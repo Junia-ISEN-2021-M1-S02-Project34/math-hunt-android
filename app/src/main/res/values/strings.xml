@@ -2,5 +2,6 @@
     <string name="app_name">math-hunt</string>
     <string name="idTeam">idTeam</string>
     <string name="password">password</string>
+    <string name="imagetest">imagetest</string>
 
 </resources>
