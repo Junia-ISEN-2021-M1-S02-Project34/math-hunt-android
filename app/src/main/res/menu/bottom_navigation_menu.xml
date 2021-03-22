@@ -5,15 +5,15 @@
             android:id="@+id/enigma"
             android:enabled="true"
             android:icon="@drawable/icon_enigma"
-            android:title="Enigmes"/>
+            android:title="@string/Enigmes"/>
         <item
             android:id="@+id/hints"
             android:enabled="true"
             android:icon="@drawable/icon_hint"
-            android:title="Indices"/>
+            android:title="@string/Indices"/>
         <item
             android:id="@+id/progress"
             android:enabled="true"
             android:icon="@drawable/icon_progress"
-            android:title="Progression"/>
+            android:title="@string/Progression"/>
 </menu>

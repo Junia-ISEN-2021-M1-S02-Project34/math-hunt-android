@@ -3,5 +3,8 @@
     <string name="idTeam">idTeam</string>
     <string name="password">password</string>
     <string name="imagetest">imagetest</string>
+    <string name="Progression" />
+    <string name="Indices" />
+    <string name="Enigmes" />
 
 </resources>
