@@ -6,5 +6,10 @@
     <string name="Progression" />
     <string name="Indices" />
     <string name="Enigmes" />
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="drawerhunt1" />
+    <string name="drawerhunt2" />
+    <string name="drawerhunt3" />
 
 </resources>
