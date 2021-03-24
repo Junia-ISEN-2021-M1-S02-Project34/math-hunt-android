@@ -6,7 +6,8 @@
     android:layout_height="match_parent"
     tools:context=".HintActivity">
 
-
+    HintFragment fragment = (HintFragment) getFragmentManager().findFragmentById(R.id.hint_fragment);
+    fragment.HintFragment();
 
     <ImageView
         android:id="@+id/imageView"
@@ -21,6 +22,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/imagetest" />
+
+
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"

@@ -11,5 +11,6 @@
     <string name="drawerhunt1" />
     <string name="drawerhunt2" />
     <string name="drawerhunt3" />
+    <string name="hint_fragm" />
 
 </resources>

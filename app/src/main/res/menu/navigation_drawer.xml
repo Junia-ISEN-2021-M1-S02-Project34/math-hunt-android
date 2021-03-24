@@ -10,17 +10,6 @@
             android:title="@string/drawerhunt1"
             android:orientation="vertical"
             android:checked="true" />
-
-        <item
-            android:id="@+id/drawerhunt_2"
-            android:icon="@drawable/icon_enigma"
-            android:orientation="vertical"
-            android:title="@string/drawerhunt2" />
-        <item
-            android:id="@+id/drawerhunt_3"
-            android:icon="@drawable/icon_enigma"
-            android:orientation="vertical"
-            android:title="@string/drawerhunt3" />
     </group>
 
 </menu>
