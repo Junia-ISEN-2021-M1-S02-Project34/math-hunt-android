@@ -2,5 +2,10 @@
     <string name="app_name">math-hunt</string>
     <string name="idTeam">idTeam</string>
     <string name="password">password</string>
+    <string name="hint">indice</string>
+    <string name="enigma">enigme</string>
+    <string name="progression">progression</string>
+    <string name="leaderBoard">classement</string>
+
 
 </resources>
