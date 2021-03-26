@@ -1,6 +1,11 @@
 package com.isen.math_hunt.entities;
 
 
+import java.util.List;
+
+/**
+ * GeoGroup entity class
+ */
 public class GeoGroup {
 
     private int _id;
@@ -10,10 +15,18 @@ public class GeoGroup {
     private int radius;
     private String pictureUrl;
     private int score;
+    private List<Enigma> enigmaList;
+
 
     public GeoGroup(String name, int score) {
         this.name = name;
         this.score = score;
+    }
+
+    public GeoGroup(String name, int score, List<Enigma> enigmaList) {
+        this.name = name;
+        this.score = score;
+        this.enigmaList = enigmaList;
     }
 
     public GeoGroup(int _id, String name, int positionX, int positionY, int radius, String pictureUrl) {
@@ -73,12 +86,19 @@ public class GeoGroup {
         this.pictureUrl = pictureUrl;
     }
 
+    public List<Enigma> getEnigmaList() {
+        return enigmaList;
+    }
+
+    public void setEnigmaList(List<Enigma> enigmaList) {
+        this.enigmaList = enigmaList;
+    }
 
     public int getScore() {
         return score;
     }
 
     public void setScore(int score) {
-       this.score = score;
+        this.score = score;
     }
 }

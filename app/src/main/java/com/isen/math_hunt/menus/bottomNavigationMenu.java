@@ -1,4 +1,4 @@
-package com.isen.math_hunt;
+package com.isen.math_hunt.menus;
 
 import android.os.Bundle;
 
@@ -7,6 +7,8 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.isen.math_hunt.R;
 
 //TODO A TOTALEMENT MODIFIER CAR GENERER PAR ANDROID STUDIO, CETTE CLASSE PERMET DE GERER LE CONTROLE DES BOUTONS POUR ENVOYER AUX DIFFERENTES VUES
 

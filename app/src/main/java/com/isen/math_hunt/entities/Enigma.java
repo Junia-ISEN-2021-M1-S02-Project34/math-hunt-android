@@ -1,5 +1,8 @@
 package com.isen.math_hunt.entities;
 
+/**
+ * Enigma entity class
+ */
 public class Enigma {
 
     private int _id;
@@ -115,5 +118,10 @@ public class Enigma {
         this.geoGroup = geoGroup;
         this.isLinked = isLinked;
         this.nextEnigmaId = nextEnigmaId;
+    }
+
+    public Enigma(String name, int scoreValue) {
+        this.name = name;
+        this.scoreValue = scoreValue;
     }
 }

@@ -20,7 +20,7 @@
 
     <fragment
         android:id="@+id/fragment2"
-        android:name="com.isen.math_hunt.bottomNavigationMenu"
+        android:name="com.isen.math_hunt.menus.bottomNavigationMenu"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
