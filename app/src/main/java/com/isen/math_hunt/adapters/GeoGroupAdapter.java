@@ -19,12 +19,12 @@ import com.isen.math_hunt.entities.GeoGroup;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GeoGroup_adapter extends ArrayAdapter<GeoGroup> {
+public class GeoGroupAdapter extends ArrayAdapter<GeoGroup> {
 
-    private Context mContext;
-    private List<GeoGroup> geoGroupsList = new ArrayList<>();
+    private final Context mContext;
+    private final List<GeoGroup> geoGroupsList;
 
-    public GeoGroup_adapter(@NonNull Context context, ArrayList<GeoGroup> list) {
+    public GeoGroupAdapter(@NonNull Context context, ArrayList<GeoGroup> list) {
         super(context, 0 , list);
         mContext = context;
         geoGroupsList = list;
@@ -43,7 +43,7 @@ public class GeoGroup_adapter extends ArrayAdapter<GeoGroup> {
         geoGroupName.setText(currentGeoGroup.getName());
 
         TextView geoGroupScore = (TextView) listItem.findViewById(R.id.geoGroupScore_textView);
-        geoGroupScore.setText(currentGeoGroup.getScore());
+        geoGroupScore.setText(Integer.toString(currentGeoGroup.getScore()));
 
         ImageButton geoGroupDrawer = (ImageButton) listItem.findViewById(R.id.geoGroupDrawer_button);
 
