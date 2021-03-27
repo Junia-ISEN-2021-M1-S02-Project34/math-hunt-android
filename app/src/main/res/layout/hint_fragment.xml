@@ -2,38 +2,47 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/frameLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".HintFragment">
+    android:layout_height="wrap_content">
 
-
-    <!-- TODO: Update blank fragment layout -->
+    <Button
+        android:id="@+id/outlinedButton"
+        style="?attr/materialButtonOutlinedStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:text="Outlined button"
+        app:layout_constraintEnd_toStartOf="@+id/imageButton"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:text="@string/hint_fragm" />
+        android:layout_marginTop="10dp"
+        android:text="TextView"
+        app:layout_constraintTop_toBottomOf="@+id/textView2"
+        tools:layout_editor_absoluteX="10dp" />
 
-    <com.google.android.material.navigation.NavigationView
-        android:id="@+id/navigationView"
-        android:layout_width="285dp"
-        android:layout_height="67dp"
-        android:orientation="vertical"
-        app:layout_constraintStart_toStartOf="parent"
-        app:menu="@menu/navigation_drawer"
-        tools:layout_editor_absoluteY="53dp">
-
-    </com.google.android.material.navigation.NavigationView>
-
-    <Button
-        android:id="@+id/unlockHintButton"
+    <TextView
+        android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/debloquer"
-        app:layout_constraintStart_toEndOf="@+id/navigationView"
-        tools:layout_editor_absoluteY="60dp" />
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:text="TextView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/imageButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/icon_enigma" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,9 +1,11 @@
-package com.isen.math_hunt;
+package com.isen.math_hunt.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.widget.ListView;
+
+import com.isen.math_hunt.R;
 
 import java.util.ArrayList;
 
