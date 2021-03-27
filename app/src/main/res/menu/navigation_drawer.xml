@@ -10,6 +10,14 @@
             android:title="@string/drawerhunt1"
             android:orientation="vertical"
             android:checked="true" />
+
+        <Button
+            android:id="@+id/unlockHintButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Debloquer"
+            style="?attr/materialButtonOutlinedStyle"
+            />
     </group>
 
 </menu>
