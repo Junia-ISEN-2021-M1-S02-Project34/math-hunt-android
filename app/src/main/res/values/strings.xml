@@ -10,5 +10,10 @@
     <string name="geoGroupDistanceTextField">Vous êtes à x mètre de la zone</string>
     <string name="geoGroupTitleTextField">A la découverte de ...</string>
     <string name="geoGroupDescriptionTextField">D\'où vient cette image ? Rendez-vous dans cette zone pour débuter les énigmes ! N\'hésitez pas à demander de l\'aide aux passants !</string>
-
+    <string name="story">Histoire et introduction au jeu de pistes</string>
+    <string name="launchGame">Lancer la partie</string>
+    <string name="hint">indice</string>
+    <string name="enigma">enigme</string>
+    <string name="progression">progression</string>
+    <string name="leaderBoard">classement</string>
 </resources>
