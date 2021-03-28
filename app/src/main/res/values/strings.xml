@@ -4,6 +4,8 @@
     <string name="password">password</string>
     <string name="story">Histoire et introduction au jeu de pistes</string>
     <string name="launchGame">Lancer la partie</string>
-    //todo
-
+    <string name="hint">indice</string>
+    <string name="enigma">enigme</string>
+    <string name="progression">progression</string>
+    <string name="leaderBoard">classement</string>
 </resources>
