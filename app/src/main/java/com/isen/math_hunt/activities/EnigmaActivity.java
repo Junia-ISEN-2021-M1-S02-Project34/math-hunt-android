@@ -1,8 +1,10 @@
-package com.isen.math_hunt;
+package com.isen.math_hunt.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+
+import com.isen.math_hunt.R;
 
 public class EnigmaActivity extends AppCompatActivity {
 

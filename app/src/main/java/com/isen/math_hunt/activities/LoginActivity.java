@@ -1,4 +1,4 @@
-package com.isen.math_hunt;
+package com.isen.math_hunt.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.widget.Button;
 
 import com.google.android.material.textfield.TextInputLayout;
+import com.isen.math_hunt.R;
 
 public class LoginActivity extends AppCompatActivity {
 
