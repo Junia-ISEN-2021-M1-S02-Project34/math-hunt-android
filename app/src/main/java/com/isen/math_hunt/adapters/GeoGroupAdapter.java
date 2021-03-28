@@ -74,12 +74,10 @@ public class GeoGroupAdapter extends ArrayAdapter<GeoGroup> {
         });
 
 
-        ArrayList<Enigma> enigmaList = (ArrayList<Enigma>) geoGroupsList.get(position).getEnigmaList();
+        ArrayList<Enigma> enigmaList = (ArrayList<Enigma>) currentGeoGroup.getEnigmaList();
 
 
         ViewGroup.LayoutParams layout = enigmaListView.getLayoutParams();
-        float factor = mContext.getResources().getDisplayMetrics().density;
-        Log.d("Coucou", String.valueOf(factor));
         layout.height = dpToPx(40, mContext) * enigmaList.size();
         enigmaListView.setLayoutParams(layout);
 

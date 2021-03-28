@@ -1,3 +1,5 @@
+<resources>
+
     <string name="app_name">math-hunt</string>
     <string name="idTeam">idTeam</string>
     <string name="password">password</string>
@@ -12,11 +14,6 @@
     <string name="drawerhunt3" />
     <string name="hint_fragm" />
     <string name="debloquer">Debloquer</string>
-
-
-    <string name="app_name">math-hunt</string>
-    <string name="idTeam">idTeam</string>
-    <string name="password">password</string>
     <string name="geogroupe_text">A la découverte de ...</string>
     <string name="geogroupe_explication">Où se trouve cette image ? Rendez-vous dans cette zone pour découvrir les énigmes qui s\'y cache. N\'hésitez pas à demander de l\'aide aux passants !</string>
     <string name="geogroup_distance">Vous êtes à x mètres de la zone !</string>

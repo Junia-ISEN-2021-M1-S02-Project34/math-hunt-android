@@ -29,7 +29,7 @@ public class HintActivity extends AppCompatActivity {
         ArrayList<Hint> hintList = new ArrayList<>();
 
         hintList.add(new Hint("Hint 1","Voici le première indice",150));
-        hintList.add(new Hint("Hint 1","Voici le première indice",150));
+        hintList.add(new Hint("Hint 2","Voici le deuxième indicxe",150));
 
         hintAdapter = new HintAdapter(this,hintList);
         hintListView.setAdapter(hintAdapter);

@@ -19,7 +19,7 @@
         <activity android:name=".activities.LoginActivity"></activity>
         <activity android:name=".activities.GeoGroupActivity"></activity>
         <activity android:name=".activities.WaitingActivity"></activity>
-        <activity android:name=".activities.ProgressionActivity">
+        <activity android:name=".activities.ProgressionActivity"></activity>
 
     </application>
 
