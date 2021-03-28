@@ -9,11 +9,6 @@ public class Hint {
     private String propositionToRemove;
     private String enigmaId;
 
-    public Hint(String name, String text, int penalty) {
-        this.name = name;
-        this.text = text;
-        this.penalty = penalty;
-    }
 
     public String getName() {
         return name;
@@ -61,5 +56,11 @@ public class Hint {
 
     public void setEnigmaId(String enigmaId) {
         this.enigmaId = enigmaId;
+    }
+
+    public Hint(String name, String text, int penalty) {
+        this.name = name;
+        this.text = text;
+        this.penalty = penalty;
     }
 }
