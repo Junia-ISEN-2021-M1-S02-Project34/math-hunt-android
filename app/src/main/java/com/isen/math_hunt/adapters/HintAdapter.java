@@ -5,7 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -37,11 +36,11 @@ public class HintAdapter extends ArrayAdapter<Hint> {
 
         Hint currentHint = hintList.get(position);
 
-        TextView hintName = (TextView)listItem.findViewById(R.id.hintName_textView);
+        TextView hintName = (TextView)listItem.findViewById(R.id.hintNameTextView);
         hintName.setText(currentHint.getName());
 
-        TextView hintPenalty = (TextView) listItem.findViewById(R.id.hintPenalty_textView);
-        hintPenalty.setText(currentHint.getPenalty());
+        TextView hintPenalty = (TextView) listItem.findViewById(R.id.hintPenaltyTextView);
+        hintPenalty.setText(String.valueOf(currentHint.getPenalty()));
 
         return listItem;
     }

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <item name="hintName_textView" type="id" />
-    <item name="hintPenalty_textView" type="id" />
+    <item name="hintNameTextView" type="id" />
+    <item name="hintPenaltyTextView" type="id" />
     <item name="hintListView" type="id" />
 </resources>

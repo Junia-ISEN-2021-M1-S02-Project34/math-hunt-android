@@ -27,14 +27,18 @@ public class HintActivity extends AppCompatActivity {
 
         hintListView = (ListView) findViewById(R.id.hintListView);
         ArrayList<Hint> hintList = new ArrayList<>();
+
+        hintList.add(new Hint("Hint 1","Voici le première indice",150));
+        hintList.add(new Hint("Hint 1","Voici le première indice",150));
+
+        hintAdapter = new HintAdapter(this,hintList);
+        hintListView.setAdapter(hintAdapter);
+
+
+
     }
 
-    //TODO call dbb
 
 
-    ArrayList<Hint> hintArrayList1 = new ArrayList<>();
-    hintArrayList1.add(new Hint("Indice 1", "Texte indice", 10));
-    hintArrayList1.add(new void Hint("Indice 2", "hint", 10));
-    hintArrayList1.add(new void Hint("Indice 3", "hint", 10));
 
 }
