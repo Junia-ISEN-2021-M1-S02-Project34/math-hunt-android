@@ -9,14 +9,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Mathhunt">
-        <activity android:name=".activities.EnigmaActivity">
+        <activity android:name=".activities.GeoGroupActivity"></activity>
+        <activity android:name=".activities.WaitingActivity"></activity>
+        <activity android:name=".activities.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.LoginActivity">
+        <activity android:name=".activities.ProgressionActivity">
 
         </activity>
     </application>
