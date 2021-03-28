@@ -6,5 +6,9 @@
     <string name="geogroupe_explication">Où se trouve cette image ? Rendez-vous dans cette zone pour découvrir les énigmes qui s\'y cache. N\'hésitez pas à demander de l\'aide aux passants !</string>
     <string name="geogroup_distance">Vous êtes à x mètres de la zone !</string>
     <string name="geogroup_button">Vous y êtes !</string>
+    <string name="continueButtonText">Vous y êtes</string>
+    <string name="geoGroupDistanceTextField">Vous êtes à x mètre de la zone</string>
+    <string name="geoGroupTitleTextField">A la découverte de ...</string>
+    <string name="geoGroupDescriptionTextField">D\'où vient cette image ? Rendez-vous dans cette zone pour débuter les énigmes ! N\'hésitez pas à demander de l\'aide aux passants !</string>
 
 </resources>
