@@ -5,40 +5,55 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ClassementActivity"
+    tools:context=".activities.ClassementActivity"
     tools:ignore="ExtraText">
-
 
 
     <ImageView
         android:id="@+id/imageView_illustration"
-        android:layout_width="301dp"
-        android:layout_height="181dp"
-        android:layout_marginTop="84dp"
-        app:layout_constraintBottom_toTopOf="@+id/textView_title"
+        android:layout_width="273dp"
+        android:layout_height="110dp"
+        android:layout_marginTop="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"
         tools:ignore="MissingConstraints" />
 
     <TextView
         android:id="@+id/textView_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
         android:padding="5dp"
         android:text="@string/classement_title"
         android:textSize="32sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.515"
         app:layout_constraintStart_toStartOf="parent"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteY="289dp" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView_illustration"
+        tools:ignore="MissingConstraints" />
 
     <ListView
-        android:id="@+id/rank_list"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/rankList"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/fragment"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView_title"
         tools:ignore="MissingConstraints" />
+
+    <fragment
+        android:id="@+id/fragment"
+        android:name="com.isen.math_hunt.menus.bottomNavigationMenu"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
