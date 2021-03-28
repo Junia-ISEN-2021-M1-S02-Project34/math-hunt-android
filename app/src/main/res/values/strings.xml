@@ -2,5 +2,8 @@
     <string name="app_name">math-hunt</string>
     <string name="idTeam">idTeam</string>
     <string name="password">password</string>
+    <string name="story">Histoire et introduction au jeu de pistes</string>
+    <string name="launchGame">Lancer la partie</string>
+    //todo
 
 </resources>
