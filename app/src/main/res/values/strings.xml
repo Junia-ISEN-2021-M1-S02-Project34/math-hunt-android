@@ -27,4 +27,7 @@
     <string name="enigma">enigme</string>
     <string name="progression">progression</string>
     <string name="leaderBoard">classement</string>
+    <string name="radioButtonAnswer">Answer</string>
+    <string name="AnswerTextFieldHint">Réponse</string>
+    <string name="idTeam">idTeam</string>
 </resources>
