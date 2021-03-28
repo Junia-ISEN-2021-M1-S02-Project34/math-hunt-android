@@ -2,6 +2,14 @@
     <string name="app_name">math-hunt</string>
     <string name="idTeam">idTeam</string>
     <string name="password">password</string>
+    <string name="geogroupe_text">A la découverte de ...</string>
+    <string name="geogroupe_explication">Où se trouve cette image ? Rendez-vous dans cette zone pour découvrir les énigmes qui s\'y cache. N\'hésitez pas à demander de l\'aide aux passants !</string>
+    <string name="geogroup_distance">Vous êtes à x mètres de la zone !</string>
+    <string name="geogroup_button">Vous y êtes !</string>
+    <string name="continueButtonText">Vous y êtes</string>
+    <string name="geoGroupDistanceTextField">Vous êtes à x mètre de la zone</string>
+    <string name="geoGroupTitleTextField">A la découverte de ...</string>
+    <string name="geoGroupDescriptionTextField">D\'où vient cette image ? Rendez-vous dans cette zone pour débuter les énigmes ! N\'hésitez pas à demander de l\'aide aux passants !</string>
     <string name="story">Histoire et introduction au jeu de pistes</string>
     <string name="launchGame">Lancer la partie</string>
     <string name="hint">indice</string>

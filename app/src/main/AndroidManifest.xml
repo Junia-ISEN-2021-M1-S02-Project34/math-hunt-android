@@ -9,6 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Mathhunt">
+        <activity android:name=".activities.GeoGroupActivity"></activity>
         <activity android:name=".activities.WaitingActivity"></activity>
         <activity android:name=".activities.LoginActivity">
             <intent-filter>
