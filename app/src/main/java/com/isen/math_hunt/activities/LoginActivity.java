@@ -12,14 +12,14 @@ public class LoginActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        final TextInputLayout userTextField = findViewById(R.id.userIdTextField);
+        final TextInputLayout userTextField = findViewById(R.id.answerTextField);
         final TextInputLayout passwordTextField = findViewById(R.id.passewordTextField);
         final Button loginButton = findViewById(R.id.loginButton);
 
 
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.login_activity);
+        setContentView(R.layout.activity_login);
     }
 
 
