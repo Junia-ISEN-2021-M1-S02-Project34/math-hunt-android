@@ -5,6 +5,7 @@
     <string name="admin_button">admin</string>
     <string name="login_button">login</string>
     <string name="password">password</string>
+    <string name="classement_title">CLASSEMENT</string>
     <string name="imagetest">imagetest</string>
     <string name="Progression" />
     <string name="Indices" />

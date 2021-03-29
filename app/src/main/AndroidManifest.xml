@@ -15,6 +15,9 @@
         <activity android:name=".activities.LoginActivity">
         </activity>
         <activity android:name=".activities.ProgressionActivity"></activity>
+        <activity android:name=".activities.RankActivity">
+        </activity>
+        <activity android:name=".activities.ProgressionActivity"></activity>
         <activity android:name=".activities.EnigmaActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

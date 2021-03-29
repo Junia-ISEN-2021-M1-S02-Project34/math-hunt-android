@@ -5,7 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -13,7 +12,6 @@ import androidx.annotation.Nullable;
 
 import com.isen.math_hunt.R;
 import com.isen.math_hunt.entities.Enigma;
-import com.isen.math_hunt.entities.GeoGroup;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,10 +47,10 @@ public class EnigmaAdapter extends ArrayAdapter<Enigma> {
 
         Enigma currentEnigma = enigmaList.get(position);
 
-        TextView enigmaName = (TextView) listItem.findViewById(R.id.enigmaName_textView);
+        TextView enigmaName = (TextView) listItem.findViewById(R.id.teamNameTextView);
         enigmaName.setText(currentEnigma.getName());
 
-        TextView enigmaValueScore = (TextView) listItem.findViewById(R.id.enigmaValueScore_textView);
+        TextView enigmaValueScore = (TextView) listItem.findViewById(R.id.teamScoreTextView);
         enigmaValueScore.setText(Integer.toString(currentEnigma.getScoreValue()));
 
 
