@@ -1,9 +1,21 @@
 <resources>
+
     <string name="app_name">math-hunt</string>
     <string name="id_team">idTeam</string>
     <string name="admin_button">admin</string>
     <string name="login_button">login</string>
     <string name="password">password</string>
+    <string name="imagetest">imagetest</string>
+    <string name="Progression" />
+    <string name="Indices" />
+    <string name="Enigmes" />
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="drawerhunt1" />
+    <string name="drawerhunt2" />
+    <string name="drawerhunt3" />
+    <string name="hint_fragm" />
+    <string name="debloquer">Debloquer</string>
     <string name="score">score</string>
     <string name="enigma_rank">enigma rank</string>
     <string name="enigma_title">enigma title</string>
@@ -11,8 +23,6 @@
     <string name="question_enigma">question</string>
     <string name="validate_button">question</string>
     <string name="validateButton">Validate</string>
-
-
     <string name="geogroupe_text">A la découverte de ...</string>
     <string name="geogroupe_explication">Où se trouve cette image ? Rendez-vous dans cette zone pour découvrir les énigmes qui s\'y cache. N\'hésitez pas à demander de l\'aide aux passants !</string>
     <string name="geogroup_distance">Vous êtes à x mètres de la zone !</string>
