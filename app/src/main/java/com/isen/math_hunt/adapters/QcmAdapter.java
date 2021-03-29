@@ -21,7 +21,7 @@ import java.util.List;
 public class QcmAdapter extends ArrayAdapter<Proposition> {
 
     private Context mContext;
-    private List<Proposition> answerList = new ArrayList<>();
+    private List<Proposition> answerList;
 
     public QcmAdapter(@NonNull Context context, ArrayList<Proposition> propositions) {
         super(context, 0 , propositions);
