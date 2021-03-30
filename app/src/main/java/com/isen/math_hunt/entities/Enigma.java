@@ -3,26 +3,46 @@ package com.isen.math_hunt.entities;
 /**
  * Enigma entity class
  */
+
+import com.google.gson.annotations.SerializedName;
+
+
 public class Enigma {
 
-    private int _id;
+    @SerializedName("id")
+    private String _id;
+    @SerializedName("id")
     private String name;
     private String description;
+    private String pictureUrl;
     private String question;
     private String positionX;
     private String positionY;
     private int scoreValue;
     private boolean isActive;
-    private GeoGroup geoGroup;
+    private GeoGroup geoGroupId;
     private boolean isLinked;
     private int nextEnigmaId;
 
+    public Enigma(String name, String description, String pictureUrl, String question, String positionX, String positionY, int scoreValue, boolean isActive, GeoGroup geoGroup, boolean isLinked, int nextEnigmaId) {
+        this.name = name;
+        this.description = description;
+        this.pictureUrl = pictureUrl;
+        this.question = question;
+        this.positionX = positionX;
+        this.positionY = positionY;
+        this.scoreValue = scoreValue;
+        this.isActive = isActive;
+        this.geoGroupId = geoGroup;
+        this.isLinked = isLinked;
+        this.nextEnigmaId = nextEnigmaId;
+    }
 
-    public int get_id() {
+    public String get_id() {
         return _id;
     }
 
-    public void set_id(int _id) {
+    public void set_id(String _id) {
         this._id = _id;
     }
 
@@ -40,6 +60,14 @@ public class Enigma {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getPictureUrl() {
+        return pictureUrl;
+    }
+
+    public void setPictureUrl(String pictureUrl) {
+        this.pictureUrl = pictureUrl;
     }
 
     public String getQuestion() {
@@ -82,12 +110,12 @@ public class Enigma {
         isActive = active;
     }
 
-    public GeoGroup getGeoGroup() {
-        return geoGroup;
+    public GeoGroup getGeoGroupId() {
+        return geoGroupId;
     }
 
-    public void setGeoGroup(GeoGroup geoGroup) {
-        this.geoGroup = geoGroup;
+    public void setGeoGroupId(GeoGroup geoGroupId) {
+        this.geoGroupId = geoGroupId;
     }
 
     public boolean isLinked() {
@@ -103,20 +131,6 @@ public class Enigma {
     }
 
     public void setNextEnigmaId(int nextEnigmaId) {
-        this.nextEnigmaId = nextEnigmaId;
-    }
-
-    public Enigma(int _id, String name, String description, String question, String positionX, String positionY, int scoreValue, boolean isActive, GeoGroup geoGroup, boolean isLinked, int nextEnigmaId) {
-        this._id = _id;
-        this.name = name;
-        this.description = description;
-        this.question = question;
-        this.positionX = positionX;
-        this.positionY = positionY;
-        this.scoreValue = scoreValue;
-        this.isActive = isActive;
-        this.geoGroup = geoGroup;
-        this.isLinked = isLinked;
         this.nextEnigmaId = nextEnigmaId;
     }
 
