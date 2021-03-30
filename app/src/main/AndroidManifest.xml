@@ -19,12 +19,18 @@
             android:windowSoftInputMode="adjustPan"></activity>
         <activity android:name=".activities.EnigmaActivity"
             android:windowSoftInputMode="adjustPan">
+        </activity>
+
+        <activity android:name=".activities.adminActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+
+
 
 
     </application>

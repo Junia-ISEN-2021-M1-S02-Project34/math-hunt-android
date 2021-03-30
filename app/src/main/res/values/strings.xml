@@ -41,4 +41,12 @@
     <string name="radioButtonAnswer">Answer</string>
     <string name="AnswerTextFieldHint">Réponse</string>
     <string name="idTeam">idTeam</string>
+    <string-array name="parties">
+        <item>Partie1</item>
+        <item>Partie2</item>
+        <item>Partie3</item>
+        <item>Partie4</item>
+        <item>Partie5</item>
+        <item>Partie6</item>
+    </string-array>
 </resources>
