@@ -9,7 +9,7 @@ import com.google.gson.annotations.SerializedName;
 
 public class Enigma {
 
-    @SerializedName("id")
+    @SerializedName("_id")
     private String _id;
     @SerializedName("name")
     private String name;

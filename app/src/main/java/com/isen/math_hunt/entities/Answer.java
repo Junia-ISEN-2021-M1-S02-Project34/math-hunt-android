@@ -1,27 +1,36 @@
 package com.isen.math_hunt.entities;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.ArrayList;
-import java.util.List;
 
 public class Answer {
 
-    private int _id;
+    @SerializedName("_id")
+    private String _id;
+    @SerializedName("enigmaId")
     private String enigmaId;
+    @SerializedName("isMcq")
     private boolean isMcq;
+    @SerializedName("solution")
     private String solution;
-    private int attemptNumber;
-    private ArrayList<Proposition> propositionList;
+    @SerializedName("attemptsNumber")
+    private int attemptsNumber;
 
-    public Answer(boolean isMcq, ArrayList<Proposition> propositionList) {
+
+    public Answer(String _id, String enigmaId, boolean isMcq, String solution, int attemptsNumber) {
+        this._id = _id;
+        this.enigmaId = enigmaId;
         this.isMcq = isMcq;
-        this.propositionList = propositionList;
+        this.solution = solution;
+        this.attemptsNumber = attemptsNumber;
     }
 
-    public int get_id() {
+    public String get_id() {
         return _id;
     }
 
-    public void set_id(int _id) {
+    public void set_id(String _id) {
         this._id = _id;
     }
 
@@ -49,19 +58,13 @@ public class Answer {
         this.solution = solution;
     }
 
-    public int getAttemptNumber() {
-        return attemptNumber;
+    public int getAttemptsNumber() {
+        return attemptsNumber;
     }
 
-    public void setAttemptNumber(int attemptNumber) {
-        this.attemptNumber = attemptNumber;
+    public void setAttemptsNumber(int attemptNumber) {
+        this.attemptsNumber = attemptNumber;
     }
 
-    public ArrayList<Proposition> getPropositionList() {
-        return propositionList;
-    }
 
-    public void setPropositionList(ArrayList<Proposition> propositionList) {
-        this.propositionList = propositionList;
-    }
 }

@@ -1,6 +1,6 @@
 package com.isen.math_hunt.model;
 
-import com.isen.math_hunt.api.EnigmaApiService;
+import com.isen.math_hunt.api.MathHuntApiService;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -8,13 +8,13 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class RetrofitClient {
 
     private static RetrofitClient instance = null;
-    private EnigmaApiService enigmaApiService;
+    private MathHuntApiService mathHuntApiService;
 
     private RetrofitClient() {
-        Retrofit retrofit = new Retrofit.Builder().baseUrl(EnigmaApiService.BASE_URL)
+        Retrofit retrofit = new Retrofit.Builder().baseUrl(MathHuntApiService.BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
-        enigmaApiService = retrofit.create(EnigmaApiService.class);
+        mathHuntApiService = retrofit.create(MathHuntApiService.class);
     }
 
     public static synchronized RetrofitClient getInstance() {
@@ -24,7 +24,9 @@ public class RetrofitClient {
         return instance;
     }
 
-    public EnigmaApiService getMyApi() {
-        return enigmaApiService;
+    public MathHuntApiService getMathHuntApiService() {
+        return mathHuntApiService;
     }
+
+
 }
