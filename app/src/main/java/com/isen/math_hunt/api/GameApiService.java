@@ -18,21 +18,12 @@ public interface GameApiService {
     String BASE_URL = Constant.URL_API;
 
 
-    @POST("/games/create/game")
-    Call<Game> createGame(@Body Game game);
 
     @GET("/games/get/games")
     Call<Game> getAllGames();
 
     @GET("/games/get/game/{id}")
     Call<Game> getGameById(@Path("id") String id);
-
-    @Headers({"Content-Type: application/json"})
-    @PUT("/gamesupdate/game/{id}")
-    Call<Game> updateGame(@Path("id") String id, @Body Game body);
-
-    @DELETE("/games/delete/game/{id}")
-    Call<ResponseBody> deleteGame(@Path("id") String id);
 
     @Headers({"/gamesContent-Type: application/json"})
     @PUT("/start/game/{id}")

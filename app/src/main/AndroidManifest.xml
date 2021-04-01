@@ -20,7 +20,13 @@
         <activity android:name=".activities.GeoGroupActivity"
             android:windowSoftInputMode="adjustPan"></activity>
         <activity android:name=".activities.WaitingActivity"></activity>
-        <activity android:name=".activities.LoginActivity"></activity>
+        <activity android:name=".activities.LoginActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity android:name=".activities.RankActivity"
             android:windowSoftInputMode="adjustPan"></activity>
         <activity android:name=".activities.EnigmaActivity"
@@ -28,11 +34,7 @@
 
         </activity>
 
-        <activity android:name=".activities.test"><intent-filter>
-            <action android:name="android.intent.action.MAIN" />
-
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter></activity>
+        <activity android:name=".activities.test"></activity>
 
     </application>
 
