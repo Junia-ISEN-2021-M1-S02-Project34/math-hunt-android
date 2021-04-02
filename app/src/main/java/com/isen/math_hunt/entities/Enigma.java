@@ -15,8 +15,6 @@ public class Enigma {
     private String name;
     @SerializedName("description")
     private String description;
-    @SerializedName("pictureUrl")
-    private String pictureUrl;
     @SerializedName("question")
     private String question;
     @SerializedName("positionX")
@@ -27,24 +25,20 @@ public class Enigma {
     private int scoreValue;
     @SerializedName("isActive")
     private boolean isActive;
-    @SerializedName("geoGroupId")
-    private GeoGroup geoGroupId;
     @SerializedName("isLinked")
     private boolean isLinked;
     @SerializedName("nextEnigmaId")
     private int nextEnigmaId;
 
-    public Enigma(String _id, String name, String description, String pictureUrl, String question, String positionX, String positionY, int scoreValue, boolean isActive, GeoGroup geoGroupId, boolean isLinked, int nextEnigmaId) {
+    public Enigma(String _id, String name, String description, String question, String positionX, String positionY, int scoreValue, boolean isActive, boolean isLinked, int nextEnigmaId) {
         this._id = _id;
         this.name = name;
         this.description = description;
-        this.pictureUrl = pictureUrl;
         this.question = question;
         this.positionX = positionX;
         this.positionY = positionY;
         this.scoreValue = scoreValue;
         this.isActive = isActive;
-        this.geoGroupId = geoGroupId;
         this.isLinked = isLinked;
         this.nextEnigmaId = nextEnigmaId;
     }
@@ -71,14 +65,6 @@ public class Enigma {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public String getPictureUrl() {
-        return pictureUrl;
-    }
-
-    public void setPictureUrl(String pictureUrl) {
-        this.pictureUrl = pictureUrl;
     }
 
     public String getQuestion() {
@@ -121,14 +107,6 @@ public class Enigma {
         isActive = active;
     }
 
-    public GeoGroup getGeoGroupId() {
-        return geoGroupId;
-    }
-
-    public void setGeoGroupId(GeoGroup geoGroupId) {
-        this.geoGroupId = geoGroupId;
-    }
-
     public boolean isLinked() {
         return isLinked;
     }
@@ -143,10 +121,5 @@ public class Enigma {
 
     public void setNextEnigmaId(int nextEnigmaId) {
         this.nextEnigmaId = nextEnigmaId;
-    }
-
-    public Enigma(String name, int scoreValue) {
-        this.name = name;
-        this.scoreValue = scoreValue;
     }
 }

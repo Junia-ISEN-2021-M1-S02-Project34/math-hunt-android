@@ -3,10 +3,12 @@ package com.isen.math_hunt.api;
 import com.isen.math_hunt.entities.Admin;
 import com.isen.math_hunt.entities.Answer;
 import com.isen.math_hunt.entities.Game;
+import com.isen.math_hunt.entities.Hint;
 import com.isen.math_hunt.interfaces.Constant;
 import com.isen.math_hunt.entities.Enigma;
 import com.isen.math_hunt.entities.GeoGroup;
 import com.isen.math_hunt.model.EnigmaList;
+import com.isen.math_hunt.model.FullEnigma;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -68,6 +70,9 @@ public interface MathHuntApiService {
     @GET("enigmas/get/enigma/{id}")
     Call<Enigma> getEnigmaById(@Path("id") String id);
 
+    @GET("enigmas/get/full/enigma/{id}")
+    Call<FullEnigma> getFullEnigmaById(@Path("id") String id);
+
     @GET("/enigmas/get/enigmas/geoGroup/{id}")
     Call<GeoGroup> getEnigmasByGeoGroupId(@Path("id") String id);
 
@@ -92,4 +97,50 @@ public interface MathHuntApiService {
     @PUT("/start/game/{id}")
     Call<Game> startGame(@Path("id") String id, @Body Game body);
 
+    //================================================================================
+    // TeamCall
+    //================================================================================
+
+    @GET("/teams/get/teams")
+    Call<Game> getAllTeams();
+
+    @GET("/teams/get/team/{id}")
+    Call<Game> getTeamById(@Path("id") String id);
+
+    @GET("/teams/get/teams/game/{id}")
+    Call<Game> getTeamsByGameId(@Path("id") String id);
+
+    //================================================================================
+    // HintCall
+    //================================================================================
+
+    @GET("/hints/get/hints")
+    Call<Game> getAllHints();
+
+    @GET("/hints/get/hint/{id}")
+    Call<Game> getHintById(@Path("id") String id);
+
+    @GET("/hints/hint/enigma/{id}")
+    Call<Game> getHintsByEnigmaId(@Path("id") String id);
+
+    @Headers({"Content-Type: application/json"})
+    @PUT("/hints/update/hint/{id}")
+    Call<Enigma> updateHint(@Path("id") String id, @Body Hint body);
+
+    //================================================================================
+    // PropositionCall
+    //================================================================================
+
+    @GET("/propositions/get/propositions")
+    Call<Game> getAllPropositions();
+
+    @GET("/propositions/get/proposition/answer/{id}")
+    Call<Game> getPropositionsByAnswerId(@Path("id") String id);
+
+    @GET("/propositions/get/proposition/{id}")
+    Call<Game> getPropositionById(@Path("id") String id);
+
+    @Headers({"Content-Type: application/json"})
+    @PUT("/propositions/update/proposition/{id}")
+    Call<Enigma> updateProposition(@Path("id") String id, @Body Hint body);
 }
