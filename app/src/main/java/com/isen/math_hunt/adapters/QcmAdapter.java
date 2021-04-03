@@ -23,7 +23,7 @@ public class QcmAdapter extends ArrayAdapter<Proposition> {
     private Context mContext;
     private List<Proposition> answerList;
 
-    public QcmAdapter(@NonNull Context context, ArrayList<Proposition> propositions) {
+    public QcmAdapter(@NonNull Context context, List<Proposition> propositions) {
         super(context, 0 , propositions);
         mContext = context;
         this.answerList = propositions;

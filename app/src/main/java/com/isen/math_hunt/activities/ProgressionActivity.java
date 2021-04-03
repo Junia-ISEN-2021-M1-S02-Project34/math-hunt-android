@@ -35,18 +35,8 @@ public class ProgressionActivity extends AppCompatActivity {
         //TODO call dbb
 
         ArrayList<Enigma> enigmaArrayList = new ArrayList<>();
-        enigmaArrayList.add(new Enigma("Enigme 1", 50));
-        enigmaArrayList.add(new Enigma("Enigme 2", 50));
-        enigmaArrayList.add(new Enigma("Enigme 3", 50));
 
 
-        ArrayList<Enigma> enigmaArrayList2 = new ArrayList<>();
-        enigmaArrayList2.add(new Enigma("Enigme 3", 50));
-        enigmaArrayList2.add(new Enigma("Enigme 4", 50));
-        enigmaArrayList2.add(new Enigma("Enigme 5", 50));
-
-        geoGroupsList.add(new GeoGroup("GeoGroup 1",260, enigmaArrayList));
-        geoGroupsList.add(new GeoGroup("GeoGroup 2",260,enigmaArrayList2));
 
 
 
