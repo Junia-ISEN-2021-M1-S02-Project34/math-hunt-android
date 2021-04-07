@@ -8,8 +8,11 @@ import android.view.View;
 import android.widget.Button;
 
 import com.isen.math_hunt.R;
+import com.isen.math_hunt.entities.Enigma;
 
 public class GeoGroupActivity extends AppCompatActivity {
+
+    private String nextEnigmaId = "6063223667829e7540fbea1f";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,12 +23,15 @@ public class GeoGroupActivity extends AppCompatActivity {
         geoGroupContinueButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                switchActivity(EnigmaActivity.class);
+                Intent intent = new Intent(GeoGroupActivity.this, EnigmaActivity.class);
+                intent.putExtra("nextEnigmaId", nextEnigmaId);
+                startActivity(intent);
+                finish();
             }
         });
     }
 
-    public void switchActivity(Class activity){
+    public void switchActivity(Class activity) {
         Intent myIntent = new Intent(this, activity);
         startActivity(myIntent);
 

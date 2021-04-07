@@ -21,7 +21,14 @@
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".activities.GeoGroupActivity"
-            android:windowSoftInputMode="adjustPan" />
+            android:windowSoftInputMode="adjustPan">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity android:name=".activities.WaitingActivity" />
         <activity android:name=".activities.LoginActivity">
 
@@ -33,11 +40,7 @@
             android:name=".activities.EnigmaActivity"
             android:windowSoftInputMode="adjustPan">
 
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 
         <activity android:name=".activities.ProgressionActivity" />

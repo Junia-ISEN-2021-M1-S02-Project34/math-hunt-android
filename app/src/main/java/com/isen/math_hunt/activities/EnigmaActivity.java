@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -46,7 +47,9 @@ public class EnigmaActivity extends AppCompatActivity {
     private TextInputLayout answerTextField;
     private List<Proposition> propositionList = new ArrayList<>();
     private Button validateButton;
-    ProgressDialog progressDialog;
+    private ProgressDialog progressDialog;
+
+
 
 
     @Override
@@ -67,9 +70,11 @@ public class EnigmaActivity extends AppCompatActivity {
         enigmaListView.setVisibility(View.GONE);
         answerTextField.setVisibility(View.GONE);
 
+        Bundle b = getIntent().getExtras();
+        String nextEnigmaId = b.getString("nextEnigmaId");
 
         //getEnigmasById("606321de67829e7540fbea1b");
-        getFullEnigmaById("6063223667829e7540fbea1f");
+        getFullEnigmaById(nextEnigmaId);
         //getAnswerByEnigmaId("606321de67829e7540fbea1b");
 
         /*
