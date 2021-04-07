@@ -1,13 +1,18 @@
 package com.isen.math_hunt.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.fragment.app.Fragment;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,13 +46,17 @@ public class EnigmaActivity extends AppCompatActivity {
     private TextInputLayout answerTextField;
     private List<Proposition> propositionList = new ArrayList<>();
     private Button validateButton;
+    ProgressDialog progressDialog;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_enigma);
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressDialog.show();
 
+        setContentView(R.layout.activity_enigma);
         enigmaListView = (ListView) findViewById(R.id.answersListView);
         answerTextField = (TextInputLayout) findViewById(R.id.answerTextField);
         scoreTextView = (TextView) findViewById(R.id.scoreTextField);
@@ -55,6 +64,9 @@ public class EnigmaActivity extends AppCompatActivity {
         descriptionEnigma = (TextView) findViewById(R.id.enigmaDescriptionTextField);
         questionTextView = (TextView) findViewById(R.id.questionTextField);
         validateButton = (Button) findViewById(R.id.validateButton);
+        enigmaListView.setVisibility(View.GONE);
+        answerTextField.setVisibility(View.GONE);
+
 
         //getEnigmasById("606321de67829e7540fbea1b");
         getFullEnigmaById("6063223667829e7540fbea1f");
@@ -75,11 +87,7 @@ public class EnigmaActivity extends AppCompatActivity {
 
          */
 
-        validateButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-            }
-        });
+
     }
 
     private void getFullEnigmaById(String id) {
@@ -89,20 +97,29 @@ public class EnigmaActivity extends AppCompatActivity {
             public void onResponse(Call<FullEnigma> call, Response<FullEnigma> response) {
 
                 try {
+                    progressDialog.dismiss();
+
                     FullEnigma fullEnigma = response.body();
                     scoreTextView.setText(Integer.toString(fullEnigma.getEnigma().getScoreValue()));
                     enigmaTitleTextView.setText(fullEnigma.getEnigma().getName());
                     questionTextView.setText(fullEnigma.getEnigma().getQuestion());
                     descriptionEnigma.setText(fullEnigma.getEnigma().getDescription());
-                    if (fullEnigma.getAnswer().isMcq()){
-                        answerTextField.setVisibility(View.GONE);
+                    if (fullEnigma.getAnswer().isMcq()) {
+                        enigmaListView.setVisibility(View.VISIBLE);
+
                         propositionList = fullEnigma.getProposition();
-                        qcmAdapter = new QcmAdapter(EnigmaActivity.this,propositionList);
+                        qcmAdapter = new QcmAdapter(EnigmaActivity.this, propositionList);
                         enigmaListView.setAdapter(qcmAdapter);
-                    }else{
-                        enigmaListView.setVisibility(View.GONE);
+                    } else {
+                        answerTextField.setVisibility(View.VISIBLE);
 
                     }
+
+                    validateButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                        }
+                    });
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -159,9 +176,10 @@ public class EnigmaActivity extends AppCompatActivity {
         });
     }
 
-    public void switchActivity(Class activity){
+    public void switchActivity(Class activity) {
         Intent myIntent = new Intent(this, activity);
         startActivity(myIntent);
     }
+
 
 }

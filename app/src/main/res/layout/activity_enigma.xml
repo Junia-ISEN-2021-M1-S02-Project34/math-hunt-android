@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/containerEnigmaActivity"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activities.EnigmaActivity">
@@ -12,7 +13,6 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
-        android:text="@string/score"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -23,7 +23,6 @@
         android:layout_marginStart="80dp"
         android:layout_marginTop="30dp"
         android:layout_marginEnd="80dp"
-        android:text="@string/enigma_title"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/scoreTextField" />
@@ -47,8 +46,7 @@
             <TextView
                 android:id="@+id/enigmaDescriptionTextField"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="@string/question_enigma" />
+                android:layout_height="match_parent" />
         </LinearLayout>
     </ScrollView>
 
@@ -72,8 +70,7 @@
             <TextView
                 android:id="@+id/questionTextField"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="@string/description_enigma" />
+                android:layout_height="match_parent" />
         </LinearLayout>
     </ScrollView>
 
