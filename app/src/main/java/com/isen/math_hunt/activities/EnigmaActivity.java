@@ -1,13 +1,19 @@
 package com.isen.math_hunt.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.fragment.app.Fragment;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,10 +23,12 @@ import com.isen.math_hunt.adapters.QcmAdapter;
 import com.isen.math_hunt.entities.Answer;
 import com.isen.math_hunt.entities.Enigma;
 import com.isen.math_hunt.entities.Proposition;
+import com.isen.math_hunt.interfaces.DataTransferInterface;
 import com.isen.math_hunt.model.EnigmaList;
 import com.isen.math_hunt.model.FullEnigma;
 import com.isen.math_hunt.model.RetrofitClient;
 
+import java.security.PrivateKey;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,7 +36,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class EnigmaActivity extends AppCompatActivity {
+public class EnigmaActivity extends AppCompatActivity implements DataTransferInterface {
 
 
     private ListView enigmaListView;
@@ -41,13 +49,21 @@ public class EnigmaActivity extends AppCompatActivity {
     private TextInputLayout answerTextField;
     private List<Proposition> propositionList = new ArrayList<>();
     private Button validateButton;
+    private ProgressDialog progressDialog;
+    private String currentAnswerValue;
+    private boolean currentAnswerIsChecked;
+
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_enigma);
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressDialog.show();
 
+        setContentView(R.layout.activity_enigma);
         enigmaListView = (ListView) findViewById(R.id.answersListView);
         answerTextField = (TextInputLayout) findViewById(R.id.answerTextField);
         scoreTextView = (TextView) findViewById(R.id.scoreTextField);
@@ -55,9 +71,14 @@ public class EnigmaActivity extends AppCompatActivity {
         descriptionEnigma = (TextView) findViewById(R.id.enigmaDescriptionTextField);
         questionTextView = (TextView) findViewById(R.id.questionTextField);
         validateButton = (Button) findViewById(R.id.validateButton);
+        enigmaListView.setVisibility(View.GONE);
+        answerTextField.setVisibility(View.GONE);
+
+        Bundle b = getIntent().getExtras();
+        String nextEnigmaId = b.getString("nextEnigmaId");
 
         //getEnigmasById("606321de67829e7540fbea1b");
-        getFullEnigmaById("6063223667829e7540fbea1f");
+        getFullEnigmaById(nextEnigmaId);
         //getAnswerByEnigmaId("606321de67829e7540fbea1b");
 
         /*
@@ -75,11 +96,7 @@ public class EnigmaActivity extends AppCompatActivity {
 
          */
 
-        validateButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-            }
-        });
+
     }
 
     private void getFullEnigmaById(String id) {
@@ -89,20 +106,29 @@ public class EnigmaActivity extends AppCompatActivity {
             public void onResponse(Call<FullEnigma> call, Response<FullEnigma> response) {
 
                 try {
+                    progressDialog.dismiss();
+
                     FullEnigma fullEnigma = response.body();
                     scoreTextView.setText(Integer.toString(fullEnigma.getEnigma().getScoreValue()));
                     enigmaTitleTextView.setText(fullEnigma.getEnigma().getName());
                     questionTextView.setText(fullEnigma.getEnigma().getQuestion());
                     descriptionEnigma.setText(fullEnigma.getEnigma().getDescription());
-                    if (fullEnigma.getAnswer().isMcq()){
-                        answerTextField.setVisibility(View.GONE);
+                    if (fullEnigma.getAnswer().isMcq()) {
+                        enigmaListView.setVisibility(View.VISIBLE);
+
                         propositionList = fullEnigma.getProposition();
-                        qcmAdapter = new QcmAdapter(EnigmaActivity.this,propositionList);
+                        qcmAdapter = new QcmAdapter(EnigmaActivity.this, propositionList, EnigmaActivity.this,EnigmaActivity.this);
                         enigmaListView.setAdapter(qcmAdapter);
-                    }else{
-                        enigmaListView.setVisibility(View.GONE);
+                    } else {
+                        answerTextField.setVisibility(View.VISIBLE);
 
                     }
+
+                    validateButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                        }
+                    });
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -159,9 +185,20 @@ public class EnigmaActivity extends AppCompatActivity {
         });
     }
 
-    public void switchActivity(Class activity){
+    public void switchActivity(Class activity) {
         Intent myIntent = new Intent(this, activity);
         startActivity(myIntent);
     }
 
+
+    /**
+     * get data from radioButton QCM Adapter
+     * @param isChecked
+     * @param value
+     */
+    @Override
+    public void onSetValues(Boolean isChecked,String value) {
+        this.currentAnswerIsChecked = isChecked;
+        this.currentAnswerValue = value;
+    }
 }
