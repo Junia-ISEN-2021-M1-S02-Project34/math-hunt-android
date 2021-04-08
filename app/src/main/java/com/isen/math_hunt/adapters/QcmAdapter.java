@@ -1,5 +1,6 @@
 package com.isen.math_hunt.adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,6 +15,7 @@ import androidx.annotation.Nullable;
 
 import com.isen.math_hunt.R;
 import com.isen.math_hunt.entities.Proposition;
+import com.isen.math_hunt.interfaces.DataTransferInterface;
 
 import java.util.List;
 
@@ -23,12 +25,16 @@ public class QcmAdapter extends ArrayAdapter<Proposition> {
     private List<Proposition> propositionList;
     private int mSelectedPosition = -1;
     private RadioButton mSelectedRB;
+    private Activity mActivity;
+    DataTransferInterface dataTransferInterface;
 
 
-    public QcmAdapter(@NonNull Context context, List<Proposition> propositions) {
+    public QcmAdapter(@NonNull Context context, List<Proposition> propositions, Activity activity , DataTransferInterface dataTransferInterface) {
         super(context, 0, propositions);
         mContext = context;
         this.propositionList = propositions;
+        this.mActivity = activity;
+        this.dataTransferInterface = dataTransferInterface;
     }
 
     @NonNull
@@ -64,6 +70,8 @@ public class QcmAdapter extends ArrayAdapter<Proposition> {
 
                 mSelectedPosition = position;
                 mSelectedRB = (RadioButton) v;
+                dataTransferInterface.onSetValues(holder.radioBtn.isChecked(), (String) holder.name.getText());
+
             }
         });
 

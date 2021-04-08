@@ -23,10 +23,12 @@ import com.isen.math_hunt.adapters.QcmAdapter;
 import com.isen.math_hunt.entities.Answer;
 import com.isen.math_hunt.entities.Enigma;
 import com.isen.math_hunt.entities.Proposition;
+import com.isen.math_hunt.interfaces.DataTransferInterface;
 import com.isen.math_hunt.model.EnigmaList;
 import com.isen.math_hunt.model.FullEnigma;
 import com.isen.math_hunt.model.RetrofitClient;
 
+import java.security.PrivateKey;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,7 +36,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class EnigmaActivity extends AppCompatActivity {
+public class EnigmaActivity extends AppCompatActivity implements DataTransferInterface {
 
 
     private ListView enigmaListView;
@@ -48,6 +50,8 @@ public class EnigmaActivity extends AppCompatActivity {
     private List<Proposition> propositionList = new ArrayList<>();
     private Button validateButton;
     private ProgressDialog progressDialog;
+    private String currentAnswerValue;
+    private boolean currentAnswerIsChecked;
 
 
 
@@ -113,7 +117,7 @@ public class EnigmaActivity extends AppCompatActivity {
                         enigmaListView.setVisibility(View.VISIBLE);
 
                         propositionList = fullEnigma.getProposition();
-                        qcmAdapter = new QcmAdapter(EnigmaActivity.this, propositionList);
+                        qcmAdapter = new QcmAdapter(EnigmaActivity.this, propositionList, EnigmaActivity.this,EnigmaActivity.this);
                         enigmaListView.setAdapter(qcmAdapter);
                     } else {
                         answerTextField.setVisibility(View.VISIBLE);
@@ -187,4 +191,14 @@ public class EnigmaActivity extends AppCompatActivity {
     }
 
 
+    /**
+     * get data from radioButton QCM Adapter
+     * @param isChecked
+     * @param value
+     */
+    @Override
+    public void onSetValues(Boolean isChecked,String value) {
+        this.currentAnswerIsChecked = isChecked;
+        this.currentAnswerValue = value;
+    }
 }
