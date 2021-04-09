@@ -23,9 +23,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.isen.math_hunt.R;
+import com.isen.math_hunt.entities.Enigma;
+import com.isen.math_hunt.entities.GeoGroup;
+import com.isen.math_hunt.model.GeoGroupList;
+import com.isen.math_hunt.model.RetrofitClient;
 
 import java.util.List;
 import java.util.Locale;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class GeoGroupActivity extends AppCompatActivity implements LocationListener{
 
@@ -39,22 +47,25 @@ public class GeoGroupActivity extends AppCompatActivity implements LocationListe
     private double latFlandres = 50.636597029006495;
     private double lonFlandres = 3.0694448466392066;
 
+    private double geoGroupPosX;
+    private double geoGroupPosY;
+
     private int dist;
 
 
-    private Button button_location;
+    //private Button button_location;
     private TextView text_location;
     private LocationManager locationManager;
+    private Button  geoGroupContinueButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_geo_groupe);
 
-        Button geoGroupContinueButton = findViewById(R.id.geoGroupContinueButton);
-
+        geoGroupContinueButton = findViewById(R.id.geoGroupContinueButton);
         text_location = findViewById(R.id.text_location);
-        button_location = findViewById(R.id.button_location);
+        //button_location = findViewById(R.id.button_location);
 
         if (ContextCompat.checkSelfPermission(GeoGroupActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED){
@@ -63,15 +74,8 @@ public class GeoGroupActivity extends AppCompatActivity implements LocationListe
             },100);
         }
 
-        button_location.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getLocation();
-                text_location.setText("vous êtes à : " + dist + "m");
-
-            }
-        });
-
+        getLocation();
+        getGeoGroupById("605af6b76df41210dd14d0ef");
 
         geoGroupContinueButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,8 +84,8 @@ public class GeoGroupActivity extends AppCompatActivity implements LocationListe
             }
         });
 
-
     }
+
     // On recupere la geolocalisation avec cette fonction
     @SuppressLint("MissingPermission")
     private void getLocation() {
@@ -104,14 +108,18 @@ public class GeoGroupActivity extends AppCompatActivity implements LocationListe
     @Override
     public void onLocationChanged(Location location) {
         dist = (int) distance(latFlandres,location.getLatitude(),lonFlandres,location.getLongitude());
+        if (dist>20){
+            geoGroupContinueButton.setEnabled(false);
+        }
+        else {
+            geoGroupContinueButton.setEnabled(true);
+        }
         //Toast.makeText(this, "vous êtes à : " + dist + "m", Toast.LENGTH_SHORT).show();
-        text_location.setText("vous êtes à : " + dist + "m");
+        text_location.setText("vous êtes à " + dist + "m");
         try {
             Geocoder geocoder = new Geocoder(GeoGroupActivity.this, Locale.getDefault());
             List<Address> addresses = geocoder.getFromLocation(location.getLatitude(),location.getLongitude(),1);
             String address = addresses.get(0).getAddressLine(0);
-
-
 
         }catch (Exception e){
             e.printStackTrace();
@@ -144,6 +152,33 @@ public class GeoGroupActivity extends AppCompatActivity implements LocationListe
         distance = Math.pow(distance, 2) + Math.pow(height, 2);
 
         return Math.sqrt(distance);
+    }
+
+    private void getGeoGroupById(String id) {
+        Call<GeoGroup> call = RetrofitClient.getInstance().getMathHuntApiService().getGeoGroupById(id);
+        call.enqueue(new Callback<GeoGroup>() {
+            @Override
+            public void onResponse(Call<GeoGroup> call, Response<GeoGroup> response) {
+
+                try {
+                    GeoGroup geoGroup = response.body();
+                    Log.e("Coucou", String.valueOf(geoGroup));
+
+                    //geoGroupPosX = geoGroup.getPositionX();
+                    //geoGroupPosY = geoGroup.getPositionY();
+                }
+                catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<GeoGroup> call, Throwable t) {
+                Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+                Log.e("Coucou", t.getMessage());
+
+            }
+        });
     }
 
 }

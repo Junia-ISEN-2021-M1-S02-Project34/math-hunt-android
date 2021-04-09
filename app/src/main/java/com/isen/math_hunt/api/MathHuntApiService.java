@@ -9,6 +9,7 @@ import com.isen.math_hunt.entities.Enigma;
 import com.isen.math_hunt.entities.GeoGroup;
 import com.isen.math_hunt.model.EnigmaList;
 import com.isen.math_hunt.model.FullEnigma;
+import com.isen.math_hunt.model.GeoGroupList;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -143,4 +144,17 @@ public interface MathHuntApiService {
     @Headers({"Content-Type: application/json"})
     @PUT("/propositions/update/proposition/{id}")
     Call<Enigma> updateProposition(@Path("id") String id, @Body Hint body);
+
+
+    //================================================================================
+    // geoGroupCall
+    //================================================================================
+
+    @GET("/geoGroups/get/geoGroups")
+    Call<GeoGroupList> getAllGeoGroups();
+
+    @GET("/geoGroups/get/geoGroup/{id}")
+    Call<GeoGroup> getGeoGroupById(@Path("id") String id);
+
+
 }

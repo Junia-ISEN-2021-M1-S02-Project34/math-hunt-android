@@ -59,7 +59,7 @@ public class GeoGroupAdapter extends ArrayAdapter<GeoGroup> {
         geoGroupName.setText(currentGeoGroup.getName());
 
         TextView geoGroupScore = (TextView) listItem.findViewById(R.id.geoGroupScore_textView);
-        geoGroupScore.setText(Integer.toString(currentGeoGroup.getScore()));
+        //geoGroupScore.setText(Integer.toString(currentGeoGroup.getScore()));
 
         ImageButton geoGroupDrawerButton = (ImageButton) listItem.findViewById(R.id.geoGroupDrawer_button);
         ListView enigmaListView = (ListView) listItem.findViewById(R.id.enigmaListView);
@@ -73,7 +73,7 @@ public class GeoGroupAdapter extends ArrayAdapter<GeoGroup> {
             }
         });
 
-
+/*
         ArrayList<Enigma> enigmaList = (ArrayList<Enigma>) currentGeoGroup.getEnigmaList();
 
 
@@ -83,7 +83,7 @@ public class GeoGroupAdapter extends ArrayAdapter<GeoGroup> {
 
         EnigmaAdapter enigmaAdapter = new EnigmaAdapter(getContext(), enigmaList);
         enigmaListView.setAdapter(enigmaAdapter);
-
+*/
         return listItem;
     }
 

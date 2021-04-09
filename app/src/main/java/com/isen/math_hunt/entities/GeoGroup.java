@@ -8,28 +8,14 @@ import java.util.List;
  */
 public class GeoGroup {
 
-    private int _id;
+    private String _id;
     private String name;
-    private int positionX;
-    private int positionY;
-    private int radius;
+    private double positionX;
+    private double positionY;
+    private double radius;
     private String pictureUrl;
-    private int score;
-    private List<Enigma> enigmaList;
 
-
-    public GeoGroup(String name, int score) {
-        this.name = name;
-        this.score = score;
-    }
-
-    public GeoGroup(String name, int score, List<Enigma> enigmaList) {
-        this.name = name;
-        this.score = score;
-        this.enigmaList = enigmaList;
-    }
-
-    public GeoGroup(int _id, String name, int positionX, int positionY, int radius, String pictureUrl) {
+    public GeoGroup(String _id, String name, double positionX, double positionY, double radius, String pictureUrl) {
         this._id = _id;
         this.name = name;
         this.positionX = positionX;
@@ -38,11 +24,11 @@ public class GeoGroup {
         this.pictureUrl = pictureUrl;
     }
 
-    public int get_id() {
+    public String get_id() {
         return _id;
     }
 
-    public void set_id(int _id) {
+    public void set_id(String _id) {
         this._id = _id;
     }
 
@@ -54,27 +40,27 @@ public class GeoGroup {
         this.name = name;
     }
 
-    public int getPositionX() {
+    public double getPositionX() {
         return positionX;
     }
 
-    public void setPositionX(int positionX) {
+    public void setPositionX(double positionX) {
         this.positionX = positionX;
     }
 
-    public int getPositionY() {
+    public double getPositionY() {
         return positionY;
     }
 
-    public void setPositionY(int positionY) {
+    public void setPositionY(double positionY) {
         this.positionY = positionY;
     }
 
-    public int getRadius() {
+    public double getRadius() {
         return radius;
     }
 
-    public void setRadius(int radius) {
+    public void setRadius(double radius) {
         this.radius = radius;
     }
 
@@ -84,21 +70,5 @@ public class GeoGroup {
 
     public void setPictureUrl(String pictureUrl) {
         this.pictureUrl = pictureUrl;
-    }
-
-    public List<Enigma> getEnigmaList() {
-        return enigmaList;
-    }
-
-    public void setEnigmaList(List<Enigma> enigmaList) {
-        this.enigmaList = enigmaList;
-    }
-
-    public int getScore() {
-        return score;
-    }
-
-    public void setScore(int score) {
-        this.score = score;
     }
 }
