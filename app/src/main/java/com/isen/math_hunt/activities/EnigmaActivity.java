@@ -1,21 +1,18 @@
 package com.isen.math_hunt.activities;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.fragment.app.Fragment;
-
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.ProgressBar;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.textfield.TextInputLayout;
 import com.isen.math_hunt.R;
@@ -24,11 +21,9 @@ import com.isen.math_hunt.entities.Answer;
 import com.isen.math_hunt.entities.Enigma;
 import com.isen.math_hunt.entities.Proposition;
 import com.isen.math_hunt.interfaces.DataTransferInterface;
-import com.isen.math_hunt.model.EnigmaList;
 import com.isen.math_hunt.model.FullEnigma;
 import com.isen.math_hunt.model.RetrofitClient;
 
-import java.security.PrivateKey;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,7 +36,6 @@ public class EnigmaActivity extends AppCompatActivity implements DataTransferInt
 
     private ListView enigmaListView;
     private TextView scoreTextView;
-    private TextView enigmaRankTextView;
     private TextView enigmaTitleTextView;
     private TextView questionTextView;
     private TextView descriptionEnigma;
@@ -50,10 +44,14 @@ public class EnigmaActivity extends AppCompatActivity implements DataTransferInt
     private List<Proposition> propositionList = new ArrayList<>();
     private Button validateButton;
     private ProgressDialog progressDialog;
-    private String currentAnswerValue;
-    private boolean currentAnswerIsChecked;
-
-
+    private String currentMcqAnswerValue="";
+    private boolean currentMcqAnswerIsChecked;
+    private String currentEnigma;
+    private int enigmaScoreValue;
+    private String nextEnigmaAddress = "ISEN LILLE";
+    private String userAnswer;
+    private Boolean isMcq = false;
+    private String enigmaAnswer;
 
 
     @Override
@@ -75,28 +73,59 @@ public class EnigmaActivity extends AppCompatActivity implements DataTransferInt
         answerTextField.setVisibility(View.GONE);
 
         Bundle b = getIntent().getExtras();
-        String nextEnigmaId = b.getString("nextEnigmaId");
+        currentEnigma = b.getString("nextEnigmaId");
 
-        //getEnigmasById("606321de67829e7540fbea1b");
-        getFullEnigmaById(nextEnigmaId);
-        //getAnswerByEnigmaId("606321de67829e7540fbea1b");
-
-        /*
+        getFullEnigmaById(currentEnigma);
 
 
-        Answer answerQCM = new Answer(true, propositionArrayList);
+        validateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
-        if (answerQCM.isMcq()) {
-            answerTextField.setVisibility(View.GONE);
-            qcmAdapter = new QcmAdapter(this, answerQCM.getPropositionList());
-            enigmaListView.setAdapter(qcmAdapter);
-        } else {
-            enigmaListView.setVisibility(View.GONE);
-        }
+                if (isMcq){
+                    userAnswer = currentMcqAnswerValue;
 
-         */
+                }else userAnswer = answerTextField.getEditText().getText().toString();
+
+                if (userAnswer.equals(enigmaAnswer)){
+                    AlertDialog alertDialog = createGoodAnswerDialog();
+                    alertDialog.show();
+                }
 
 
+                 else if (userAnswer.isEmpty()){
+                    AlertDialog.Builder builder
+                            = new AlertDialog
+                            .Builder(EnigmaActivity.this);
+
+                    builder.setTitle("Oups ...");
+                    builder.setMessage("Il semble que ta réponse est vide !");
+                    builder.setCancelable(false);
+                    builder
+                            .setPositiveButton(
+                                    "Réésayer",
+                                    new DialogInterface
+                                            .OnClickListener() {
+
+                                        @Override
+                                        public void onClick(DialogInterface dialog,
+                                                            int which)
+                                        {
+                                            // When the user click yes button
+                                            // then app will close
+                                            dialog.cancel();
+                                        }
+                                    });
+                    AlertDialog alertDialog = builder.create();
+                    alertDialog.show();
+                }
+                else {
+                    AlertDialog alertDialog = createBadAnswerDialog();
+                    alertDialog.show();
+                }
+
+            }
+        });
     }
 
     private void getFullEnigmaById(String id) {
@@ -113,22 +142,19 @@ public class EnigmaActivity extends AppCompatActivity implements DataTransferInt
                     enigmaTitleTextView.setText(fullEnigma.getEnigma().getName());
                     questionTextView.setText(fullEnigma.getEnigma().getQuestion());
                     descriptionEnigma.setText(fullEnigma.getEnigma().getDescription());
+                    enigmaAnswer = fullEnigma.getAnswer().getSolution();
                     if (fullEnigma.getAnswer().isMcq()) {
                         enigmaListView.setVisibility(View.VISIBLE);
-
                         propositionList = fullEnigma.getProposition();
-                        qcmAdapter = new QcmAdapter(EnigmaActivity.this, propositionList, EnigmaActivity.this,EnigmaActivity.this);
+                        qcmAdapter = new QcmAdapter(EnigmaActivity.this, propositionList, EnigmaActivity.this, EnigmaActivity.this);
                         enigmaListView.setAdapter(qcmAdapter);
+                        isMcq=true;
                     } else {
                         answerTextField.setVisibility(View.VISIBLE);
 
                     }
 
-                    validateButton.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                        }
-                    });
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -193,12 +219,70 @@ public class EnigmaActivity extends AppCompatActivity implements DataTransferInt
 
     /**
      * get data from radioButton QCM Adapter
+     *
      * @param isChecked
      * @param value
      */
     @Override
-    public void onSetValues(Boolean isChecked,String value) {
-        this.currentAnswerIsChecked = isChecked;
-        this.currentAnswerValue = value;
+    public void onSetValues(Boolean isChecked, String value) {
+        this.currentMcqAnswerIsChecked = isChecked;
+        this.currentMcqAnswerValue = value;
+    }
+
+    public AlertDialog createGoodAnswerDialog(){
+        AlertDialog.Builder builder
+                = new AlertDialog
+                .Builder(EnigmaActivity.this);
+
+        builder.setTitle("Bravo vous avez réussi cette enigme");
+        builder.setMessage("vous avez gagné " + enigmaScoreValue + " point \n" +
+                "Maintenant rendez vous ici : " + nextEnigmaAddress);
+        builder.setCancelable(false);
+        builder
+                .setPositiveButton(
+                        "Continuer",
+                        new DialogInterface
+                                .OnClickListener() {
+
+                            @Override
+                            public void onClick(DialogInterface dialog,
+                                                int which)
+                            {
+                                // When the user click yes button
+                                // then app will close
+                                dialog.cancel();
+                            }
+                        });
+        AlertDialog alertDialog = builder.create();
+
+        return alertDialog;
+    }
+
+    public AlertDialog createBadAnswerDialog(){
+        AlertDialog.Builder builder
+                = new AlertDialog
+                .Builder(EnigmaActivity.this);
+
+            builder.setTitle("Et mince vous êtes nul");
+        builder.setMessage("Vous avez raté cette enigme");
+        builder.setCancelable(false);
+        builder
+                .setPositiveButton(
+                        "Continuer",
+                        new DialogInterface
+                                .OnClickListener() {
+
+                            @Override
+                            public void onClick(DialogInterface dialog,
+                                                int which)
+                            {
+                                // When the user click yes button
+                                // then app will close
+                                dialog.cancel();
+                            }
+                        });
+        AlertDialog alertDialog = builder.create();
+
+        return alertDialog;
     }
 }

@@ -59,6 +59,19 @@ public class QcmAdapter extends ArrayAdapter<Proposition> {
             holder = (ViewHolder) listItem.getTag();
         }
 
+
+        if (mSelectedPosition != position) {
+            holder.radioBtn.setChecked(false);
+        } else {
+            holder.radioBtn.setChecked(true);
+            if (mSelectedRB != null && holder.radioBtn != mSelectedRB) {
+                mSelectedRB = holder.radioBtn;
+            }
+        }
+
+        holder.name.setText(getItem(position).getText());
+
+
         holder.radioBtn.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -74,19 +87,6 @@ public class QcmAdapter extends ArrayAdapter<Proposition> {
 
             }
         });
-
-
-        if (mSelectedPosition != position) {
-            holder.radioBtn.setChecked(false);
-        } else {
-            holder.radioBtn.setChecked(true);
-            if (mSelectedRB != null && holder.radioBtn != mSelectedRB) {
-                mSelectedRB = holder.radioBtn;
-            }
-        }
-
-        holder.name.setText(getItem(position).getText());
-
 
         return listItem;
     }
