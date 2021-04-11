@@ -161,8 +161,9 @@ public class GeoGroupActivity extends AppCompatActivity implements LocationListe
             public void onResponse(Call<GeoGroup> call, Response<GeoGroup> response) {
 
                 try {
-                    GeoGroup geoGroup = response.body();
-                    Log.e("Coucou", String.valueOf(geoGroup));
+                   // GeoGroup geoGroup = response.body();
+                    Log.d("Coucou", String.valueOf(response));
+
 
                     //geoGroupPosX = geoGroup.getPositionX();
                     //geoGroupPosY = geoGroup.getPositionY();

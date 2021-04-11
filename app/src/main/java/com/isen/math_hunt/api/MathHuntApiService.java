@@ -30,31 +30,31 @@ public interface MathHuntApiService {
     // AdminCall
     //================================================================================
 
-    @POST("/admins/create/admin")
+    @POST("admins/create/admin")
     Call<Enigma> createAdmin(@Body Admin admin);
 
     @Headers({"Content-Type: application/json"})
-    @PUT("/admins/update/admin/{username}")
+    @PUT("admins/update/admin/{username}")
     Call<Enigma> updateAdmin(@Path("username") String username, @Body Admin body);
 
     //================================================================================
     // AnswerCall
     //================================================================================
 
-    @GET("/answers/get/answers")
+    @GET("answers/get/answers")
     Call<Answer> getAllAnswers();
 
-    @GET("/answers/get/answer/{id}")
+    @GET("answers/get/answer/{id}")
     Call<Answer> getAnswerById(@Path("id") String id);
 
-    @GET("/answers/get/answer/enigma/{id}")
+    @GET("answers/get/answer/enigma/{id}")
     Call<Answer> getAnswerByEnigmaId(@Path("id") String id);
 
     @Headers({"Content-Type: application/json"})
-    @PUT("/answers/update/answer/{id}")
+    @PUT("answers/update/answer/{id}")
     Call<Answer> updateAnswer(@Path("id") String id, @Body Answer body);
 
-    @DELETE("/answers/delete/answer/{id}")
+    @DELETE("answers/delete/answer/{id}")
     Call<ResponseBody> deleteAnswer(@Path("id") String id);
 
 
@@ -62,7 +62,7 @@ public interface MathHuntApiService {
     // EnigmaCall
     //================================================================================
 
-    @POST("/enigmas/create/enigma")
+    @POST("enigmas/create/enigma")
     Call<Enigma> createEnigma(@Body Enigma enigma);
 
     @GET("enigmas/get/enigmas")
@@ -74,54 +74,54 @@ public interface MathHuntApiService {
     @GET("enigmas/get/full/enigma/{id}")
     Call<FullEnigma> getFullEnigmaById(@Path("id") String id);
 
-    @GET("/enigmas/get/enigmas/geoGroup/{id}")
+    @GET("enigmas/get/enigmas/geoGroup/{id}")
     Call<GeoGroup> getEnigmasByGeoGroupId(@Path("id") String id);
 
     @Headers({"Content-Type: application/json"})
-    @PUT("/enigmas/update/enigma/{id}")
+    @PUT("enigmas/update/enigma/{id}")
     Call<Enigma> updateEnigma(@Path("id") String id, @Body Enigma body);
 
-    @DELETE("/enigmas/delete/enigma/{id}")
+    @DELETE("enigmas/delete/enigma/{id}")
     Call<ResponseBody> deleteEnigma(@Path("id") String id);
 
     //================================================================================
     // GameCall
     //================================================================================
 
-    @GET("/games/get/games")
+    @GET("games/get/games")
     Call<Game> getAllGames();
 
-    @GET("/games/get/game/{id}")
+    @GET("games/get/game/{id}")
     Call<Game> getGameById(@Path("id") String id);
 
     @Headers({"/gamesContent-Type: application/json"})
-    @PUT("/start/game/{id}")
+    @PUT("start/game/{id}")
     Call<Game> startGame(@Path("id") String id, @Body Game body);
 
     //================================================================================
     // TeamCall
     //================================================================================
 
-    @GET("/teams/get/teams")
+    @GET("teams/get/teams")
     Call<Game> getAllTeams();
 
-    @GET("/teams/get/team/{id}")
+    @GET("teams/get/team/{id}")
     Call<Game> getTeamById(@Path("id") String id);
 
-    @GET("/teams/get/teams/game/{id}")
+    @GET("teams/get/teams/game/{id}")
     Call<Game> getTeamsByGameId(@Path("id") String id);
 
     //================================================================================
     // HintCall
     //================================================================================
 
-    @GET("/hints/get/hints")
+    @GET("hints/get/hints")
     Call<Game> getAllHints();
 
-    @GET("/hints/get/hint/{id}")
+    @GET("hints/get/hint/{id}")
     Call<Game> getHintById(@Path("id") String id);
 
-    @GET("/hints/hint/enigma/{id}")
+    @GET("hints/hint/enigma/{id}")
     Call<Game> getHintsByEnigmaId(@Path("id") String id);
 
     @Headers({"Content-Type: application/json"})
@@ -132,17 +132,17 @@ public interface MathHuntApiService {
     // PropositionCall
     //================================================================================
 
-    @GET("/propositions/get/propositions")
+    @GET("propositions/get/propositions")
     Call<Game> getAllPropositions();
 
-    @GET("/propositions/get/proposition/answer/{id}")
+    @GET("propositions/get/proposition/answer/{id}")
     Call<Game> getPropositionsByAnswerId(@Path("id") String id);
 
-    @GET("/propositions/get/proposition/{id}")
+    @GET("propositions/get/proposition/{id}")
     Call<Game> getPropositionById(@Path("id") String id);
 
     @Headers({"Content-Type: application/json"})
-    @PUT("/propositions/update/proposition/{id}")
+    @PUT("propositions/update/proposition/{id}")
     Call<Enigma> updateProposition(@Path("id") String id, @Body Hint body);
 
 
@@ -150,10 +150,10 @@ public interface MathHuntApiService {
     // geoGroupCall
     //================================================================================
 
-    @GET("/geoGroups/get/geoGroups")
+    @GET("geoGroups/get/geoGroups")
     Call<GeoGroupList> getAllGeoGroups();
 
-    @GET("/geoGroups/get/geoGroup/{id}")
+    @GET("geoGroups/get/geoGroup/{id}")
     Call<GeoGroup> getGeoGroupById(@Path("id") String id);
 
 
