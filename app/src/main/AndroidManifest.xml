@@ -33,9 +33,6 @@
         <activity
             android:name=".activities.RankActivity"
             android:windowSoftInputMode="adjustPan" />
-        <activity
-            android:name=".activities.EnigmaActivity"
-            android:windowSoftInputMode="adjustPan" />
         <activity android:name=".activities.ProgressionActivity" />
     </application>
 

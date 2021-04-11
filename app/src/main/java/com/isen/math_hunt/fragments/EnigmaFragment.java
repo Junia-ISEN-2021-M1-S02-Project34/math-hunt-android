@@ -3,7 +3,6 @@ package com.isen.math_hunt.fragments;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -19,7 +18,6 @@ import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputLayout;
 import com.isen.math_hunt.R;
-import com.isen.math_hunt.activities.EnigmaActivity;
 import com.isen.math_hunt.adapters.QcmAdapter;
 import com.isen.math_hunt.entities.Answer;
 import com.isen.math_hunt.entities.Enigma;
@@ -139,6 +137,8 @@ public class EnigmaFragment extends Fragment implements DataTransferInterface {
 
             }
         });
+
+
         return mView;
 
     }

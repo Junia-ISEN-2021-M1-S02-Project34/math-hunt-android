@@ -23,10 +23,10 @@ public class GeoGroupActivity extends AppCompatActivity {
         geoGroupContinueButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(GeoGroupActivity.this, EnigmaActivity.class);
-                intent.putExtra("nextEnigmaId", nextEnigmaId);
-                startActivity(intent);
-                finish();
+               // Intent intent = new Intent(GeoGroupActivity.this, EnigmaActivity.class);
+              //  intent.putExtra("nextEnigmaId", nextEnigmaId);
+              //  startActivity(intent);
+              //  finish();
             }
         });
     }
