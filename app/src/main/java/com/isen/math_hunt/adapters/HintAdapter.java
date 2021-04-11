@@ -6,17 +6,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.google.android.material.textfield.TextInputLayout;
 import com.isen.math_hunt.R;
 import com.isen.math_hunt.entities.Hint;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +35,7 @@ public class HintAdapter extends ArrayAdapter<Hint> {
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         View listItem = convertView;
         if(listItem == null)
-            listItem = LayoutInflater.from(mContext).inflate(R.layout.hint_item,parent,false);
+            listItem = LayoutInflater.from(mContext).inflate(R.layout.item_hint,parent,false);
 
         Hint currentHint = hintList.get(position);
 

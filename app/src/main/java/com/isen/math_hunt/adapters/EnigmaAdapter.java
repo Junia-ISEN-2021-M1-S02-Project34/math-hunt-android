@@ -43,7 +43,7 @@ public class EnigmaAdapter extends ArrayAdapter<Enigma> {
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         View listItem = convertView;
         if (listItem == null)
-            listItem = LayoutInflater.from(mContext).inflate(R.layout.enigma_item, parent, false);
+            listItem = LayoutInflater.from(mContext).inflate(R.layout.item_progression_enigma, parent, false);
 
         Enigma currentEnigma = enigmaList.get(position);
 

@@ -1,17 +1,14 @@
 package com.isen.math_hunt.adapters;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -25,7 +22,7 @@ import java.util.List;
 /**
  * geoGroupAdapter
  */
-public class GeoGroupAdapter extends ArrayAdapter<GeoGroup> {
+public class ProgressionAdapter extends ArrayAdapter<GeoGroup> {
 
     private final Context mContext;
     private final List<GeoGroup> geoGroupsList;
@@ -35,7 +32,7 @@ public class GeoGroupAdapter extends ArrayAdapter<GeoGroup> {
      * @param context   view
      * @param geoGroups you want to use for display
      */
-    public GeoGroupAdapter(@NonNull Context context, ArrayList<GeoGroup> geoGroups) {
+    public ProgressionAdapter(@NonNull Context context, ArrayList<GeoGroup> geoGroups) {
         super(context, 0, geoGroups);
         mContext = context;
         geoGroupsList = geoGroups;
@@ -51,7 +48,7 @@ public class GeoGroupAdapter extends ArrayAdapter<GeoGroup> {
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         View listItem = convertView;
         if (listItem == null)
-            listItem = LayoutInflater.from(mContext).inflate(R.layout.geo_group_item, parent, false);
+            listItem = LayoutInflater.from(mContext).inflate(R.layout.item_progression_geo_group, parent, false);
 
         GeoGroup currentGeoGroup = geoGroupsList.get(position);
 

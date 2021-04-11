@@ -21,19 +21,12 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activities.HintActivity"
-            android:windowSoftInputMode="adjustPan" />
-        <activity
             android:name=".activities.GeoGroupActivity"
             android:windowSoftInputMode="adjustPan">
 
         </activity>
         <activity android:name=".activities.WaitingActivity" />
         <activity android:name=".activities.LoginActivity"></activity>
-        <activity
-            android:name=".activities.RankActivity"
-            android:windowSoftInputMode="adjustPan" />
-        <activity android:name=".activities.ProgressionActivity" />
     </application>
 
 </manifest>
