@@ -18,9 +18,11 @@ import com.isen.math_hunt.entities.Enigma;
 import com.isen.math_hunt.entities.Hint;
 import com.isen.math_hunt.entities.Team;
 import com.isen.math_hunt.model.FullEnigma;
+import com.isen.math_hunt.model.HintList;
 import com.isen.math_hunt.model.RetrofitClient;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -28,16 +30,17 @@ import retrofit2.Response;
 
 public class HintFragment extends Fragment {
 
-    private ListView  hintListView;
+    private ListView hintListView;
     private HintAdapter hintAdapter;
     private String teamId;
     private String currentEnigmaId;
     private ProgressDialog progressDialog;
+    private List<Hint> hintList = new ArrayList<>();
+
 
     public HintFragment() {
         // Required empty public constructor
     }
-
 
 
     @Override
@@ -53,33 +56,30 @@ public class HintFragment extends Fragment {
         progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         progressDialog.show();
 
-
+        getHintsByEnigmaId(currentEnigmaId);
 
         hintListView = (ListView) mView.findViewById(R.id.hintListView);
 
-        ArrayList<Hint> hintList = new ArrayList<>();
 
-        hintList.add(new Hint("Hint 1","Voici le première indice",150));
-        hintList.add(new Hint("Hint 2","Voici le deuxième indicxe",150));
 
-        hintAdapter = new HintAdapter(getActivity(),hintList);
-        hintListView.setAdapter(hintAdapter);
 
         return mView;
     }
 
     private void getHintsByEnigmaId(String id) {
-        Call<Hint> call = RetrofitClient.getInstance().getMathHuntApiService().getHintsByEnigmaId(id);
-        call.enqueue(new Callback<Hint>() {
+        Call<HintList> call = RetrofitClient.getInstance().getMathHuntApiService().getHintsByEnigmaId(id);
+        call.enqueue(new Callback<HintList>() {
             @Override
-            public void onResponse(Call<Hint> call, Response<Hint> response) {
+            public void onResponse(Call<HintList> call, Response<HintList> response) {
 
                 try {
                     progressDialog.dismiss();
 
-                    Hint hint = response.body();
+                    HintList hints = response.body();
 
-
+                    hintList = hints.getHints();
+                    hintAdapter = new HintAdapter(getActivity(),hintList);
+                    hintListView.setAdapter(hintAdapter);
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -88,7 +88,7 @@ public class HintFragment extends Fragment {
             }
 
             @Override
-            public void onFailure(Call<Hint> call, Throwable t) {
+            public void onFailure(Call<HintList> call, Throwable t) {
                 Toast.makeText(getActivity(), t.getMessage(), Toast.LENGTH_SHORT).show();
                 Log.e("Prout", t.getMessage());
 

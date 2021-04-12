@@ -11,6 +11,7 @@ import com.isen.math_hunt.entities.Enigma;
 import com.isen.math_hunt.entities.GeoGroup;
 import com.isen.math_hunt.model.EnigmaList;
 import com.isen.math_hunt.model.FullEnigma;
+import com.isen.math_hunt.model.HintList;
 import com.isen.math_hunt.model.ProgressionPost;
 
 import okhttp3.ResponseBody;
@@ -112,8 +113,8 @@ public interface MathHuntApiService {
     @GET("hints/get/hint/{id}")
     Call<Hint> getHintById(@Path("id") String id);
 
-    @GET("hints/hint/enigma/{id}")
-    Call<Hint> getHintsByEnigmaId(@Path("id") String id);
+    @GET("hints/get/hint/enigma/{id}")
+    Call<HintList> getHintsByEnigmaId(@Path("id") String id);
 
     @Headers({"Content-Type: application/json"})
     @PUT("hints/update/hint/{id}")

@@ -24,7 +24,7 @@ public class HintAdapter extends ArrayAdapter<Hint> {
     private boolean showHintText = Boolean.FALSE;
 
 
-    public HintAdapter(@NonNull Context context, ArrayList<Hint> hints) {
+    public HintAdapter(@NonNull Context context, List<Hint> hints) {
         super(context, 0, hints);
         mContext = context;
         this.hintList = hints;
@@ -43,7 +43,7 @@ public class HintAdapter extends ArrayAdapter<Hint> {
         hintName.setText(currentHint.getName());
 
         TextView hintPenalty = (TextView) listItem.findViewById(R.id.hintPenaltyTextView);
-        hintPenalty.setText(String.valueOf(currentHint.getPenalty()));
+        hintPenalty.setText(String.valueOf("Pénalité : " + currentHint.getPenalty()));
 
         Button getHintButton = (Button)listItem.findViewById(R.id.getHintButton);
 
