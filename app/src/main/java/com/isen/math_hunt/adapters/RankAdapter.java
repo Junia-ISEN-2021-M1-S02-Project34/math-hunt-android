@@ -12,7 +12,6 @@ import androidx.annotation.Nullable;
 import com.isen.math_hunt.R;
 import com.isen.math_hunt.entities.Team;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class RankAdapter extends ArrayAdapter<Team> {
@@ -31,7 +30,7 @@ public class RankAdapter extends ArrayAdapter<Team> {
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         View listItem = convertView;
         if(listItem == null)
-            listItem = LayoutInflater.from(mContext).inflate(R.layout.ranking_item,parent,false);
+            listItem = LayoutInflater.from(mContext).inflate(R.layout.item_ranking,parent,false);
 
         Team currentTeam = rankList.get(position);
 

@@ -2,7 +2,6 @@ package com.isen.math_hunt.adapters;
 
 import android.app.Activity;
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,7 +43,7 @@ public class QcmAdapter extends ArrayAdapter<Proposition> {
         ViewHolder holder;
 
         if (listItem == null) {
-            listItem = LayoutInflater.from(mContext).inflate(R.layout.qcm_item, parent, false);
+            listItem = LayoutInflater.from(mContext).inflate(R.layout.item_mcq, parent, false);
 
             holder = new ViewHolder();
 
@@ -58,6 +57,19 @@ public class QcmAdapter extends ArrayAdapter<Proposition> {
         } else {
             holder = (ViewHolder) listItem.getTag();
         }
+
+
+        if (mSelectedPosition != position) {
+            holder.radioBtn.setChecked(false);
+        } else {
+            holder.radioBtn.setChecked(true);
+            if (mSelectedRB != null && holder.radioBtn != mSelectedRB) {
+                mSelectedRB = holder.radioBtn;
+            }
+        }
+
+        holder.name.setText(getItem(position).getText());
+
 
         holder.radioBtn.setOnClickListener(new View.OnClickListener() {
 
@@ -74,19 +86,6 @@ public class QcmAdapter extends ArrayAdapter<Proposition> {
 
             }
         });
-
-
-        if (mSelectedPosition != position) {
-            holder.radioBtn.setChecked(false);
-        } else {
-            holder.radioBtn.setChecked(true);
-            if (mSelectedRB != null && holder.radioBtn != mSelectedRB) {
-                mSelectedRB = holder.radioBtn;
-            }
-        }
-
-        holder.name.setText(getItem(position).getText());
-
 
         return listItem;
     }
