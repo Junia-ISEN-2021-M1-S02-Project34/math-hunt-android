@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ScrollView;
@@ -14,23 +15,33 @@ import com.isen.math_hunt.entities.GeoGroup;
 
 public class WaitingActivity extends AppCompatActivity {
 
+    private String teamId;
+    private String gameId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_waiting);
+
+        Bundle b = getIntent().getExtras();
+        teamId = b.getString("TEAM_ID");
+        gameId = b.getString("GAME_ID");
+
 
         Button launchButton = findViewById(R.id.startButton);
 
         launchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                switchActivity(GeoGroupActivity.class);
+                Intent intent = new Intent(WaitingActivity.this, GeoGroupActivity.class);
+                Bundle b = new Bundle();
+                b.putString("TEAM_ID", teamId);
+                b.putString("GAME_ID", gameId);
+                intent.putExtras(b); //Put your id to your next Intent
+                startActivity(intent);
+                finish();
             }
         });
     }
 
-    public void switchActivity(Class activity){
-        Intent myIntent = new Intent(this, activity);
-        startActivity(myIntent);
-    }
 }

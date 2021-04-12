@@ -19,10 +19,10 @@ import android.widget.Toast;
 import com.google.android.material.textfield.TextInputLayout;
 import com.isen.math_hunt.R;
 import com.isen.math_hunt.adapters.QcmAdapter;
-import com.isen.math_hunt.entities.Answer;
-import com.isen.math_hunt.entities.Enigma;
 import com.isen.math_hunt.entities.Proposition;
-import com.isen.math_hunt.interfaces.DataTransferInterface;
+import com.isen.math_hunt.entities.Team;
+import com.isen.math_hunt.interfaces.CurrentEnigmaIdInterface;
+import com.isen.math_hunt.interfaces.RadioButtonDataTransfertInterface;
 import com.isen.math_hunt.model.FullEnigma;
 import com.isen.math_hunt.model.RetrofitClient;
 
@@ -34,8 +34,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
-
-public class EnigmaFragment extends Fragment implements DataTransferInterface {
+public class EnigmaFragment extends Fragment implements RadioButtonDataTransfertInterface {
 
     private ListView enigmaListView;
     private TextView scoreTextView;
@@ -47,19 +46,24 @@ public class EnigmaFragment extends Fragment implements DataTransferInterface {
     private List<Proposition> propositionList = new ArrayList<>();
     private Button validateButton;
     private ProgressDialog progressDialog;
-    private String currentMcqAnswerValue="";
+    private String currentMcqAnswerValue = "";
     private boolean currentMcqAnswerIsChecked;
-    private String currentEnigma;
     private int enigmaScoreValue;
     private String nextEnigmaAddress = "ISEN LILLE";
     private String userAnswer;
     private Boolean isMcq = false;
     private String enigmaAnswer;
 
+    private String teamId;
+    private String currentEnigmaId;
+    private String currentGeoGroupId;
+
+    private CurrentEnigmaIdInterface listener = (CurrentEnigmaIdInterface) getActivity();
+
+
     public EnigmaFragment() {
         // Required empty public constructor
     }
-
 
 
     @Override
@@ -83,28 +87,24 @@ public class EnigmaFragment extends Fragment implements DataTransferInterface {
         enigmaListView.setVisibility(View.GONE);
         answerTextField.setVisibility(View.GONE);
 
-        //Bundle b = getIntent().getExtras();
-        //currentEnigma = b.getString("nextEnigmaId");
+        teamId = getArguments().getString("TEAM_ID");
+        currentEnigmaId = getArguments().getString("CURRENT_ENIGMA_ID");
 
-        getFullEnigmaById("6063223667829e7540fbea1f");
-
-
+        getFullEnigmaById(currentEnigmaId);
         validateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                if (isMcq){
+                if (isMcq) {
                     userAnswer = currentMcqAnswerValue;
 
-                }else userAnswer = answerTextField.getEditText().getText().toString();
+                } else
+                    userAnswer = answerTextField.getEditText().getText().toString().toLowerCase();
 
-                if (userAnswer.equals(enigmaAnswer)){
+                if (userAnswer.equals(enigmaAnswer.toLowerCase())) {
                     AlertDialog alertDialog = createGoodAnswerDialog();
                     alertDialog.show();
-                }
-
-
-                else if (userAnswer.isEmpty()){
+                } else if (userAnswer.isEmpty()) {
                     AlertDialog.Builder builder
                             = new AlertDialog
                             .Builder(getActivity());
@@ -120,8 +120,7 @@ public class EnigmaFragment extends Fragment implements DataTransferInterface {
 
                                         @Override
                                         public void onClick(DialogInterface dialog,
-                                                            int which)
-                                        {
+                                                            int which) {
                                             // When the user click yes button
                                             // then app will close
                                             dialog.cancel();
@@ -129,8 +128,7 @@ public class EnigmaFragment extends Fragment implements DataTransferInterface {
                                     });
                     AlertDialog alertDialog = builder.create();
                     alertDialog.show();
-                }
-                else {
+                } else {
                     AlertDialog alertDialog = createBadAnswerDialog();
                     alertDialog.show();
                 }
@@ -142,6 +140,7 @@ public class EnigmaFragment extends Fragment implements DataTransferInterface {
         return mView;
 
     }
+
 
     private void getFullEnigmaById(String id) {
         Call<FullEnigma> call = RetrofitClient.getInstance().getMathHuntApiService().getFullEnigmaById(id);
@@ -163,7 +162,7 @@ public class EnigmaFragment extends Fragment implements DataTransferInterface {
                         propositionList = fullEnigma.getProposition();
                         qcmAdapter = new QcmAdapter(getActivity(), propositionList, getActivity(), EnigmaFragment.this);
                         enigmaListView.setAdapter(qcmAdapter);
-                        isMcq=true;
+                        isMcq = true;
                     } else {
                         answerTextField.setVisibility(View.VISIBLE);
 
@@ -185,49 +184,6 @@ public class EnigmaFragment extends Fragment implements DataTransferInterface {
         });
     }
 
-    private void getEnigmasById(String id) {
-        Call<Enigma> call = RetrofitClient.getInstance().getMathHuntApiService().getEnigmaById(id);
-        call.enqueue(new Callback<Enigma>() {
-            @Override
-            public void onResponse(Call<Enigma> call, Response<Enigma> response) {
-
-                try {
-                    Enigma enigma = response.body();
-                    scoreTextView.setText(Integer.toString(enigma.getScoreValue()));
-                    enigmaTitleTextView.setText(enigma.getName());
-                    questionTextView.setText(enigma.getQuestion());
-                    descriptionEnigma.setText(enigma.getDescription());
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-            }
-
-            @Override
-            public void onFailure(Call<Enigma> call, Throwable t) {
-                Toast.makeText(getActivity(), t.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-    private void getAnswerByEnigmaId(String id) {
-        Call<Answer> call = RetrofitClient.getInstance().getMathHuntApiService().getAnswerByEnigmaId(id);
-        call.enqueue(new Callback<Answer>() {
-            @Override
-            public void onResponse(Call<Answer> call, Response<Answer> response) {
-                Answer answer = response.body();
-                Log.e("ANSWER", String.valueOf(answer));
-            }
-
-            @Override
-            public void onFailure(Call<Answer> call, Throwable t) {
-                Toast.makeText(getActivity(), t.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-
-
     /**
      * get data from radioButton QCM Adapter
      *
@@ -240,7 +196,7 @@ public class EnigmaFragment extends Fragment implements DataTransferInterface {
         this.currentMcqAnswerValue = value;
     }
 
-    public AlertDialog createGoodAnswerDialog(){
+    public AlertDialog createGoodAnswerDialog() {
         AlertDialog.Builder builder
                 = new AlertDialog
                 .Builder(getActivity());
@@ -257,8 +213,7 @@ public class EnigmaFragment extends Fragment implements DataTransferInterface {
 
                             @Override
                             public void onClick(DialogInterface dialog,
-                                                int which)
-                            {
+                                                int which) {
                                 // When the user click yes button
                                 // then app will close
                                 dialog.cancel();
@@ -269,7 +224,7 @@ public class EnigmaFragment extends Fragment implements DataTransferInterface {
         return alertDialog;
     }
 
-    public AlertDialog createBadAnswerDialog(){
+    public AlertDialog createBadAnswerDialog() {
         AlertDialog.Builder builder
                 = new AlertDialog
                 .Builder(getActivity());
@@ -285,8 +240,7 @@ public class EnigmaFragment extends Fragment implements DataTransferInterface {
 
                             @Override
                             public void onClick(DialogInterface dialog,
-                                                int which)
-                            {
+                                                int which) {
                                 // When the user click yes button
                                 // then app will close
                                 dialog.cancel();
