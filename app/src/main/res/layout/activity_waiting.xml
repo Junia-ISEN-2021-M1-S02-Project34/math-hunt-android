@@ -31,7 +31,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="618dp"
                 android:background="@color/mathHuntTheme"
-                android:text="@string/chers_tudiants_vous_ne_me_connaissez_pas_mais_vous_avez_s_rement_entendu_le_nom_de_mon_grand_p_re_norbert_s_gard_j_ai_une_certaine_passion_pour_les_sciences_et_les_math_matiques_et_voyez_vous_c_est_une_passion_familiale_mon_grand_p_re_m_a_transmis_tous_ses_carnets_de_notes_avant_de_mourir_et_j_y_ai_d_couvert_pleins_d_exp_riences_et_de_myst_res_scientifiques_qu_il_a_tudi_tout_au_long_de_sa_vie_mais_alors_quel_rapport_avec_vous_et_bien_il_y_a_peu_j_ai_d_couvert_dans_un_de_ses_carnets_qu_apr_s_avoir_cr_une_certaine_cole_d_ing_nieur_appel_isen_en_1956_il_a_dissimul_plusieurs_nigmes_math_matiques_un_peu_partout_dans_la_ville_de_lille_il_pr_cise_que_ceux_qui_r_ussiraient_les_trouver_et_les_r_soudre_obtiendrait_la_cl_d_un_r_ussite_inexplicable_dans_leurs_tudes_a_condition_d_tre_assez_rapide_et_de_r_colter_assez_de_cl_s_alors_que_diriez_vous_d_une_chasse_aux_maths_elise_s_gard" />
+                android:gravity="center"
+
+                android:text="@string/introduction" />
         </LinearLayout>
     </ScrollView>
 
