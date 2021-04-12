@@ -5,7 +5,7 @@
     android:id="@+id/containerEnigmaActivity"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.EnigmaActivity">
+    android:background="@drawable/fondapp">
 
     <TextView
         android:id="@+id/scoreTextField"
@@ -80,6 +80,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
+        android:background="@color/mathHuntTheme"
         android:text="@string/validateButton"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
