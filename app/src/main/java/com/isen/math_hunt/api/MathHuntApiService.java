@@ -13,6 +13,7 @@ import com.isen.math_hunt.model.EnigmaList;
 import com.isen.math_hunt.model.FullEnigma;
 import com.isen.math_hunt.model.HintList;
 import com.isen.math_hunt.model.ProgressionPost;
+import com.isen.math_hunt.model.GeoGroupList;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -53,6 +54,8 @@ public interface MathHuntApiService {
     @GET("answers/get/answer/enigma/{id}")
     Call<Answer> getAnswerByEnigmaId(@Path("id") String id);
 
+
+
     //================================================================================
     // EnigmaCall
     //================================================================================
@@ -73,6 +76,7 @@ public interface MathHuntApiService {
     Call<Enigma> getEnigmasByGeoGroupId(@Path("id") String id);
 
 
+
     //================================================================================
     // GameCall
     //================================================================================
@@ -83,7 +87,7 @@ public interface MathHuntApiService {
     @GET("games/get/game/{id}")
     Call<Game> getGameById(@Path("id") String id);
 
-    @Headers({"gamesContent-Type: application/json"})
+    @Headers({"/gamesContent-Type: application/json"})
     @PUT("start/game/{id}")
     Call<Game> startGame(@Path("id") String id, @Body Game body);
 
@@ -92,6 +96,7 @@ public interface MathHuntApiService {
     //================================================================================
 
     @GET("teams/get/teams")
+
     Call<Team> getAllTeams();
 
     @GET("teams/get/team/{id}")
@@ -99,9 +104,6 @@ public interface MathHuntApiService {
 
     @GET("teams/get/teams/game/{id}")
     Call<Team> getTeamsByGameId(@Path("id") String id);
-
-    @POST("teams/update/team/progression/:id")
-    Call<Team> updateTeamProgression(@Path("id") String id, @Body ProgressionPost progressionPost);
 
     //================================================================================
     // HintCall
@@ -115,6 +117,7 @@ public interface MathHuntApiService {
 
     @GET("hints/get/hints/enigma/{id}")
     Call<HintList> getHintsByEnigmaId(@Path("id") String id);
+
 
     @Headers({"Content-Type: application/json"})
     @PUT("hints/update/hint/{id}")
@@ -136,4 +139,17 @@ public interface MathHuntApiService {
     @Headers({"Content-Type: application/json"})
     @PUT("propositions/update/proposition/{id}")
     Call<Proposition> updateProposition(@Path("id") String id, @Body Hint body);
+
+
+    //================================================================================
+    // geoGroupCall
+    //================================================================================
+
+    @GET("geoGroups/get/geoGroups")
+    Call<GeoGroupList> getAllGeoGroups();
+
+    @GET("geoGroups/get/geoGroup/{id}")
+    Call<GeoGroup> getGeoGroupById(@Path("id") String id);
+
+
 }

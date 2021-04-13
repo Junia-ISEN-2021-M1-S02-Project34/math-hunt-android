@@ -1,6 +1,10 @@
 package com.isen.math_hunt.entities;
 
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -8,42 +12,58 @@ import java.util.List;
  */
 public class GeoGroup {
 
-    private int _id;
+    @SerializedName("_id")
+    private String _id;
+
+    @SerializedName("positionY")
+    private Number positionY;
+
+    @SerializedName("positionX")
+    private Number positionX;
+
+    @SerializedName("name")
     private String name;
-    private int positionX;
-    private int positionY;
-    private int radius;
+
+    @SerializedName("radius")
+    private Number radius;
+
+    @SerializedName("pictureUrl")
     private String pictureUrl;
-    private int score;
-    private List<Enigma> enigmaList;
 
 
-    public GeoGroup(String name, int score) {
-        this.name = name;
-        this.score = score;
-    }
 
-    public GeoGroup(String name, int score, List<Enigma> enigmaList) {
-        this.name = name;
-        this.score = score;
-        this.enigmaList = enigmaList;
-    }
-
-    public GeoGroup(int _id, String name, int positionX, int positionY, int radius, String pictureUrl) {
+    public GeoGroup(String _id, Number positionY, Number positionX, String name, Number radius, String pictureUrl) {
         this._id = _id;
-        this.name = name;
-        this.positionX = positionX;
         this.positionY = positionY;
+        this.positionX = positionX;
+        this.name = name;
         this.radius = radius;
         this.pictureUrl = pictureUrl;
+
     }
 
-    public int get_id() {
+    public String get_id() {
         return _id;
     }
 
-    public void set_id(int _id) {
+    public void set_id(String _id) {
         this._id = _id;
+    }
+
+    public Number getPositionY() {
+        return positionY;
+    }
+
+    public void setPositionY(Number positionY) {
+        this.positionY = positionY;
+    }
+
+    public Number getPositionX() {
+        return positionX;
+    }
+
+    public void setPositionX(Number positionX) {
+        this.positionX = positionX;
     }
 
     public String getName() {
@@ -54,27 +74,11 @@ public class GeoGroup {
         this.name = name;
     }
 
-    public int getPositionX() {
-        return positionX;
-    }
-
-    public void setPositionX(int positionX) {
-        this.positionX = positionX;
-    }
-
-    public int getPositionY() {
-        return positionY;
-    }
-
-    public void setPositionY(int positionY) {
-        this.positionY = positionY;
-    }
-
-    public int getRadius() {
+    public Number getRadius() {
         return radius;
     }
 
-    public void setRadius(int radius) {
+    public void setRadius(Number radius) {
         this.radius = radius;
     }
 
@@ -86,19 +90,5 @@ public class GeoGroup {
         this.pictureUrl = pictureUrl;
     }
 
-    public List<Enigma> getEnigmaList() {
-        return enigmaList;
-    }
-
-    public void setEnigmaList(List<Enigma> enigmaList) {
-        this.enigmaList = enigmaList;
-    }
-
-    public int getScore() {
-        return score;
-    }
-
-    public void setScore(int score) {
-        this.score = score;
-    }
 }
+
