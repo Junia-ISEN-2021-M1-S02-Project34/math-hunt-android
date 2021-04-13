@@ -113,7 +113,7 @@ public interface MathHuntApiService {
     @GET("hints/get/hint/{id}")
     Call<Hint> getHintById(@Path("id") String id);
 
-    @GET("hints/get/hint/enigma/{id}")
+    @GET("hints/get/hints/enigma/{id}")
     Call<HintList> getHintsByEnigmaId(@Path("id") String id);
 
     @Headers({"Content-Type: application/json"})

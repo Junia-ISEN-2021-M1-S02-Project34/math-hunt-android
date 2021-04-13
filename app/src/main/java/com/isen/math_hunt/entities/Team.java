@@ -1,16 +1,28 @@
 package com.isen.math_hunt.entities;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.List;
 
 public class Team {
+
+    @SerializedName("_id")
     private String _id;
+    @SerializedName("username")
     private String username;
+    @SerializedName("password")
     private String password;
+    @SerializedName("score")
     private int score;
+    @SerializedName("gameId")
     private String gameId;
+    @SerializedName("isConnected")
     private boolean isConnected;
+    @SerializedName("currentEnigmaId")
     private String currentEnigmaId;
+    @SerializedName("currentGeoGroupId")
     private String currentGeoGroupId;
+    @SerializedName("progression")
     private List<Progression> progression;
 
     public Team(String _id, String username, String password, int score, String gameId, boolean isConnected, String currentEnigmaId, String currentGeoGroupId, List<Progression> progression) {

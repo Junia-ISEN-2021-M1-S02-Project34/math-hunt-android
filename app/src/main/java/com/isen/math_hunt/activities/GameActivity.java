@@ -116,6 +116,7 @@ public class GameActivity extends AppCompatActivity implements CurrentEnigmaIdIn
 
                 try {
                     Team team = response.body();
+                    Log.d("TAG", "onResponse: " + response);
                     currentEnigmaId = team.getCurrentEnigmaId();
                     currentGeoGroupId = team.getCurrentGeoGroupId();
 
