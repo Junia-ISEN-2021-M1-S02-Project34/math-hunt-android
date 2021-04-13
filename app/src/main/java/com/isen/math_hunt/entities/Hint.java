@@ -2,6 +2,7 @@ package com.isen.math_hunt.entities;
 
 public class Hint {
 
+    private String _id;
     private String name;
     private String text;
     private int rank;
@@ -9,10 +10,22 @@ public class Hint {
     private String propositionToRemove;
     private String enigmaId;
 
-    public Hint(String name, String text, int penalty) {
+    public Hint(String _id, String name, String text, int rank, int penalty, String propositionToRemove, String enigmaId) {
+        this._id = _id;
         this.name = name;
         this.text = text;
+        this.rank = rank;
         this.penalty = penalty;
+        this.propositionToRemove = propositionToRemove;
+        this.enigmaId = enigmaId;
+    }
+
+    public String get_id() {
+        return _id;
+    }
+
+    public void set_id(String _id) {
+        this._id = _id;
     }
 
     public String getName() {
@@ -62,6 +75,4 @@ public class Hint {
     public void setEnigmaId(String enigmaId) {
         this.enigmaId = enigmaId;
     }
-
-
 }

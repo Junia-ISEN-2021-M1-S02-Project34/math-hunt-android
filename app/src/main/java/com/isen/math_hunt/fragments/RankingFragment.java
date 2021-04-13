@@ -33,8 +33,7 @@ public class RankingFragment extends Fragment {
         rankListView = (ListView) mView.findViewById(R.id.rankList);
         ArrayList<Team> teamList = new ArrayList<>();
 
-        teamList.add(new Team("Team 1", 150));
-        teamList.add(new Team("Team 2", 150));
+
 
         rankAdapter = new RankAdapter(getActivity(),teamList);
         rankListView.setAdapter(rankAdapter);

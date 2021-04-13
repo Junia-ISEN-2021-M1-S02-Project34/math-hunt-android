@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/fondapp"
     tools:context=".activities.WaitingActivity">
 
 
@@ -28,8 +29,11 @@
             <TextView
                 android:id="@+id/story"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/story" />
+                android:layout_height="618dp"
+                android:background="@color/mathHuntTheme"
+                android:gravity="center"
+
+                android:text="@string/introduction" />
         </LinearLayout>
     </ScrollView>
 
@@ -39,6 +43,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
         android:text="@string/launchGame"
+        android:background="@color/mathHuntTheme"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

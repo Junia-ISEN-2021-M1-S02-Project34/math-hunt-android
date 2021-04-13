@@ -1,24 +1,35 @@
 package com.isen.math_hunt.entities;
 
+import java.util.List;
+
 public class Team {
-    private int _id;
+    private String _id;
     private String username;
     private String password;
     private int score;
     private String gameId;
-    private String currentId;
-    private String enigmaList;
+    private boolean isConnected;
+    private String currentEnigmaId;
+    private String currentGeoGroupId;
+    private List<Progression> progression;
 
-    public Team(String username, int score) {
+    public Team(String _id, String username, String password, int score, String gameId, boolean isConnected, String currentEnigmaId, String currentGeoGroupId, List<Progression> progression) {
+        this._id = _id;
         this.username = username;
+        this.password = password;
         this.score = score;
+        this.gameId = gameId;
+        this.isConnected = isConnected;
+        this.currentEnigmaId = currentEnigmaId;
+        this.currentGeoGroupId = currentGeoGroupId;
+        this.progression = progression;
     }
 
-    public int get_id() {
+    public String get_id() {
         return _id;
     }
 
-    public void set_id(int _id) {
+    public void set_id(String _id) {
         this._id = _id;
     }
 
@@ -54,19 +65,35 @@ public class Team {
         this.gameId = gameId;
     }
 
-    public String getCurrentId() {
-        return currentId;
+    public boolean isConnected() {
+        return isConnected;
     }
 
-    public void setCurrentId(String currentId) {
-        this.currentId = currentId;
+    public void setConnected(boolean connected) {
+        isConnected = connected;
     }
 
-    public String getEnigmaList() {
-        return enigmaList;
+    public String getCurrentEnigmaId() {
+        return currentEnigmaId;
     }
 
-    public void setEnigmaList(String enigmaList) {
-        this.enigmaList = enigmaList;
+    public void setCurrentEnigmaId(String currentEnigmaId) {
+        this.currentEnigmaId = currentEnigmaId;
+    }
+
+    public String getCurrentGeoGroupId() {
+        return currentGeoGroupId;
+    }
+
+    public void setCurrentGeoGroupId(String currentGeoGroupId) {
+        this.currentGeoGroupId = currentGeoGroupId;
+    }
+
+    public List<Progression> getProgression() {
+        return progression;
+    }
+
+    public void setProgression(List<Progression> progression) {
+        this.progression = progression;
     }
 }

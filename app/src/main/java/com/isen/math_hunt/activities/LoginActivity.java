@@ -12,6 +12,9 @@ import com.isen.math_hunt.R;
 
 public class LoginActivity extends AppCompatActivity {
 
+    private String teamId = "60740db80a26b92104b9402a";
+    private String gameId = "6059e4165375a204b13e1e8a";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -24,18 +27,23 @@ public class LoginActivity extends AppCompatActivity {
 
 
 
+
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                switchActivity(WaitingActivity.class);
+                Intent intent = new Intent(LoginActivity.this, WaitingActivity.class);
+                Bundle b = new Bundle();
+                b.putString("TEAM_ID", teamId);
+                b.putString("GAME_ID", gameId);
+                intent.putExtras(b); //Put your id to your next Intent
+                startActivity(intent);
+                finish();
+
             }
         });
     }
 
-    public void switchActivity(Class activity){
-        Intent myIntent = new Intent(this, activity);
-        startActivity(myIntent);
-    }
+
 
 
 }
