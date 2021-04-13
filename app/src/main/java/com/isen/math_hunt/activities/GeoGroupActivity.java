@@ -41,7 +41,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class GeoGroupActivity extends AppCompatActivity implements LocationListener{
+public class GeoGroupActivity extends AppCompatActivity implements LocationListener {
 
 
     private static final long LOCATION_REFRESH_TIME = 5000;
@@ -63,7 +63,7 @@ public class GeoGroupActivity extends AppCompatActivity implements LocationListe
     //private Button button_location;
     private TextView text_location;
     private LocationManager locationManager;
-    private Button  geoGroupContinueButton;
+    private Button geoGroupContinueButton;
 
     private String teamId;
     private String gameId;
@@ -78,10 +78,10 @@ public class GeoGroupActivity extends AppCompatActivity implements LocationListe
         //button_location = findViewById(R.id.button_location);
 
         if (ContextCompat.checkSelfPermission(GeoGroupActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED){
-            ActivityCompat.requestPermissions(GeoGroupActivity.this,new String[]{
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(GeoGroupActivity.this, new String[]{
                     Manifest.permission.ACCESS_FINE_LOCATION
-            },100);
+            }, 100);
         }
 
         getLocation();
@@ -126,6 +126,9 @@ public class GeoGroupActivity extends AppCompatActivity implements LocationListe
             @Override
             public void onFailure(Call<Team> call, Throwable t) {
                 Log.d("TAG", t.getMessage());
+            }
+        });
+    }
 
     public void switchActivity(Class activity) {
         Intent myIntent = new Intent(this, activity);
@@ -134,13 +137,12 @@ public class GeoGroupActivity extends AppCompatActivity implements LocationListe
 
     @Override
     public void onLocationChanged(Location location) {
-        dist = (int) distance(geoGroupPosX,location.getLatitude(),geoGroupPosY,location.getLongitude());
-        if (dist>2000){ // changer la valeur par geoGroupRadius
+        dist = (int) distance(geoGroupPosX, location.getLatitude(), geoGroupPosY, location.getLongitude());
+        if (dist > 2000) { // changer la valeur par geoGroupRadius
             geoGroupContinueButton.setEnabled(false);
             geoGroupContinueButton.setText("Encore un peu de marche!");
 
-        }
-        else {
+        } else {
             geoGroupContinueButton.setEnabled(true);
             geoGroupContinueButton.setText("Vous y êtes! ");
         }
@@ -148,10 +150,10 @@ public class GeoGroupActivity extends AppCompatActivity implements LocationListe
         text_location.setText("vous êtes à " + dist + "m");
         try {
             Geocoder geocoder = new Geocoder(GeoGroupActivity.this, Locale.getDefault());
-            List<Address> addresses = geocoder.getFromLocation(location.getLatitude(),location.getLongitude(),1);
+            List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
             String address = addresses.get(0).getAddressLine(0);
 
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -161,9 +163,10 @@ public class GeoGroupActivity extends AppCompatActivity implements LocationListe
      * Calculate distance between two points in latitude and longitude taking
      * into account height difference. If you are not interested in height
      * difference pass 0.0. Uses Haversine method as its base.
-     *
+     * <p>
      * lat1, lon1 Start point lat2, lon2 End point el1 Start altitude in meters
      * el2 End altitude in meters
+     *
      * @returns Distance in Meters
      */
     public static double distance(Number lat1, Number lat2, Number lon1, Number lon2) {
@@ -189,9 +192,9 @@ public class GeoGroupActivity extends AppCompatActivity implements LocationListe
 
         try {
             locationManager = (LocationManager) getApplicationContext().getSystemService(LOCATION_SERVICE);
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,LOCATION_REFRESH_TIME,LOCATION_REFRESH_DISTANCE,GeoGroupActivity.this);
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, LOCATION_REFRESH_TIME, LOCATION_REFRESH_DISTANCE, GeoGroupActivity.this);
 
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -208,8 +211,7 @@ public class GeoGroupActivity extends AppCompatActivity implements LocationListe
                     geoGroupPosX = geoGroup.getPositionX();
                     geoGroupPosY = geoGroup.getPositionY();
                     geoGroupRadius = geoGroup.getRadius();
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
