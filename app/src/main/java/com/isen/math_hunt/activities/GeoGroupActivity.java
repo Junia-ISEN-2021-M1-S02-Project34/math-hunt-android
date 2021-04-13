@@ -47,10 +47,11 @@ public class GeoGroupActivity extends AppCompatActivity implements LocationListe
     private double latFlandres = 50.636597029006495;
     private double lonFlandres = 3.0694448466392066;
 
-    private double geoGroupPosX;
-    private double geoGroupPosY;
+    private Number geoGroupPosX; // latitude
+    private Number geoGroupPosY; // longitude
+    private Number geoGroupRadius; // radius en metres
 
-    private int dist;
+    private int dist; // en metres
 
 
     //private Button button_location;
@@ -86,20 +87,6 @@ public class GeoGroupActivity extends AppCompatActivity implements LocationListe
 
     }
 
-    // On recupere la geolocalisation avec cette fonction
-    @SuppressLint("MissingPermission")
-    private void getLocation() {
-
-        try {
-            locationManager = (LocationManager) getApplicationContext().getSystemService(LOCATION_SERVICE);
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,LOCATION_REFRESH_TIME,LOCATION_REFRESH_DISTANCE,GeoGroupActivity.this);
-
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-    }
-
-
     public void switchActivity(Class activity) {
         Intent myIntent = new Intent(this, activity);
         startActivity(myIntent);
@@ -107,12 +94,15 @@ public class GeoGroupActivity extends AppCompatActivity implements LocationListe
 
     @Override
     public void onLocationChanged(Location location) {
-        dist = (int) distance(latFlandres,location.getLatitude(),lonFlandres,location.getLongitude());
-        if (dist>20){
+        dist = (int) distance(geoGroupPosX,location.getLatitude(),geoGroupPosY,location.getLongitude());
+        if (dist>2000){ // changer la valeur par geoGroupRadius
             geoGroupContinueButton.setEnabled(false);
+            geoGroupContinueButton.setText("Encore un peu de marche!");
+
         }
         else {
             geoGroupContinueButton.setEnabled(true);
+            geoGroupContinueButton.setText("Vous y êtes! ");
         }
         //Toast.makeText(this, "vous êtes à : " + dist + "m", Toast.LENGTH_SHORT).show();
         text_location.setText("vous êtes à " + dist + "m");
@@ -136,22 +126,34 @@ public class GeoGroupActivity extends AppCompatActivity implements LocationListe
      * el2 End altitude in meters
      * @returns Distance in Meters
      */
-    public static double distance(double lat1, double lat2, double lon1,
-                                  double lon2) {
+    public static double distance(Number lat1, Number lat2, Number lon1, Number lon2) {
 
         final int R = 6371; // Radius of the earth
-        double height = 0;
-        double latDistance = Math.toRadians(lat2 - lat1);
-        double lonDistance = Math.toRadians(lon2 - lon1);
+        //double height = 0;
+        double latDistance = Math.toRadians(lat2.doubleValue() - lat1.doubleValue());
+        double lonDistance = Math.toRadians(lon2.doubleValue() - lon1.doubleValue());
         double a = Math.sin(latDistance / 2) * Math.sin(latDistance / 2)
-                + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2))
+                + Math.cos(Math.toRadians(lat1.doubleValue())) * Math.cos(Math.toRadians(lat2.doubleValue()))
                 * Math.sin(lonDistance / 2) * Math.sin(lonDistance / 2);
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
         double distance = R * c * 1000; // convert to meters
 
-        distance = Math.pow(distance, 2) + Math.pow(height, 2);
+        distance = Math.pow(distance, 2)  /* + Math.pow(height, 2) */;
 
         return Math.sqrt(distance);
+    }
+
+    // On recupere la geolocalisation
+    @SuppressLint("MissingPermission")
+    private void getLocation() {
+
+        try {
+            locationManager = (LocationManager) getApplicationContext().getSystemService(LOCATION_SERVICE);
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,LOCATION_REFRESH_TIME,LOCATION_REFRESH_DISTANCE,GeoGroupActivity.this);
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     private void getGeoGroupById(String id) {
@@ -161,12 +163,11 @@ public class GeoGroupActivity extends AppCompatActivity implements LocationListe
             public void onResponse(Call<GeoGroup> call, Response<GeoGroup> response) {
 
                 try {
-                   // GeoGroup geoGroup = response.body();
-                    Log.d("Coucou", String.valueOf(response));
+                    GeoGroup geoGroup = response.body();
 
-
-                    //geoGroupPosX = geoGroup.getPositionX();
-                    //geoGroupPosY = geoGroup.getPositionY();
+                    geoGroupPosX = geoGroup.getPositionX();
+                    geoGroupPosY = geoGroup.getPositionY();
+                    geoGroupRadius = geoGroup.getRadius();
                 }
                 catch (Exception e) {
                     e.printStackTrace();
