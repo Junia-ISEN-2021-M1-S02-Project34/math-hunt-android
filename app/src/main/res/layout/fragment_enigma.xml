@@ -34,6 +34,7 @@
         android:layout_marginStart="10dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="10dp"
+        android:background="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView4">
@@ -46,7 +47,8 @@
             <TextView
                 android:id="@+id/enigmaDescriptionTextField"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:background="@color/white"/>
         </LinearLayout>
     </ScrollView>
 
@@ -57,6 +59,7 @@
         android:layout_marginStart="10dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="10dp"
+        android:background="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -95,6 +98,8 @@
         android:layout_marginEnd="10dp"
         android:hint="@string/AnswerTextFieldHint"
         android:background="@color/white"
+        app:boxStrokeColor="#70000000"
+        app:hintTextColor="#70000000"
         app:layout_constraintBottom_toTopOf="@+id/validateButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -114,6 +119,9 @@
         android:layout_marginTop="20dp"
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="20dp"
+        android:background="@color/white"
+        app:boxStrokeColor="#70000000"
+        app:hintTextColor="#70000000"
         app:layout_constraintBottom_toTopOf="@+id/validateButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
