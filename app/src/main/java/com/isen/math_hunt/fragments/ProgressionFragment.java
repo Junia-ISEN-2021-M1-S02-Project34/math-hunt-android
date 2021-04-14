@@ -48,6 +48,7 @@ public class ProgressionFragment extends Fragment {
         View mView = inflater.inflate(R.layout.fragment_progression, null);
 
         teamId = getArguments().getString("TEAM_ID");
+
         geoGroupsListView = (ListView) mView.findViewById(R.id.geoGroupsListView);
 
         progressDialog = new ProgressDialog(getActivity());

@@ -13,9 +13,12 @@ import androidx.fragment.app.Fragment;
 
 import com.isen.math_hunt.R;
 import com.isen.math_hunt.adapters.HintAdapter;
+import com.isen.math_hunt.adapters.ProgressionAdapter;
 import com.isen.math_hunt.adapters.QcmAdapter;
 import com.isen.math_hunt.entities.Enigma;
+import com.isen.math_hunt.entities.EnigmasProgression;
 import com.isen.math_hunt.entities.Hint;
+import com.isen.math_hunt.entities.Progression;
 import com.isen.math_hunt.entities.Team;
 import com.isen.math_hunt.model.FullEnigma;
 import com.isen.math_hunt.model.HintList;
@@ -36,12 +39,15 @@ public class HintFragment extends Fragment {
     private String currentEnigmaId;
     private ProgressDialog progressDialog;
     private List<Hint> hintList = new ArrayList<>();
+    private List<Progression> progressions;
+    private List<EnigmasProgression> enigmasProgression;
+
+    private List<String> usedHintsIds;
 
 
     public HintFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -52,6 +58,7 @@ public class HintFragment extends Fragment {
         teamId = getArguments().getString("TEAM_ID");
         currentEnigmaId = getArguments().getString("CURRENT_ENIGMA_ID");
 
+        usedHintsIds = getArguments().getStringArrayList("USED_HINTS_IDS");
         progressDialog = new ProgressDialog(getActivity());
         progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         progressDialog.show();
@@ -59,9 +66,6 @@ public class HintFragment extends Fragment {
         getHintsByEnigmaId(currentEnigmaId);
 
         hintListView = (ListView) mView.findViewById(R.id.hintListView);
-
-
-
 
         return mView;
     }
@@ -79,7 +83,7 @@ public class HintFragment extends Fragment {
 
                     hintList = hints.getHints();
 
-                    hintAdapter = new HintAdapter(getActivity(),hintList);
+                    hintAdapter = new HintAdapter(getActivity(),hintList, usedHintsIds);
                     hintListView.setAdapter(hintAdapter);
 
                 } catch (Exception e) {
@@ -96,6 +100,8 @@ public class HintFragment extends Fragment {
             }
         });
     }
+
+
 
 
 }

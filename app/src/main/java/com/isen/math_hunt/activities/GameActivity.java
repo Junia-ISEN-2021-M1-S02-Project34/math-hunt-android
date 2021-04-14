@@ -11,6 +11,8 @@ import android.view.MenuItem;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.isen.math_hunt.R;
+import com.isen.math_hunt.entities.EnigmasProgression;
+import com.isen.math_hunt.entities.Progression;
 import com.isen.math_hunt.entities.Team;
 import com.isen.math_hunt.fragments.EnigmaFragment;
 import com.isen.math_hunt.fragments.HintFragment;
@@ -18,6 +20,9 @@ import com.isen.math_hunt.fragments.ProgressionFragment;
 import com.isen.math_hunt.fragments.RankingFragment;
 import com.isen.math_hunt.interfaces.CurrentEnigmaIdInterface;
 import com.isen.math_hunt.model.RetrofitClient;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -31,7 +36,10 @@ public class GameActivity extends AppCompatActivity implements CurrentEnigmaIdIn
     private String currentEnigmaId;
     private String currentGeoGroupId;
 
+    private Team currentTeam;
     private FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+
+    private List<String> usedHintsIds;
 
 
     @Override
@@ -42,6 +50,7 @@ public class GameActivity extends AppCompatActivity implements CurrentEnigmaIdIn
         Bundle b = getIntent().getExtras();
         teamId = b.getString("TEAM_ID");
         gameId = b.getString("GAME_ID");
+
 
         getTeamById(teamId);
 
@@ -74,6 +83,8 @@ public class GameActivity extends AppCompatActivity implements CurrentEnigmaIdIn
                             Bundle hintBundle = new Bundle();
                             hintBundle.putString("TEAM_ID", teamId);
                             hintBundle.putString("CURRENT_ENIGMA_ID", currentEnigmaId);
+                            hintBundle.putStringArrayList("USED_HINTS_IDS", (ArrayList<String>) usedHintsIds);
+
                             Fragment hintFragment = new HintFragment();
                             hintFragment.setArguments(hintBundle);
                             transaction = getSupportFragmentManager().beginTransaction();
@@ -111,14 +122,28 @@ public class GameActivity extends AppCompatActivity implements CurrentEnigmaIdIn
     private void getTeamById(String id) {
         Call<Team> call = RetrofitClient.getInstance().getMathHuntApiService().getTeamById(id);
         call.enqueue(new Callback<Team>() {
+            List<EnigmasProgression> enigmasProgression;
             @Override
             public void onResponse(Call<Team> call, Response<Team> response) {
 
                 try {
-                    Team team = response.body();
+                     currentTeam = response.body();
                     Log.d("TAG", "onResponse: " + response);
-                    currentEnigmaId = team.getCurrentEnigmaId();
-                    currentGeoGroupId = team.getCurrentGeoGroupId();
+                    currentEnigmaId = currentTeam.getCurrentEnigmaId();
+                    currentGeoGroupId = currentTeam.getCurrentGeoGroupId();
+
+                    for (Progression progression:currentTeam.getProgression()) {
+                        if (progression.getGeoGroupId().equals(currentTeam.getCurrentGeoGroupId())){
+                            enigmasProgression = progression.getEnigmasProgression();
+
+                        }
+                    }
+
+                    for (EnigmasProgression enigmaProgression:enigmasProgression) {
+                        if (enigmaProgression.getEnigmaId().equals(currentTeam.getCurrentEnigmaId())){
+                            usedHintsIds = enigmaProgression.getUsedHintsIds();
+                        }
+                    }
 
 
                     Bundle enigmaBundle = new Bundle();
