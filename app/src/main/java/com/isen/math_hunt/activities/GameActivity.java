@@ -39,7 +39,7 @@ public class GameActivity extends AppCompatActivity implements CurrentEnigmaIdIn
     private Team currentTeam;
     private FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
-    private List<String> usedHintsIds;
+    private ArrayList<String> usedHintsIds;
 
 
     @Override
@@ -50,7 +50,6 @@ public class GameActivity extends AppCompatActivity implements CurrentEnigmaIdIn
         Bundle b = getIntent().getExtras();
         teamId = b.getString("TEAM_ID");
         gameId = b.getString("GAME_ID");
-
 
         getTeamById(teamId);
 
@@ -83,7 +82,6 @@ public class GameActivity extends AppCompatActivity implements CurrentEnigmaIdIn
                             Bundle hintBundle = new Bundle();
                             hintBundle.putString("TEAM_ID", teamId);
                             hintBundle.putString("CURRENT_ENIGMA_ID", currentEnigmaId);
-                            hintBundle.putStringArrayList("USED_HINTS_IDS", (ArrayList<String>) usedHintsIds);
 
                             Fragment hintFragment = new HintFragment();
                             hintFragment.setArguments(hintBundle);
@@ -128,22 +126,8 @@ public class GameActivity extends AppCompatActivity implements CurrentEnigmaIdIn
 
                 try {
                      currentTeam = response.body();
-                    Log.d("TAG", "onResponse: " + response);
                     currentEnigmaId = currentTeam.getCurrentEnigmaId();
                     currentGeoGroupId = currentTeam.getCurrentGeoGroupId();
-
-                    for (Progression progression:currentTeam.getProgression()) {
-                        if (progression.getGeoGroupId().equals(currentTeam.getCurrentGeoGroupId())){
-                            enigmasProgression = progression.getEnigmasProgression();
-
-                        }
-                    }
-
-                    for (EnigmasProgression enigmaProgression:enigmasProgression) {
-                        if (enigmaProgression.getEnigmaId().equals(currentTeam.getCurrentEnigmaId())){
-                            usedHintsIds = enigmaProgression.getUsedHintsIds();
-                        }
-                    }
 
 
                     Bundle enigmaBundle = new Bundle();

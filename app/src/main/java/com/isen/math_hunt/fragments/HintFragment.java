@@ -57,7 +57,6 @@ public class HintFragment extends Fragment {
         View mView = inflater.inflate(R.layout.fragment_hint, null);
         teamId = getArguments().getString("TEAM_ID");
         currentEnigmaId = getArguments().getString("CURRENT_ENIGMA_ID");
-
         usedHintsIds = getArguments().getStringArrayList("USED_HINTS_IDS");
         progressDialog = new ProgressDialog(getActivity());
         progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);

@@ -66,8 +66,6 @@ public class HintAdapter extends ArrayAdapter<Hint> {
         hintPenalty.setText(String.valueOf("Pénalité : " + currentHint.getPenalty()));
 
         lockImageView = (ImageView) listItem.findViewById(R.id.lockImageView);
-        lockImageView.setClickable(false);
-        lockImageView.setFocusable(false);
 
 
         hintTextView = (TextView) listItem.findViewById(R.id.hintTextTextView);
@@ -75,8 +73,7 @@ public class HintAdapter extends ArrayAdapter<Hint> {
 
 
         hintTextView.setText(currentHint.getText());
-        hintTextView.setFocusable(false);
-        hintTextView.setClickable(false);
+
 
         lockImageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,19 +83,11 @@ public class HintAdapter extends ArrayAdapter<Hint> {
             }
         });
 
-        for (String hint :usedHintsIds) {
-            if (hint.equals(currentHint.get_id())){
-                lockImageView.setClickable(true);
-                lockImageView.setFocusable(true);
-                lockImageView.setImageResource(R.drawable.ic_unlock);
-            }
-        }
+        
 
 
         return listItem;
     }
-
-
 
 
 }
