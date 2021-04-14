@@ -1,5 +1,6 @@
 package com.isen.math_hunt.fragments;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,13 +13,11 @@ import androidx.fragment.app.Fragment;
 import com.isen.math_hunt.R;
 import com.isen.math_hunt.adapters.EnigmaAdapter;
 import com.isen.math_hunt.adapters.ProgressionAdapter;
-import com.isen.math_hunt.entities.Enigma;
-import com.isen.math_hunt.entities.GeoGroup;
+import com.isen.math_hunt.entities.EnigmasProgression;
 import com.isen.math_hunt.entities.Progression;
 import com.isen.math_hunt.entities.Team;
 import com.isen.math_hunt.model.RetrofitClient;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -32,7 +31,10 @@ public class ProgressionFragment extends Fragment {
     private ProgressionAdapter progressionAdapter;
     private EnigmaAdapter enigmaAdapter;
     private List<Progression> progressions;
+    private List<EnigmasProgression> enigmasProgression;
     private String teamId;
+    private ProgressDialog progressDialog;
+
 
 
     public ProgressionFragment() {
@@ -47,16 +49,13 @@ public class ProgressionFragment extends Fragment {
 
         teamId = getArguments().getString("TEAM_ID");
         geoGroupsListView = (ListView) mView.findViewById(R.id.geoGroupsListView);
-        ArrayList<GeoGroup> geoGroupsList = new ArrayList<>();
 
-        //TODO call dbb
+        progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressDialog.show();
 
         getTeamById(teamId);
-        ArrayList<Enigma> enigmaArrayList = new ArrayList<>();
 
-
-        progressionAdapter = new ProgressionAdapter(getActivity(),geoGroupsList);
-        geoGroupsListView.setAdapter(progressionAdapter);
 
         return mView;
     }
@@ -68,8 +67,13 @@ public class ProgressionFragment extends Fragment {
             public void onResponse(Call<Team> call, Response<Team> response) {
 
                 try {
+                    progressDialog.dismiss();
                     Team team = response.body();
                     progressions = team.getProgression();
+
+
+                    progressionAdapter = new ProgressionAdapter(getActivity(),progressions);
+                    geoGroupsListView.setAdapter(progressionAdapter);
 
 
                 } catch (Exception e) {

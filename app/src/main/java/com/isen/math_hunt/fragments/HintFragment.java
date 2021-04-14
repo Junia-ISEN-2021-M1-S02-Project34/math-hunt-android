@@ -78,6 +78,7 @@ public class HintFragment extends Fragment {
                     HintList hints = response.body();
 
                     hintList = hints.getHints();
+
                     hintAdapter = new HintAdapter(getActivity(),hintList);
                     hintListView.setAdapter(hintAdapter);
 

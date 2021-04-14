@@ -38,11 +38,14 @@
         android:layout_marginEnd="40dp"
         android:background="@color/white"
         android:hint="@string/idTeam"
+        app:boxStrokeColor="#70000000"
+        app:hintTextColor="#70000000"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.textfield.TextInputEditText
+            style="@style/Theme.Mathhunt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
@@ -58,6 +61,8 @@
         android:layout_marginEnd="40dp"
         android:background="@color/white"
         android:hint="@string/password"
+        app:boxStrokeColor="#70000000"
+        app:hintTextColor="#70000000"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/userIdTextField">
@@ -65,7 +70,7 @@
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:visibility="visible" />
+            tools:visibility="visible"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 

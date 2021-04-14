@@ -8,7 +8,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class RetrofitClient {
 
     private static RetrofitClient instance = null;
-    private MathHuntApiService mathHuntApiService;
+    private final MathHuntApiService mathHuntApiService;
 
     private RetrofitClient() {
         Retrofit retrofit = new Retrofit.Builder().baseUrl(MathHuntApiService.BASE_URL)

@@ -4,36 +4,46 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/fondapp"
-    tools:context=".activities.GeoGroupActivity">
+    tools:context=".activities.GeoGroupActivity"
+    android:background="@drawable/fondapp">
 
     <Button
         android:id="@+id/geoGroupContinueButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="30dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
         android:text="@string/continueButtonText"
-        android:background="@color/mathHuntTheme"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.507"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
-        android:id="@+id/geoGroupDistance"
+        android:id="@+id/text_location"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        android:background="@color/white"
         android:text="@string/geoGroupDistanceTextField"
         app:layout_constraintBottom_toTopOf="@+id/geoGroupContinueButton"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/geoGroupDescrpition" />
+        app:layout_constraintTop_toBottomOf="@+id/geoGroupDescrpition"
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/titleGeoGroupActivity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="16dp"
         android:text="@string/geoGroupTitleTextField"
+        android:background="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -43,8 +53,9 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="30dp"
+        android:background="@color/white"
         android:text="@string/geoGroupDescriptionTextField"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -52,12 +63,12 @@
 
     <ImageView
         android:id="@+id/geoGroupImageView"
-        android:layout_width="291dp"
-        android:layout_height="242dp"
+        android:layout_width="262dp"
+        android:layout_height="194dp"
         android:layout_marginTop="40dp"
+        android:contentDescription="TODO"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/titleGeoGroupActivity"
-        tools:src="@tools:sample/avatars"
-        android:contentDescription="TODO" />
+        tools:src="@tools:sample/avatars" />
 </androidx.constraintlayout.widget.ConstraintLayout>

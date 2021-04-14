@@ -13,29 +13,28 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.isen.math_hunt.R;
-import com.isen.math_hunt.entities.Enigma;
-import com.isen.math_hunt.entities.GeoGroup;
+import com.isen.math_hunt.entities.EnigmasProgression;
+import com.isen.math_hunt.entities.Progression;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
  * geoGroupAdapter
  */
-public class ProgressionAdapter extends ArrayAdapter<GeoGroup> {
+public class ProgressionAdapter extends ArrayAdapter<Progression> {
 
     private final Context mContext;
-    private final List<GeoGroup> geoGroupsList;
+    private final List<Progression> progressionList;
     private boolean showEnigmaList = Boolean.FALSE;
 
     /**
      * @param context   view
-     * @param geoGroups you want to use for display
+     * @param progressions you want to use for display
      */
-    public ProgressionAdapter(@NonNull Context context, ArrayList<GeoGroup> geoGroups) {
-        super(context, 0, geoGroups);
+    public ProgressionAdapter(@NonNull Context context, List<Progression> progressions) {
+        super(context, 0, progressions);
         mContext = context;
-        geoGroupsList = geoGroups;
+        progressionList = progressions;
     }
 
     /**
@@ -50,17 +49,19 @@ public class ProgressionAdapter extends ArrayAdapter<GeoGroup> {
         if (listItem == null)
             listItem = LayoutInflater.from(mContext).inflate(R.layout.item_progression_geo_group, parent, false);
 
-        GeoGroup currentGeoGroup = geoGroupsList.get(position);
+        Progression progression = progressionList.get(position);
 
         TextView geoGroupName = (TextView) listItem.findViewById(R.id.geoGroupName_textView);
-        geoGroupName.setText(currentGeoGroup.getName());
+        geoGroupName.setText(progression.getGeoGroupName());
 
         TextView geoGroupScore = (TextView) listItem.findViewById(R.id.geoGroupScore_textView);
-        geoGroupScore.setText(Integer.toString(currentGeoGroup.getScore()));
+        geoGroupScore.setText(Integer.toString(progression.getGeoGroupScoreValue()));
 
         ImageButton geoGroupDrawerButton = (ImageButton) listItem.findViewById(R.id.geoGroupDrawer_button);
         ListView enigmaListView = (ListView) listItem.findViewById(R.id.enigmaListView);
         enigmaListView.setVisibility(View.GONE);
+        enigmaListView.setClickable(false);
+
         geoGroupDrawerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -71,7 +72,7 @@ public class ProgressionAdapter extends ArrayAdapter<GeoGroup> {
         });
 
 
-        ArrayList<Enigma> enigmaList = (ArrayList<Enigma>) currentGeoGroup.getEnigmaList();
+        List<EnigmasProgression> enigmaList = (List<EnigmasProgression>) progression.getEnigmasProgression();
 
 
         ViewGroup.LayoutParams layout = enigmaListView.getLayoutParams();
