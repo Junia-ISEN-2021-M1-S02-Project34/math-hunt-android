@@ -26,6 +26,7 @@ import com.isen.math_hunt.model.RetrofitClient;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.IntStream;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -41,6 +42,7 @@ public class HintFragment extends Fragment {
     private List<Hint> hintList = new ArrayList<>();
     private List<Progression> progressions;
     private List<EnigmasProgression> enigmasProgression;
+
 
     private List<String> usedHintsIds;
 
@@ -62,7 +64,9 @@ public class HintFragment extends Fragment {
         progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         progressDialog.show();
 
-        getHintsByEnigmaId(currentEnigmaId);
+        getTeamById(teamId);
+
+        //getHintsByEnigmaId(currentEnigmaId);
 
         hintListView = (ListView) mView.findViewById(R.id.hintListView);
 
@@ -82,7 +86,7 @@ public class HintFragment extends Fragment {
 
                     hintList = hints.getHints();
 
-                    hintAdapter = new HintAdapter(getActivity(),hintList, usedHintsIds);
+                    hintAdapter = new HintAdapter(getActivity(), hintList, usedHintsIds);
                     hintListView.setAdapter(hintAdapter);
 
                 } catch (Exception e) {
@@ -100,7 +104,49 @@ public class HintFragment extends Fragment {
         });
     }
 
+    private void getTeamById(String id) {
+        Call<Team> call = RetrofitClient.getInstance().getMathHuntApiService().getTeamById(id);
+        call.enqueue(new Callback<Team>() {
+            List<EnigmasProgression> enigmasProgression;
 
+            @Override
+            public void onResponse(Call<Team> call, Response<Team> response) {
+
+                try {
+                    progressDialog.dismiss();
+                    Team currentTeam = response.body();
+                    List<Progression> progressionList = currentTeam.getProgression();
+
+                    int indexOfGeoGroupId = IntStream.range(0, progressionList.size())
+                            .filter(i -> progressionList.get(i).getGeoGroupId().equals(currentTeam.getCurrentGeoGroupId()))
+                            .findAny()
+                            .orElse(-1);
+
+                    List<EnigmasProgression> enigmasProgressionList = progressionList.get(indexOfGeoGroupId).getEnigmasProgression();
+
+                    int indexOfEnigmaId = IntStream.range(0, enigmasProgressionList.size())
+                            .filter(i -> enigmasProgressionList.get(i).getEnigmaId().equals(currentTeam.getCurrentEnigmaId()))
+                            .findAny()
+                            .orElse(-1);
+
+                     usedHintsIds = enigmasProgressionList.get(indexOfEnigmaId).getUsedHintsIds();
+
+
+                    getHintsByEnigmaId(currentEnigmaId);
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<Team> call, Throwable t) {
+                Log.d("TAG", t.getMessage());
+
+            }
+        });
+    }
 
 
 }
