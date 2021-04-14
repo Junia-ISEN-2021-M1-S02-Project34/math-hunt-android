@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -86,6 +87,8 @@ public class EnigmaFragment extends Fragment implements RadioButtonDataTransfert
         validateButton = (Button) mView.findViewById(R.id.validateButton);
         enigmaListView.setVisibility(View.GONE);
         answerTextField.setVisibility(View.GONE);
+
+
 
         teamId = getArguments().getString("TEAM_ID");
         currentEnigmaId = getArguments().getString("CURRENT_ENIGMA_ID");
