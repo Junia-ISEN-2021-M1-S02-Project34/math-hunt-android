@@ -16,24 +16,35 @@
         android:theme="@style/Theme.Mathhunt"
         android:usesCleartextTraffic="true">
 
-        <activity android:name=".activities.GameActivity">
-
-
+        <activity
+            android:name=".activities.GameActivity"
+            android:windowSoftInputMode="adjustPan">
         </activity>
-        <activity android:name=".activities.AdminActivity"></activity>
+        <activity
+            android:name=".activities.AdminActivity"
+            android:windowSoftInputMode="adjustPan"></activity>
 
         <activity
             android:name=".activities.GeoGroupActivity"
             android:windowSoftInputMode="adjustPan">
 
         </activity>
-        <activity android:name=".activities.WaitingActivity" />
-        <activity android:name=".activities.LoginActivity">
+        <activity
+            android:name=".activities.SuccessActivity"
+            android:windowSoftInputMode="adjustPan">
+        </activity>
+        <activity
+            android:name=".activities.WaitingActivity"
+            android:windowSoftInputMode="adjustPan"/>
+        <activity
+            android:name=".activities.LoginActivity"
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
     </application>
 

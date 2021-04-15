@@ -47,11 +47,11 @@ public class GeoGroupActivity extends AppCompatActivity implements LocationListe
     private static final long LOCATION_REFRESH_TIME = 5000;
     private static final float LOCATION_REFRESH_DISTANCE = 5;
 
-    private double latIsen = 50.63418574831333;
-    private double lonIsen = 3.048819125188862;
+    //private double latIsen = 50.63418574831333;
+    //private double lonIsen = 3.048819125188862;
 
-    private double latFlandres = 50.636597029006495;
-    private double lonFlandres = 3.0694448466392066;
+    //private double latFlandres = 50.636597029006495;
+    //private double lonFlandres = 3.0694448466392066;
 
     private Number geoGroupPosX; // latitude
     private Number geoGroupPosY; // longitude
@@ -148,13 +148,16 @@ public class GeoGroupActivity extends AppCompatActivity implements LocationListe
         }
         //Toast.makeText(this, "vous êtes à : " + dist + "m", Toast.LENGTH_SHORT).show();
         text_location.setText("vous êtes à " + dist + "m");
+        Log.d("tag","heho la");
         try {
             Geocoder geocoder = new Geocoder(GeoGroupActivity.this, Locale.getDefault());
             List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
             String address = addresses.get(0).getAddressLine(0);
+            Log.d("tag",address);
 
         } catch (Exception e) {
             e.printStackTrace();
+            Log.d("tag","adresse marche pas");
         }
     }
 
