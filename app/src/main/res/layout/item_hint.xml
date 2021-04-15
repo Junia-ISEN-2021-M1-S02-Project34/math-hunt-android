@@ -9,13 +9,12 @@
 
     <Button
         android:id="@+id/getHintButton"
-        style="?attr/materialButtonOutlinedStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:layout_marginEnd="10dp"
+        android:layout_marginEnd="20dp"
         android:text="@string/delockButton"
-        app:layout_constraintEnd_toStartOf="@+id/imageButton"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -36,16 +35,6 @@
         android:text="@string/nextIndice"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageButton
-        android:id="@+id/imageButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:layout_marginEnd="10dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/icon_enigma" />
 
     <TextView
         android:id="@+id/hintTextTextView"

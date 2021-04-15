@@ -42,10 +42,19 @@
     <string name="radioButtonAnswer">Answer</string>
     <string name="AnswerTextFieldHint">Réponse</string>
     <string name="idTeam">idTeam</string>
+    <string-array name="parties">
+        <item>Partie1</item>
+        <item>Partie2</item>
+        <item>Partie3</item>
+        <item>Partie4</item>
+        <item>Partie5</item>
+        <item>Partie6</item>
+    </string-array>
     <string name="login">Login</string>
     <string name="admin">Admin</string>
     <string name="introduction">Chers étudiants,\n\n Vous ne me connaissez pas, mais vous avez sûrement entendu le nom de mon grand-père, Norbert Ségard. \n J\'ai une certaine passion pour les sciences et les mathématiques et voyez-vous, c\'est une passion familiale. Mon grand-père m\'a transmis tous ses carnets de notes avant de mourir et j\'y ai découvert pleins d\'expériences et de mystères scientifiques qu\'il a étudié tout au long de sa vie. \n Mais alors quel rapport avec vous? Et bien il y a peu, j\'ai découvert dans un de ses carnets qu\'après avoir créé une certaine école d\'ingénieur appelé ISEN en 1956, il a dissimulé plusieurs énigmes mathématiques un peu partout dans la ville de Lille. \n Il précise que ceux qui réussiraient à les trouver et les résoudre obtiendrait la clé d\'un réussite inexplicable dans leurs études. A condition d’être assez rapide et de récolter assez de clés. \n \n Alors que diriez-vous d\'une chasse aux maths? \n\n Elise Ségard</string>
     <string name="delockButton">Débloquer</string>
     <string name="nextIndice">Votre indice est le suivant</string>
+    <string name="valider">Valider</string>
 
 </resources>

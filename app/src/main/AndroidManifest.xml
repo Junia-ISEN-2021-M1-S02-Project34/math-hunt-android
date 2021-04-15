@@ -20,6 +20,8 @@
 
 
         </activity>
+        <activity android:name=".activities.AdminActivity"></activity>
+
         <activity
             android:name=".activities.GeoGroupActivity"
             android:windowSoftInputMode="adjustPan">

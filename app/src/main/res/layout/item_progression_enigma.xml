@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/size_enigme_item">
+    android:layout_height="@dimen/size_enigme_item"
+    android:background="@color/white">
 
     <TextView
         android:id="@+id/teamNameTextView"
@@ -13,6 +14,7 @@
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
         android:text="dd"
+        android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
