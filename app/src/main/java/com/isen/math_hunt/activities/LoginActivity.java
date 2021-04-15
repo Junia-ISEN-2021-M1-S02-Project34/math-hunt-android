@@ -2,8 +2,10 @@ package com.isen.math_hunt.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 
@@ -21,6 +23,8 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         final TextInputLayout userTextField = findViewById(R.id.answerTextField);
+
+
         final TextInputLayout passwordTextField = findViewById(R.id.passewordTextField);
         final Button loginButton = findViewById(R.id.loginButton);
         final Button adminButton = findViewById(R.id.adminButton);
@@ -37,9 +41,6 @@ public class LoginActivity extends AppCompatActivity {
         });
 
 
-
-
-
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -54,8 +55,5 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
-
-
-
 
 }

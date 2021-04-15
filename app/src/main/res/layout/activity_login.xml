@@ -5,6 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/fondapp"
+    android:singleLine="true"
+    android:theme="@style/Theme.Mathhunt2"
     tools:context=".activities.LoginActivity">
 
     <Button
@@ -38,6 +40,10 @@
         android:layout_marginEnd="40dp"
         android:background="@color/white"
         android:hint="@string/idTeam"
+        android:maxLines="1"
+        android:minLines="1"
+        android:lines="1"
+        android:singleLine="true"
         app:boxStrokeColor="#70000000"
         app:hintTextColor="#70000000"
         app:layout_constraintEnd_toEndOf="parent"

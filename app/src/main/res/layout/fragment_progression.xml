@@ -36,8 +36,8 @@
         android:background="@color/mathHuntTheme"
         android:fontFamily="@font/rouge_script"
         android:gravity="center"
-        android:text="Alors, vous en êtes où?  /n  J'ai noté pour vous  votre progression dans cette chasse aux énigmes."
-        android:textSize="18sp"
+        android:text="@string/textProgression"
+        android:textSize="22sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
