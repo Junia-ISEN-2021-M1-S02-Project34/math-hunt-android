@@ -23,6 +23,9 @@ public class LoginActivity extends AppCompatActivity {
     private String teamId = "6075624ad113d40016e1a33c";
     private String gameId = "6059e4165375a204b13e1e8a";
 
+    String loginUsername;
+    String loginPassword;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -70,8 +73,8 @@ public class LoginActivity extends AppCompatActivity {
                 try {
                     Login login = response.body();
 
-                    String loginUsername = login.getUsername();
-                    String loginPassword = login.getPassword();
+                    loginUsername = login.getUsername();
+                    loginPassword = login.getPassword();
                     // teamId
                     // accessToken
                 } catch (Exception e) {
