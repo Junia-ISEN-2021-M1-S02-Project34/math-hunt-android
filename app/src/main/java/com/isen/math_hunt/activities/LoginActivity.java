@@ -83,7 +83,7 @@ public class LoginActivity extends AppCompatActivity {
                         builder.setCancelable(true);
                         builder.setTitle("Fail to connect");
                         builder.setMessage("Identification incorrecte");
-                        builder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
                                     }
