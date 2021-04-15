@@ -79,9 +79,9 @@ public class LoginActivity extends AppCompatActivity {
                 dialog.cancel();
             }
         });
-        AlertDialog alertDialog = builder.create();
+        AlertDialog warningDialog = builder.create();
 
-        return alertDialog;
+        return warningDialog;
     }
 
 
