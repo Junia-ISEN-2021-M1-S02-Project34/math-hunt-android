@@ -56,7 +56,7 @@
     <string name="delockButton">Débloquer</string>
     <string name="nextIndice">Votre indice est le suivant</string>
     <string name="valider">Valider</string>
-    <string name="hintTextr">Besoin d’un coup de main? \n Mon grand-père à cacher des indices dans ses carnets mais cela vous coûtera quelques clés…</string>
+    <string name="hintTextr">Besoin d’un coup de main? \n Mon grand-père a caché des indices dans ses carnets mais cela vous coûtera quelques clés…</string>
     <string name="progressionText">Alors où en êtes vous? \n J’ai noté pour vous votre progression dans cette chasse aux énigmes.</string>
 
 </resources>
