@@ -4,11 +4,19 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputLayout;
 import com.isen.math_hunt.R;
+import com.isen.math_hunt.entities.Login;
+import com.isen.math_hunt.model.RetrofitClient;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -37,9 +45,6 @@ public class LoginActivity extends AppCompatActivity {
         });
 
 
-
-
-
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -56,6 +61,33 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
+    private void loginTeam(String username, String password) {
+        Call<Login> call = RetrofitClient.getInstance().getMathHuntApiService().loginTeam(username, password);
+        call.enqueue(new Callback<Login>() {
+            @Override
+            public void onResponse(Call<Login> call, Response<Login> response) {
 
+                try {
+                    Login login = response.body();
+
+                    String loginUsername = login.getUsername();
+                    String loginPassword = login.getPassword();
+                    // teamId
+                    // accessToken
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Login> call, Throwable t) {
+                Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+                Log.e("Coucou", t.getMessage());
+
+            }
+        });
+
+
+    }
 
 }

@@ -4,6 +4,7 @@ import com.isen.math_hunt.entities.Admin;
 import com.isen.math_hunt.entities.Answer;
 import com.isen.math_hunt.entities.Game;
 import com.isen.math_hunt.entities.Hint;
+import com.isen.math_hunt.entities.Login;
 import com.isen.math_hunt.entities.Proposition;
 import com.isen.math_hunt.entities.Team;
 import com.isen.math_hunt.interfaces.Constant;
@@ -151,5 +152,11 @@ public interface MathHuntApiService {
     @GET("geoGroups/get/geoGroup/{id}")
     Call<GeoGroup> getGeoGroupById(@Path("id") String id);
 
+    //================================================================================
+    // Login
+    //================================================================================
+
+    @POST("auth/sign-in/team")
+    Call<Login> loginTeam(@Path("username") String username, @Path("password") String password);
 
 }
