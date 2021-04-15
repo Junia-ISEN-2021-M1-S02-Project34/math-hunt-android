@@ -1,7 +1,10 @@
 package com.isen.math_hunt.activities;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -23,8 +26,8 @@ public class LoginActivity extends AppCompatActivity {
     private String teamId = "6075624ad113d40016e1a33c";
     private String gameId = "6059e4165375a204b13e1e8a";
 
-    String loginUsername;
-    String loginPassword;
+    String loginteamId;
+    String loginAccessToken;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,13 +54,8 @@ public class LoginActivity extends AppCompatActivity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(LoginActivity.this, WaitingActivity.class);
-                Bundle b = new Bundle();
-                b.putString("TEAM_ID", teamId);
-                b.putString("GAME_ID", gameId);
-                intent.putExtras(b); //Put your id to your next Intent
-                startActivity(intent);
-                finish();
+                loginTeam(userTextField.getEditText().getText().toString(), passwordTextField.getEditText().getText().toString());
+
 
             }
         });
@@ -73,10 +71,45 @@ public class LoginActivity extends AppCompatActivity {
                 try {
                     Login login = response.body();
 
-                    loginUsername = login.getUsername();
-                    loginPassword = login.getPassword();
-                    // teamId
-                    // accessToken
+                    loginteamId = login.getTeamId();
+                    loginAccessToken = login.getAccessToken();
+
+                    if(login == null)
+                    {
+                        // FUCKING POPUP
+
+                        Context mContext = null;
+                        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+                        builder.setCancelable(true);
+                        builder.setTitle("Fail to connect");
+                        builder.setMessage("Identification incorrecte");
+                        builder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                    }
+                                });
+                        builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                            }
+                        });
+
+                        AlertDialog dialog = builder.create();
+                        dialog.show();
+                    }
+
+                    else
+                    {
+                        Intent intent = new Intent(LoginActivity.this, WaitingActivity.class);
+                        Bundle b = new Bundle();
+                        b.putString("TEAM_ID", teamId);
+                        b.putString("GAME_ID", gameId);
+                        intent.putExtras(b); //Put your id to your next Intent
+                        startActivity(intent);
+                        finish();
+                    }
+
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

@@ -4,33 +4,33 @@ import com.google.gson.annotations.SerializedName;
 
 public class Login {
 
-    @SerializedName("username")
-    private String username;
+    @SerializedName("teamId")
+    private String teamId;
 
-    @SerializedName("password")
-    private String password;
+    @SerializedName("accessToken")
+    private String accessToken;
 
-    public Login(String username, String password) {
+    public Login(String teamId, String accessToken) {
 
-        this.username = username;
-        this.password = password;
+        this.teamId = teamId;
+        this.accessToken = accessToken;
 
     }
 
-    public String getUsername() {
-        return username;
+    public String getTeamId() {
+        return teamId;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setTeamId(String teamId) {
+        this.teamId = teamId;
     }
 
-    public String getPassword() {
-        return password;
+    public String getAccessToken() {
+        return accessToken;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setAccessToken(String accessToken) {
+        this.accessToken = accessToken;
     }
 
 }
