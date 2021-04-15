@@ -1,8 +1,11 @@
 package com.isen.math_hunt.activities;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
+import android.os.Bundle;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -61,6 +64,26 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+    public AlertDialog createWrongLogin()
+    {
+        Context mContext = null;
+        android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(mContext);
+        builder.setTitle("Mauvais logs boloss");
+        builder.setMessage("Recommence");
+        builder.setCancelable(false);
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener()
+        {
+            @Override
+            public void onClick(DialogInterface dialog, int which)
+            {
+                dialog.cancel();
+            }
+        });
+        AlertDialog alertDialog = builder.create();
+
+        return alertDialog;
+    }
+
 
     private void loginTeam(String username, String password) {
         Call<Login> call = RetrofitClient.getInstance().getMathHuntApiService().loginTeam(username, password);
@@ -78,25 +101,10 @@ public class LoginActivity extends AppCompatActivity {
                     {
                         // FUCKING POPUP
 
-                        Context mContext = null;
-                        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-                        builder.setCancelable(true);
-                        builder.setTitle("Fail to connect");
-                        builder.setMessage("Identification incorrecte");
-                        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                    }
-                                });
-                        builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                            }
-                        });
+                        createWrongLogin();
 
-                        AlertDialog dialog = builder.create();
-                        dialog.show();
                     }
+
 
                     else
                     {
