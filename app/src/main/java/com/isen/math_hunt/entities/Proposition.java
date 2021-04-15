@@ -12,6 +12,9 @@ public class Proposition {
         this.answerId = answerId;
     }
 
+    public Proposition(String text) {
+        this.text = text;
+    }
 
     public String get_id() {
         return _id;

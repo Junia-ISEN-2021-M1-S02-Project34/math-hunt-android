@@ -63,14 +63,15 @@ public class HintAdapter extends ArrayAdapter<Hint> {
         hintTextView = (TextView) listItem.findViewById(R.id.hintTextTextView);
         hintTextView.setVisibility(View.GONE);
 
-        for (String hintId : usedHintsIds
-        ) {
-            if (hintId.equals(currentHint.get_id())) {
-                getHintButton.setText("Ouvrir");
-                getHintButton.setBackgroundColor(getContext().getColor(R.color.mathHuntTheme));
+        if (usedHintsIds!=null){
+            for (String hintId : usedHintsIds) {
+                if (hintId.equals(currentHint.get_id())) {
+                    getHintButton.setText("Ouvrir");
+                    getHintButton.setBackgroundColor(getContext().getColor(R.color.mathHuntTheme));
+
+                }
 
             }
-
         }
         hintTextView.setText(currentHint.getText());
 
@@ -78,56 +79,59 @@ public class HintAdapter extends ArrayAdapter<Hint> {
         getHintButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                for (String hintId : usedHintsIds
-                ) {
-                    if (hintId.equals(currentHint.get_id())) {
-                        showHint();
+                if (usedHintsIds!=null){
+                    for (String hintId : usedHintsIds
+                    ) {
+                        if (hintId.equals(currentHint.get_id())) {
+                            showHint();
 
-                    }else{
-                        AlertDialog.Builder builder
-                                = new AlertDialog
-                                .Builder(getContext());
+                        }
 
-                        builder.setTitle("Débloquer indice");
-                        builder.setMessage("Voulez vous vraiment débloquer cette indice ?");
-                        builder.setCancelable(false);
-                        builder
-                                .setPositiveButton(
-                                        "Oui",
-                                        new DialogInterface
-                                                .OnClickListener() {
-
-                                            @Override
-                                            public void onClick(DialogInterface dialog,
-                                                                int which) {
-                                                // When the user click yes button
-                                                // then app will close
-                                                //Todo : update la bdd
-                                                getHintButton.setText("Ouvrir");
-                                                getHintButton.setBackgroundColor(getContext().getColor(R.color.mathHuntTheme));
-                                                usedHintsIds.add(currentHint.get_id());
-                                                notifyDataSetChanged();
-                                                showHint();
-                                                dialog.cancel();
-                                            }
-                                        });
-                        builder
-                                .setNegativeButton(
-                                        "Annuler",
-                                        new DialogInterface
-                                                .OnClickListener() {
-
-                                            @Override
-                                            public void onClick(DialogInterface dialog,
-                                                                int which) {
-                                                // When the user click yes button
-                                                // then app will close
-                                                dialog.cancel();
-                                            }
-                                        });
-                        AlertDialog alertDialog = builder.create();
-                        alertDialog.show();
                     }
+                }else{
+                    AlertDialog.Builder builder
+                            = new AlertDialog
+                            .Builder(getContext());
+
+                    builder.setTitle("Débloquer indice");
+                    builder.setMessage("Voulez vous vraiment débloquer cette indice ?");
+                    builder.setCancelable(false);
+                    builder
+                            .setPositiveButton(
+                                    "Oui",
+                                    new DialogInterface
+                                            .OnClickListener() {
+
+                                        @Override
+                                        public void onClick(DialogInterface dialog,
+                                                            int which) {
+                                            // When the user click yes button
+                                            // then app will close
+                                            //Todo : update la bdd
+                                            getHintButton.setText("Ouvrir");
+                                            getHintButton.setBackgroundColor(getContext().getColor(R.color.mathHuntTheme));
+                                            usedHintsIds.add(currentHint.get_id());
+                                            notifyDataSetChanged();
+                                            showHint();
+                                            dialog.cancel();
+                                        }
+                                    });
+                    builder
+                            .setNegativeButton(
+                                    "Annuler",
+                                    new DialogInterface
+                                            .OnClickListener() {
+
+                                        @Override
+                                        public void onClick(DialogInterface dialog,
+                                                            int which) {
+                                            // When the user click yes button
+                                            // then app will close
+                                            dialog.cancel();
+                                        }
+                                    });
+                    AlertDialog alertDialog = builder.create();
+                    alertDialog.show();
 
                 }
             }

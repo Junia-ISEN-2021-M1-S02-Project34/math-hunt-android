@@ -56,8 +56,8 @@ public class EnigmaAdapter extends ArrayAdapter<EnigmasProgression> {
             enigmaValidationImageView.setImageResource(R.drawable.ic_done_black_24dp);
         }else  enigmaValidationImageView.setImageResource(R.drawable.ic_close_black_24dp);
 
-        TextView enigmaValueScore = (TextView) listItem.findViewById(R.id.teamScoreTextView);
-        enigmaValueScore.setText(Integer.toString(currentEnigma.getScoreValue()));
+        TextView enigmaValueScore = (TextView) listItem.findViewById(R.id.geoGroupScore_textView);
+        enigmaValueScore.setText(Integer.toString(currentEnigma.getScore()) + "/" + Integer.toString(currentEnigma.getScoreValue()));
 
 
         return listItem;

@@ -37,7 +37,7 @@ public class RankAdapter extends ArrayAdapter<Team> {
         TextView teamNameTextView = (TextView)listItem.findViewById(R.id.teamNameTextView);
         teamNameTextView.setText(currentTeam.getUsername());
 
-        TextView teamScoreTextView = (TextView) listItem.findViewById(R.id.teamScoreTextView);
+        TextView teamScoreTextView = (TextView) listItem.findViewById(R.id.geoGroupScore_textView);
         teamScoreTextView.setText(String.valueOf(currentTeam.getScore()));
 
 

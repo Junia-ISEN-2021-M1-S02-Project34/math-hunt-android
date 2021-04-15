@@ -55,7 +55,7 @@ public class ProgressionAdapter extends ArrayAdapter<Progression> {
         geoGroupName.setText(progression.getGeoGroupName());
 
         TextView geoGroupScore = (TextView) listItem.findViewById(R.id.geoGroupScore_textView);
-        geoGroupScore.setText(Integer.toString(progression.getGeoGroupScoreValue()));
+        geoGroupScore.setText(Integer.toString(progression.getGeoGroupScore()) + "/" + Integer.toString(progression.getGeoGroupScoreValue()));
 
         ImageButton geoGroupDrawerButton = (ImageButton) listItem.findViewById(R.id.geoGroupDrawer_button);
         ListView enigmaListView = (ListView) listItem.findViewById(R.id.enigmaListView);

@@ -113,7 +113,6 @@ public class HintFragment extends Fragment {
             public void onResponse(Call<Team> call, Response<Team> response) {
 
                 try {
-                    progressDialog.dismiss();
                     Team currentTeam = response.body();
                     List<Progression> progressionList = currentTeam.getProgression();
 

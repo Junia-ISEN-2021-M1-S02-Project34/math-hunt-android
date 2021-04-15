@@ -25,7 +25,10 @@ public class Team {
     @SerializedName("progression")
     private List<Progression> progression;
 
-    public Team(String _id, String username, String password, int score, String gameId, boolean isConnected, String currentEnigmaId, String currentGeoGroupId, List<Progression> progression) {
+    @SerializedName("gameFinished")
+    private Boolean gameFinished;
+
+    public Team(String _id, String username, String password, int score, String gameId, boolean isConnected, String currentEnigmaId, String currentGeoGroupId, List<Progression> progression, Boolean gameFinished) {
         this._id = _id;
         this.username = username;
         this.password = password;
@@ -35,6 +38,7 @@ public class Team {
         this.currentEnigmaId = currentEnigmaId;
         this.currentGeoGroupId = currentGeoGroupId;
         this.progression = progression;
+        this.gameFinished = gameFinished;
     }
 
     public String get_id() {
@@ -107,5 +111,13 @@ public class Team {
 
     public void setProgression(List<Progression> progression) {
         this.progression = progression;
+    }
+
+    public Boolean getGameFinished() {
+        return gameFinished;
+    }
+
+    public void setGameFinished(Boolean gameFinished) {
+        this.gameFinished = gameFinished;
     }
 }

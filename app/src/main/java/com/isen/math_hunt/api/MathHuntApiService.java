@@ -87,9 +87,7 @@ public interface MathHuntApiService {
     @GET("games/get/game/{id}")
     Call<Game> getGameById(@Path("id") String id);
 
-    @Headers({"/gamesContent-Type: application/json"})
-    @PUT("start/game/{id}")
-    Call<Game> startGame(@Path("id") String id, @Body Game body);
+
 
     //================================================================================
     // TeamCall
@@ -104,6 +102,14 @@ public interface MathHuntApiService {
 
     @GET("teams/get/teams/game/{id}")
     Call<Team> getTeamsByGameId(@Path("id") String id);
+
+    @Headers({"Content-Type: application/json"})
+    @PUT("start/game/{id}")
+    Call<Game> startGame(@Path("id") String id, @Body Game body);
+
+    @Headers({"Content-Type: application/json"})
+    @PUT("teams/update/team/progression/{id}")
+    Call<Team> updateTeamProgression(@Path("id") String id, @Body ProgressionPost body);
 
     //================================================================================
     // HintCall
