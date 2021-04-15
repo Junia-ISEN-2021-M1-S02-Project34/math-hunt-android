@@ -13,7 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.textfield.TextInputLayout;
 import com.isen.math_hunt.R;
 
-public class adminActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+public class AdminActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

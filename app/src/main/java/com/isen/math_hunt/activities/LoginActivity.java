@@ -23,6 +23,18 @@ public class LoginActivity extends AppCompatActivity {
         final TextInputLayout userTextField = findViewById(R.id.answerTextField);
         final TextInputLayout passwordTextField = findViewById(R.id.passewordTextField);
         final Button loginButton = findViewById(R.id.loginButton);
+        final Button adminButton = findViewById(R.id.adminButton);
+
+        adminButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LoginActivity.this, AdminActivity.class);
+                Bundle b = new Bundle();
+                intent.putExtras(b); //Put your id to your next Intent
+                startActivity(intent);
+                finish();
+            }
+        });
 
 
 
