@@ -26,7 +26,7 @@ import retrofit2.Response;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private String teamId = "6075624ad113d40016e1a33c";
+    private String teamId = "60783b356336f10016689b6c";
     private String gameId = "6059e4165375a204b13e1e8a";
 
     String loginteamId;

@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -71,6 +72,9 @@ public class GameActivity extends AppCompatActivity implements CurrentEnigmaIdIn
                             Bundle enigmaBundle = new Bundle();
                             enigmaBundle.putString("TEAM_ID", teamId);
                             enigmaBundle.putString("CURRENT_ENIGMA_ID", currentEnigmaId);
+                            Log.d("YOLOLO", "onNavigationItemSelected: " + currentGeoGroupId);
+                            enigmaBundle.putString("CURRENT_GEOGROUP_ID", currentGeoGroupId);
+
                             Fragment enigmaFragment = new EnigmaFragment();
                             enigmaFragment.setArguments(enigmaBundle);
                             transaction = getSupportFragmentManager().beginTransaction();
@@ -129,10 +133,13 @@ public class GameActivity extends AppCompatActivity implements CurrentEnigmaIdIn
                     currentEnigmaId = currentTeam.getCurrentEnigmaId();
                     currentGeoGroupId = currentTeam.getCurrentGeoGroupId();
 
+                    Log.d("TAG", "onResponse: " + currentEnigmaId);
 
                     Bundle enigmaBundle = new Bundle();
                     enigmaBundle.putString("TEAM_ID", teamId);
                     enigmaBundle.putString("CURRENT_ENIGMA_ID", currentEnigmaId);
+                    enigmaBundle.putString("CURRENT_GEOGROUP_ID", currentGeoGroupId);
+
                     Fragment enigmaFragment = new EnigmaFragment();
                     enigmaFragment.setArguments(enigmaBundle);
                     transaction = getSupportFragmentManager().beginTransaction();
@@ -156,6 +163,9 @@ public class GameActivity extends AppCompatActivity implements CurrentEnigmaIdIn
 
     @Override
     public void updateCurrentEnigmaId(String newEnigmaId) {
+
         this.currentEnigmaId = newEnigmaId;
+
+
     }
 }

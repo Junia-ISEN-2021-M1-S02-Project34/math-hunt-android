@@ -1,27 +1,22 @@
 package com.isen.math_hunt.model;
 
-import com.isen.math_hunt.entities.Enigma;
-import com.isen.math_hunt.entities.Hint;
-
 import java.util.List;
 
 public class ProgressionPost {
 
-    private Enigma finishedEnigma;
+    private String finishedEnigma;
     private int enigmaScore;
-    private List<String> usedHintsIds;
 
-    public ProgressionPost(Enigma finishedEnigma, int enigmaScore, List<String> usedHintsIds) {
+    public ProgressionPost(String finishedEnigma, int enigmaScore) {
         this.finishedEnigma = finishedEnigma;
         this.enigmaScore = enigmaScore;
-        this.usedHintsIds = usedHintsIds;
     }
 
-    public Enigma getFinishedEnigma() {
+    public String getFinishedEnigma() {
         return finishedEnigma;
     }
 
-    public void setFinishedEnigma(Enigma finishedEnigma) {
+    public void setFinishedEnigma(String finishedEnigma) {
         this.finishedEnigma = finishedEnigma;
     }
 
@@ -33,11 +28,5 @@ public class ProgressionPost {
         this.enigmaScore = enigmaScore;
     }
 
-    public List<String> getUsedHintsIds() {
-        return usedHintsIds;
-    }
 
-    public void setUsedHintsIds(List<String> usedHintsIds) {
-        this.usedHintsIds = usedHintsIds;
-    }
 }
