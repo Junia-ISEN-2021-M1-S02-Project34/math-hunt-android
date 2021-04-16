@@ -50,7 +50,7 @@ public class GameActivity extends AppCompatActivity implements CurrentEnigmaIdIn
 
         Bundle b = getIntent().getExtras();
         teamId = b.getString("TEAM_ID");
-        gameId = b.getString("GAME_ID");
+        gameId = b.getString("ACCESS_TOKEN");
 
         getTeamById(teamId);
 

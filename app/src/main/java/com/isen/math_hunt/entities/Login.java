@@ -1,37 +1,27 @@
 package com.isen.math_hunt.entities;
 
-import com.google.gson.annotations.SerializedName;
-
 public class Login {
+    private String username;
+    private String password;
 
-    @SerializedName("teamId")
-    private String teamId;
-
-    @SerializedName("accessToken")
-    private String accessToken;
-
-    public Login(String teamId, String accessToken) {
-
-        this.teamId = teamId;
-        this.accessToken = accessToken;
-
+    public Login(String username, String password) {
+        this.username = username;
+        this.password = password;
     }
 
-    public String getTeamId() {
-        return teamId;
+    public String getUsername() {
+        return username;
     }
 
-    public void setTeamId(String teamId) {
-        this.teamId = teamId;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    public String getAccessToken() {
-        return accessToken;
+    public String getPassword() {
+        return password;
     }
 
-    public void setAccessToken(String accessToken) {
-        this.accessToken = accessToken;
+    public void setPassword(String password) {
+        this.password = password;
     }
-
 }
-

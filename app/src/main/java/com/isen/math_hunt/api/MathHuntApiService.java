@@ -5,6 +5,7 @@ import com.isen.math_hunt.entities.Answer;
 import com.isen.math_hunt.entities.Game;
 import com.isen.math_hunt.entities.Hint;
 import com.isen.math_hunt.entities.Login;
+import com.isen.math_hunt.entities.LoginResponse;
 import com.isen.math_hunt.entities.Proposition;
 import com.isen.math_hunt.entities.Team;
 import com.isen.math_hunt.interfaces.Constant;
@@ -163,6 +164,6 @@ public interface MathHuntApiService {
     //================================================================================
 
     @POST("auth/sign-in/team")
-    Call<Login> loginTeam(@Path("username") String username, @Path("password") String password);
+    Call<LoginResponse> loginTeam(@Body Login login);
 
 }
