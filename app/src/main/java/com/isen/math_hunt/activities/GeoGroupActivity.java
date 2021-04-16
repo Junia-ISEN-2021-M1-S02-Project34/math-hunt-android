@@ -47,22 +47,13 @@ public class GeoGroupActivity extends AppCompatActivity implements LocationListe
     private static final long LOCATION_REFRESH_TIME = 5000;
     private static final float LOCATION_REFRESH_DISTANCE = 5;
 
-    private double latIsen = 50.63418574831333;
-    private double lonIsen = 3.048819125188862;
-
-    private double latFlandres = 50.636597029006495;
-    private double lonFlandres = 3.0694448466392066;
-
     private Number geoGroupPosX; // latitude
     private Number geoGroupPosY; // longitude
     private Number geoGroupRadius; // radius en metres
 
-    private int dist; // en metres
-
 
     //private Button button_location;
     private TextView text_location;
-    private LocationManager locationManager;
     private Button geoGroupContinueButton;
 
     private String teamId;
@@ -76,13 +67,6 @@ public class GeoGroupActivity extends AppCompatActivity implements LocationListe
         geoGroupContinueButton = findViewById(R.id.geoGroupContinueButton);
         text_location = findViewById(R.id.text_location);
         //button_location = findViewById(R.id.button_location);
-
-        if (ContextCompat.checkSelfPermission(GeoGroupActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(GeoGroupActivity.this, new String[]{
-                    Manifest.permission.ACCESS_FINE_LOCATION
-            }, 100);
-        }
 
         getLocation();
         getGeoGroupById("605af6b76df41210dd14d0ef");
@@ -137,7 +121,8 @@ public class GeoGroupActivity extends AppCompatActivity implements LocationListe
 
     @Override
     public void onLocationChanged(Location location) {
-        dist = (int) distance(geoGroupPosX, location.getLatitude(), geoGroupPosY, location.getLongitude());
+        // en metres
+        int dist = (int) distance(geoGroupPosX, location.getLatitude(), geoGroupPosY, location.getLongitude());
         if (dist > 2000) { // changer la valeur par geoGroupRadius
             geoGroupContinueButton.setEnabled(false);
             geoGroupContinueButton.setText("Encore un peu de marche!");
@@ -191,7 +176,7 @@ public class GeoGroupActivity extends AppCompatActivity implements LocationListe
     private void getLocation() {
 
         try {
-            locationManager = (LocationManager) getApplicationContext().getSystemService(LOCATION_SERVICE);
+            LocationManager locationManager = (LocationManager) getApplicationContext().getSystemService(LOCATION_SERVICE);
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, LOCATION_REFRESH_TIME, LOCATION_REFRESH_DISTANCE, GeoGroupActivity.this);
 
         } catch (Exception e) {

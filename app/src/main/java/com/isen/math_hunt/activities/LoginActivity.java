@@ -1,10 +1,14 @@
 package com.isen.math_hunt.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.content.Context;
 import android.content.Intent;
@@ -32,6 +36,8 @@ public class LoginActivity extends AppCompatActivity {
     String loginTeamId;
     String loginAccessToken;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -41,6 +47,14 @@ public class LoginActivity extends AppCompatActivity {
         final TextInputLayout passwordTextField = findViewById(R.id.passewordTextField);
         final Button loginButton = findViewById(R.id.loginButton);
         final Button adminButton = findViewById(R.id.adminButton);
+
+        if (ContextCompat.checkSelfPermission(LoginActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(LoginActivity.this, new String[]{
+                    Manifest.permission.ACCESS_FINE_LOCATION
+            }, 100);
+        }
+
         adminButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
