@@ -98,7 +98,7 @@ public class GeoGroupActivity extends AppCompatActivity implements LocationListe
                 Intent intent = new Intent(GeoGroupActivity.this, GameActivity.class);
                 Bundle b = new Bundle();
                 b.putString("TEAM_ID", teamId);
-                b.putString("GAME_ID", gameId);
+                b.putString("CURRENT_ENIGMA_ID", gameId);
                 intent.putExtras(b); //Put your id to your next Intent
                 startActivity(intent);
                 finish();
@@ -116,6 +116,7 @@ public class GeoGroupActivity extends AppCompatActivity implements LocationListe
                 try {
                     Team team = response.body();
                     Log.d("TAG", "onResponse: " + team.getUsername());
+                    teamId = team.get_id();
 
                 } catch (Exception e) {
                     e.printStackTrace();

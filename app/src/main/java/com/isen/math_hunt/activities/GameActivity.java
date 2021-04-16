@@ -69,7 +69,6 @@ public class GameActivity extends AppCompatActivity implements CurrentEnigmaIdIn
                             Bundle enigmaBundle = new Bundle();
                             enigmaBundle.putString("TEAM_ID", teamId);
                             enigmaBundle.putString("CURRENT_ENIGMA_ID", currentEnigmaId);
-                            Log.d("YOLOLO", "onNavigationItemSelected: " + currentGeoGroupId);
                             enigmaBundle.putString("CURRENT_GEOGROUP_ID", currentGeoGroupId);
 
                             Fragment enigmaFragment = new EnigmaFragment();

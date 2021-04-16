@@ -89,6 +89,8 @@ public class EnigmaFragment extends Fragment implements RadioButtonDataTransfert
     private int newScore;
     private int currentEnigmaScore;
 
+    private AlertDialog alertDialog;
+
 
     private String teamId;
     private String currentEnigmaId;
@@ -99,7 +101,6 @@ public class EnigmaFragment extends Fragment implements RadioButtonDataTransfert
     private Number posY;
     private String address;
 
-    private AlertDialog alertDialog = alertEnigma();
 
     private CurrentEnigmaIdInterface currentEnigmaIdInterface = (CurrentEnigmaIdInterface) getActivity();
 
@@ -130,11 +131,14 @@ public class EnigmaFragment extends Fragment implements RadioButtonDataTransfert
         enigmaListView.setVisibility(View.GONE);
         answerTextField.setVisibility(View.GONE);
 
+        createDialog().show();
 
         teamId = getArguments().getString("TEAM_ID");
         currentEnigmaId = getArguments().getString("CURRENT_ENIGMA_ID");
         currentGeoGroupId = getArguments().getString("CURRENT_GEOGROUP_ID");
 
+
+        alertDialog.show();
 
         getFullEnigmaById(currentEnigmaId);
 
@@ -391,12 +395,12 @@ public class EnigmaFragment extends Fragment implements RadioButtonDataTransfert
         int dist = (int) distance(posX, location.getLatitude(), posY, location.getLongitude());
         address = addresses.get(0).getAddressLine(0);
         Log.d("tag", "adresse : " + address);
-        Log.d("tag","distance:" +dist);
+        Log.d("tag", "distance:" + dist);
 
-        if (dist>50){
+        if (dist > 50) {
             alertDialog.show();
         }
-        if (dist<50){
+        if (dist < 50) {
             alertDialog.dismiss();
         }
     }
@@ -419,12 +423,17 @@ public class EnigmaFragment extends Fragment implements RadioButtonDataTransfert
         return Math.sqrt(distance);
     }
 
-    public AlertDialog alertEnigma() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder
-                .setTitle("Rejoignez l'enigme indiquée!")
-                .setMessage("Allez à l'adresse suivante:" + address).create();
-        AlertDialog alertDialog = builder.create();
+    public AlertDialog createDialog() {
+
+        AlertDialog.Builder builder
+                = new AlertDialog
+                .Builder(getContext());
+
+        builder.setTitle("Bravo vous avez réussi cette enigme");
+        builder.setMessage("vous avez gagné " + address);
+        builder.setCancelable(false);
+        alertDialog = builder.create();
         return alertDialog;
     }
+
 }
