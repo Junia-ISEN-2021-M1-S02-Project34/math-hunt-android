@@ -38,6 +38,8 @@ import com.isen.math_hunt.model.ProgressionPost;
 import com.isen.math_hunt.model.RetrofitClient;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import retrofit2.Call;
@@ -188,6 +190,7 @@ public class EnigmaFragment extends Fragment implements RadioButtonDataTransfert
                         enigmaListView.setVisibility(View.VISIBLE);
                         propositionList = fullEnigma.getProposition();
                         propositionList.add(new Proposition(fullEnigma.getAnswer().getSolution()));
+                        Collections.shuffle(propositionList);
                         qcmAdapter = new QcmAdapter(getActivity(), propositionList, getActivity(), EnigmaFragment.this);
                         enigmaListView.setAdapter(qcmAdapter);
                         isMcq = true;

@@ -23,6 +23,7 @@
         android:layout_marginStart="80dp"
         android:layout_marginTop="30dp"
         android:layout_marginEnd="80dp"
+        android:background="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/scoreTextField" />
@@ -69,10 +70,10 @@
             android:orientation="vertical">
 
             <TextView
-                android:background="@color/white"
                 android:id="@+id/questionTextField"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:background="@color/white" />
         </LinearLayout>
     </ScrollView>
 
@@ -95,8 +96,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
-        android:hint="@string/AnswerTextFieldHint"
         android:background="@color/white"
+        android:hint="@string/AnswerTextFieldHint"
         app:boxStrokeColor="#70000000"
         app:hintTextColor="#70000000"
         app:layout_constraintBottom_toTopOf="@+id/validateButton"

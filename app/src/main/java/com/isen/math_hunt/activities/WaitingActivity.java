@@ -16,7 +16,7 @@ import com.isen.math_hunt.entities.GeoGroup;
 public class WaitingActivity extends AppCompatActivity {
 
     private String teamId;
-    private String gameId;
+    private String token;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,7 +25,7 @@ public class WaitingActivity extends AppCompatActivity {
 
         Bundle b = getIntent().getExtras();
         teamId = b.getString("TEAM_ID");
-        gameId = b.getString("GAME_ID");
+        token = b.getString("ACCESS_TOKEN");
 
 
         Button launchButton = findViewById(R.id.startButton);
@@ -36,7 +36,7 @@ public class WaitingActivity extends AppCompatActivity {
                 Intent intent = new Intent(WaitingActivity.this, GeoGroupActivity.class);
                 Bundle b = new Bundle();
                 b.putString("TEAM_ID", teamId);
-                b.putString("GAME_ID", gameId);
+                b.putString("ACCESS_TOKEN", token);
                 intent.putExtras(b); //Put your id to your next Intent
                 startActivity(intent);
                 finish();
