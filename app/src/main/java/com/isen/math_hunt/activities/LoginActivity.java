@@ -3,6 +3,7 @@ package com.isen.math_hunt.activities;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.content.Context;
@@ -26,6 +27,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private String teamId = "60783b356336f10016689b6c";
     private String gameId = "6059e4165375a204b13e1e8a";
+    private ProgressDialog progressDialog;
 
     String loginTeamId;
     String loginAccessToken;
@@ -39,7 +41,6 @@ public class LoginActivity extends AppCompatActivity {
         final TextInputLayout passwordTextField = findViewById(R.id.passewordTextField);
         final Button loginButton = findViewById(R.id.loginButton);
         final Button adminButton = findViewById(R.id.adminButton);
-
         adminButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -65,6 +66,9 @@ public class LoginActivity extends AppCompatActivity {
                     Log.d("PROUT", "Username: " + login.getUsername());
                     Log.d("PROUT", "Password: " + login.getPassword());
 
+                    progressDialog = new ProgressDialog(LoginActivity.this);
+                    progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                    progressDialog.show();
 
                     loginTeam(login);
                 }
@@ -85,9 +89,10 @@ public class LoginActivity extends AppCompatActivity {
                 try {
                     LoginResponse login = response.body();
                     Log.d("PROUT", "onResponse: " + response);
-
+                    progressDialog.dismiss();
                     loginTeamId = login.getTeamId();
                     loginAccessToken = login.getAccessToken();
+                    Toast.makeText(getApplicationContext(), "Tu es bien connecté", Toast.LENGTH_SHORT).show();
 
                     Intent intent = new Intent(LoginActivity.this, WaitingActivity.class);
                     Bundle b = new Bundle();
@@ -99,7 +104,8 @@ public class LoginActivity extends AppCompatActivity {
 
 
                 } catch (Exception e) {
-                    Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                    progressDialog.dismiss();
+                    Toast.makeText(getApplicationContext(),"Vérifie tes identifiants ", Toast.LENGTH_LONG).show();
 
                 }
             }
