@@ -18,9 +18,9 @@ public class Enigma {
     @SerializedName("question")
     private String question;
     @SerializedName("positionX")
-    private String positionX;
+    private Number positionX;
     @SerializedName("positionY")
-    private String positionY;
+    private Number positionY;
     @SerializedName("scoreValue")
     private int scoreValue;
     @SerializedName("isActive")
@@ -30,7 +30,7 @@ public class Enigma {
     @SerializedName("nextEnigmaId")
     private int nextEnigmaId;
 
-    public Enigma(String _id, String name, String description, String question, String positionX, String positionY, int scoreValue, boolean isActive, boolean isLinked, int nextEnigmaId) {
+    public Enigma(String _id, String name, String description, String question, Number positionX, Number positionY, int scoreValue, boolean isActive, boolean isLinked, int nextEnigmaId) {
         this._id = _id;
         this.name = name;
         this.description = description;
@@ -75,19 +75,19 @@ public class Enigma {
         this.question = question;
     }
 
-    public String getPositionX() {
+    public Number getPositionX() {
         return positionX;
     }
 
-    public void setPositionX(String positionX) {
+    public void setPositionX(Number positionX) {
         this.positionX = positionX;
     }
 
-    public String getPositionY() {
+    public Number getPositionY() {
         return positionY;
     }
 
-    public void setPositionY(String positionY) {
+    public void setPositionY(Number positionY) {
         this.positionY = positionY;
     }
 

@@ -54,9 +54,6 @@ public class GameActivity extends AppCompatActivity implements CurrentEnigmaIdIn
 
         getTeamById(teamId);
 
-
-
-
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(navigationItemSelectedListener);
     }
