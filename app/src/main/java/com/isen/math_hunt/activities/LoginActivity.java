@@ -110,9 +110,9 @@ public class LoginActivity extends AppCompatActivity {
                     {
                         Intent intent = new Intent(LoginActivity.this, WaitingActivity.class);
                         Bundle b = new Bundle();
-                        b.putString("TEAM_ID", teamId);
-                        b.putString("ACCESS_TOKEN", gameId); // accessToken ?
-                        intent.putExtras(b); //Put your id to your next Intent
+                        b.putString("TEAM_ID", loginteamId);
+                        b.putString("ACCESS_TOKEN", loginAccessToken);
+                        intent.putExtras(b);
                         startActivity(intent);
                         finish();
                     }
