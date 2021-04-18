@@ -164,9 +164,7 @@ public class EnigmaFragment extends Fragment implements RadioButtonDataTransfert
             }
         });
 
-
         return mView;
-
     }
 
 

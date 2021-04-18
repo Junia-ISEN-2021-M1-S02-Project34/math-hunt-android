@@ -133,13 +133,16 @@ public class GeoGroupActivity extends AppCompatActivity implements LocationListe
         }
         //Toast.makeText(this, "vous êtes à : " + dist + "m", Toast.LENGTH_SHORT).show();
         text_location.setText("vous êtes à " + dist + "m");
+        Log.d("tag","heho la");
         try {
             Geocoder geocoder = new Geocoder(GeoGroupActivity.this, Locale.getDefault());
             List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
             String address = addresses.get(0).getAddressLine(0);
+            Log.d("tag",address);
 
         } catch (Exception e) {
             e.printStackTrace();
+            Log.d("tag","adresse marche pas");
         }
     }
 

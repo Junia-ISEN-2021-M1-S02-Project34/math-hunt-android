@@ -16,6 +16,16 @@
         <item name="android:state_activated">@color/black</item>
         <item name="android:state_focused">@color/black</item>
 
+    </style>
+    <style name="Theme.Mathhunt2" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+
+        <item name="android:maxLines">1</item>
+        <item name="android:minLines">1</item>
+        <item name="android:lines">1</item>
 
     </style>
+
+
+
+
 </resources>

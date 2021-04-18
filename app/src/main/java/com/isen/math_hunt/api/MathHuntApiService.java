@@ -13,6 +13,7 @@ import com.isen.math_hunt.entities.Enigma;
 import com.isen.math_hunt.entities.GeoGroup;
 import com.isen.math_hunt.model.EnigmaList;
 import com.isen.math_hunt.model.FullEnigma;
+import com.isen.math_hunt.model.HintId;
 import com.isen.math_hunt.model.HintList;
 import com.isen.math_hunt.model.ProgressionPost;
 import com.isen.math_hunt.model.GeoGroupList;
@@ -112,6 +113,10 @@ public interface MathHuntApiService {
     @Headers({"Content-Type: application/json"})
     @PUT("teams/update/team/progression/{id}")
     Call<Team> updateTeamProgression(@Path("id") String id, @Body ProgressionPost body);
+
+    @Headers({"Content-Type: application/json"})
+    @PUT("teams/update/team/used/hint/{id}")
+    Call<Team> updateTeamUsedHint(@Path("id") String id, @Body HintId hintId);
 
     //================================================================================
     // HintCall

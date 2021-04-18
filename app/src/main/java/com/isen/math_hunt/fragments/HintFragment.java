@@ -86,7 +86,7 @@ public class HintFragment extends Fragment {
 
                     hintList = hints.getHints();
 
-                    hintAdapter = new HintAdapter(getActivity(), hintList, usedHintsIds);
+                    hintAdapter = new HintAdapter(getActivity(), hintList, usedHintsIds, teamId);
                     hintListView.setAdapter(hintAdapter);
 
                 } catch (Exception e) {
@@ -116,6 +116,8 @@ public class HintFragment extends Fragment {
                     Team currentTeam = response.body();
                     List<Progression> progressionList = currentTeam.getProgression();
 
+                    teamId = currentTeam.get_id();
+
                     int indexOfGeoGroupId = IntStream.range(0, progressionList.size())
                             .filter(i -> progressionList.get(i).getGeoGroupId().equals(currentTeam.getCurrentGeoGroupId()))
                             .findAny()
@@ -128,7 +130,7 @@ public class HintFragment extends Fragment {
                             .findAny()
                             .orElse(-1);
 
-                     usedHintsIds = enigmasProgressionList.get(indexOfEnigmaId).getUsedHintsIds();
+                    usedHintsIds = enigmasProgressionList.get(indexOfEnigmaId).getUsedHintsIds();
 
 
                     getHintsByEnigmaId(currentEnigmaId);
