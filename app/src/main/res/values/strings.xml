@@ -42,6 +42,8 @@
     <string name="radioButtonAnswer">Answer</string>
     <string name="AnswerTextFieldHint">Réponse</string>
     <string name="idTeam">idTeam</string>
+    <string name="textProgression">Alors, vous en êtes où? \n  J\'ai noté pour vous  votre progression dans cette chasse aux énigmes.</string>
+    <string name="textHint">Besoin d\'un coup de main? \n Mon grand-père a caché des indices dans ses carnets mais cela vous coûtera quelque clés... </string>
     <string-array name="parties">
         <item>Partie1</item>
         <item>Partie2</item>
