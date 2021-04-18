@@ -100,7 +100,7 @@
         android:hint="@string/AnswerTextFieldHint"
         app:boxStrokeColor="#70000000"
         app:hintTextColor="#70000000"
-        app:layout_constraintBottom_toTopOf="@+id/validateButton"
+        app:layout_constraintBottom_toTopOf="@+id/attemptsTextView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/scrollView3">
@@ -122,7 +122,7 @@
         android:layout_marginBottom="20dp"
         app:boxStrokeColor="#70000000"
         app:hintTextColor="#70000000"
-        app:layout_constraintBottom_toTopOf="@+id/validateButton"
+        app:layout_constraintBottom_toTopOf="@+id/attemptsTextView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/scrollView3" />
@@ -136,6 +136,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/logoapp" />
+
+    <TextView
+        android:id="@+id/attemptsTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/validateButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:background="#D3D3D3" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

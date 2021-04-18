@@ -41,6 +41,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.IntStream;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -69,6 +70,9 @@ public class EnigmaFragment extends Fragment implements RadioButtonDataTransfert
     private int oldScore;
     private int newScore;
     private int currentEnigmaScore;
+    private TextView attemptsTextView;
+
+    private int attemptsValue;
 
 
     private String teamId;
@@ -102,6 +106,8 @@ public class EnigmaFragment extends Fragment implements RadioButtonDataTransfert
         descriptionEnigma = (TextView) mView.findViewById(R.id.enigmaDescriptionTextField);
         questionTextView = (TextView) mView.findViewById(R.id.questionTextField);
         validateButton = (Button) mView.findViewById(R.id.validateButton);
+        attemptsTextView = (TextView) mView.findViewById(R.id.attemptsTextView);
+
         enigmaListView.setVisibility(View.GONE);
         answerTextField.setVisibility(View.GONE);
 
@@ -110,54 +116,87 @@ public class EnigmaFragment extends Fragment implements RadioButtonDataTransfert
         currentEnigmaId = getArguments().getString("CURRENT_ENIGMA_ID");
         currentGeoGroupId = getArguments().getString("CURRENT_GEOGROUP_ID");
 
-        Log.d("YOLOLO", "onCreateView: " +currentGeoGroupId);
+        Log.d("YOLOLO", "onCreateView: " + currentGeoGroupId);
         getFullEnigmaById(currentEnigmaId);
+
         validateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.d("Attempts", "onClick: " + attemptsValue);
 
-                newScore = oldScore + currentEnigmaScore;
-                Log.d("Score", "onClick: " + newScore);
+                if (attemptsValue != 0) {
+                    newScore = oldScore + currentEnigmaScore;
+                    Log.d("Score", "onClick: " + newScore);
 
-                ProgressionPost progressionPost = new ProgressionPost(currentEnigmaId, newScore);
+                    ProgressionPost progressionPost = new ProgressionPost(currentEnigmaId, newScore);
 
-                if (isMcq) {
-                    userAnswer = currentMcqAnswerValue.toLowerCase();
+                    if (isMcq) {
+                        userAnswer = currentMcqAnswerValue.toLowerCase();
 
-                } else
-                    userAnswer = answerTextField.getEditText().getText().toString().toLowerCase();
+                    } else
+                        userAnswer = answerTextField.getEditText().getText().toString().toLowerCase();
 
-                if (userAnswer.equals(enigmaAnswer.toLowerCase())) {
+                    if (userAnswer.equals(enigmaAnswer.toLowerCase())) {
 
-                    updateTeamProgression(teamId, progressionPost);
+                        updateTeamProgression(teamId, progressionPost);
 
 
-                } else if (userAnswer.isEmpty()) {
+                    } else if (userAnswer.isEmpty()) {
+                        AlertDialog.Builder builder
+                                = new AlertDialog
+                                .Builder(getActivity());
+
+                        builder.setTitle("Oups ...");
+                        builder.setMessage("Il semble que ta réponse est vide !");
+                        builder.setCancelable(false);
+                        builder
+                                .setPositiveButton(
+                                        "Réésayer",
+                                        new DialogInterface
+                                                .OnClickListener() {
+
+                                            @Override
+                                            public void onClick(DialogInterface dialog,
+                                                                int which) {
+                                                // When the user click yes button
+                                                // then app will close
+                                                dialog.cancel();
+                                            }
+                                        });
+                        AlertDialog alertDialog = builder.create();
+                        alertDialog.show();
+                    } else {
+                        attemptsValue--;
+                        Log.d("Attempts", "onClick: " + attemptsValue);
+                        attemptsTextView.setText("Nombre d'essaies restant :" + attemptsValue);
+                        AlertDialog alertDialog = createBadAnswerDialog();
+                        alertDialog.show();
+                    }
+
+                } else {
                     AlertDialog.Builder builder
                             = new AlertDialog
                             .Builder(getActivity());
 
-                    builder.setTitle("Oups ...");
-                    builder.setMessage("Il semble que ta réponse est vide !");
+                    builder.setTitle("Mince vous n'avez plus d'essai disponible");
+                    builder.setMessage("Passer à l'énigme suivante ");
                     builder.setCancelable(false);
                     builder
                             .setPositiveButton(
-                                    "Réésayer",
+                                    "Continuer",
                                     new DialogInterface
                                             .OnClickListener() {
 
                                         @Override
                                         public void onClick(DialogInterface dialog,
                                                             int which) {
-                                            // When the user click yes button
-                                            // then app will close
+
+                                            updateTeamProgression(teamId, new ProgressionPost(currentEnigmaId, 0));
                                             dialog.cancel();
+
                                         }
                                     });
                     AlertDialog alertDialog = builder.create();
-                    alertDialog.show();
-                } else {
-                    AlertDialog alertDialog = createBadAnswerDialog();
                     alertDialog.show();
                 }
 
@@ -178,12 +217,14 @@ public class EnigmaFragment extends Fragment implements RadioButtonDataTransfert
                     progressDialog.dismiss();
 
                     FullEnigma fullEnigma = response.body();
-                    scoreTextView.setText(Integer.toString(fullEnigma.getEnigma().getScoreValue()));
+                    scoreTextView.setText("Score : " + Integer.toString(fullEnigma.getEnigma().getScoreValue()));
                     enigmaTitleTextView.setText(fullEnigma.getEnigma().getName());
                     questionTextView.setText(fullEnigma.getEnigma().getQuestion());
                     descriptionEnigma.setText(fullEnigma.getEnigma().getDescription());
                     enigmaAnswer = fullEnigma.getAnswer().getSolution();
                     currentEnigmaScore = fullEnigma.getEnigma().getScoreValue();
+                    attemptsTextView.setText("Nombre d'essaies restant :" + Integer.toString(fullEnigma.getAnswer().getAttemptsNumber()));
+                    attemptsValue = fullEnigma.getAnswer().getAttemptsNumber();
                     if (fullEnigma.getAnswer().isMcq()) {
                         enigmaListView.setVisibility(View.VISIBLE);
                         propositionList = fullEnigma.getProposition();
@@ -201,6 +242,7 @@ public class EnigmaFragment extends Fragment implements RadioButtonDataTransfert
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+
 
             }
 
@@ -292,10 +334,10 @@ public class EnigmaFragment extends Fragment implements RadioButtonDataTransfert
                                 Log.d("coucou", "onClick: " + currentGeoGroupId);
                                 Log.d("coucou", "onClick: " + nextGeoGroup);
 
-                                if (!currentGeoGroupId.equals(nextGeoGroup)){
+                                if (!currentGeoGroupId.equals(nextGeoGroup)) {
                                     intent = new Intent(getContext(), GeoGroupActivity.class);
 
-                                }else{
+                                } else {
                                     intent = new Intent(getContext(), GameActivity.class);
 
                                 }
@@ -317,8 +359,8 @@ public class EnigmaFragment extends Fragment implements RadioButtonDataTransfert
                 = new AlertDialog
                 .Builder(getActivity());
 
-        builder.setTitle("Et mince vous êtes nul");
-        builder.setMessage("Vous avez raté cette enigme");
+        builder.setTitle("Mince mauvaise réponse");
+        builder.setMessage("Il vous reste " + attemptsValue + " essais");
         builder.setCancelable(false);
         builder
                 .setPositiveButton(
