@@ -135,9 +135,18 @@ public class HintAdapter extends ArrayAdapter<Hint> {
                                                 usedHintsIds.add(hintList.get(position).get_id());
 
 
-                                                hintAdapter = new HintAdapter(getContext(), hintList, usedHintsIds, teamId);
-                                                listView.setAdapter(hintAdapter);
-                                                dialog.cancel();
+                                                if (usedHintsIds==null){
+                                                    List<String> newUsedHintsId = new ArrayList<>();
+                                                    newUsedHintsId.add(hintList.get(position).get_id());
+                                                    hintAdapter = new HintAdapter(getContext(), hintList, newUsedHintsId, teamId);
+                                                    listView.setAdapter(hintAdapter);
+                                                    dialog.cancel();
+                                                }else{
+                                                    usedHintsIds.add(hintList.get(position).get_id());
+                                                    hintAdapter = new HintAdapter(getContext(), hintList, usedHintsIds, teamId);
+                                                    listView.setAdapter(hintAdapter);
+                                                    dialog.cancel();
+                                                }
                                             }
                                         });
                         builder
@@ -158,7 +167,6 @@ public class HintAdapter extends ArrayAdapter<Hint> {
                         alertDialog.show();
 
                     }
-
                 } else {
                     AlertDialog.Builder builder
                             = new AlertDialog
@@ -178,16 +186,25 @@ public class HintAdapter extends ArrayAdapter<Hint> {
                                                             int which) {
                                             // When the user click yes button
                                             // then app will close
-                                            //Todo : update la bdd
                                             getHintButton.setText("Ouvrir");
                                             getHintButton.setBackgroundColor(getContext().getColor(R.color.mathHuntTheme));
                                             updateTeamUsedHint(teamId, new HintId(hintList.get(position).get_id()));
-                                            usedHintsIds.add(hintList.get(position).get_id());
+                                            Log.d("Need", "onClick: " + hintList.get(position).get_id());
+
+                                            if (usedHintsIds==null){
+                                                List<String> newUsedHintsId = new ArrayList<>();
+                                                newUsedHintsId.add(hintList.get(position).get_id());
+                                                hintAdapter = new HintAdapter(getContext(), hintList, newUsedHintsId, teamId);
+                                                listView.setAdapter(hintAdapter);
+                                                dialog.cancel();
+                                            }else{
+                                                usedHintsIds.add(hintList.get(position).get_id());
+                                                hintAdapter = new HintAdapter(getContext(), hintList, usedHintsIds, teamId);
+                                                listView.setAdapter(hintAdapter);
+                                                dialog.cancel();
+                                            }
 
 
-                                            hintAdapter = new HintAdapter(getContext(), hintList, usedHintsIds, teamId);
-                                            listView.setAdapter(hintAdapter);
-                                            dialog.cancel();
                                         }
                                     });
                     builder
