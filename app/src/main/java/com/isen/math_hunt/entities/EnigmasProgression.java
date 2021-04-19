@@ -21,11 +21,10 @@ public class EnigmasProgression {
     @SerializedName("scoreValue")
     private int scoreValue;
 
+    @SerializedName("attemptsNumber")
+    private int attemptsNumber;
 
-
-    public EnigmasProgression(boolean done, int score, List<String> usedHintsIds, String _id, String enigmaId, String enigmaName, int scoreValue) {
-
-
+    public EnigmasProgression(boolean done, int score, List<String> usedHintsIds, String _id, String enigmaId, String enigmaName, int scoreValue, int attemptsNumber) {
         this.done = done;
         this.score = score;
         this.usedHintsIds = usedHintsIds;
@@ -33,6 +32,7 @@ public class EnigmasProgression {
         this.enigmaId = enigmaId;
         this.enigmaName = enigmaName;
         this.scoreValue = scoreValue;
+        this.attemptsNumber = attemptsNumber;
     }
 
     public boolean isDone() {
@@ -89,5 +89,13 @@ public class EnigmasProgression {
 
     public void setScoreValue(int scoreValue) {
         this.scoreValue = scoreValue;
+    }
+
+    public int getAttemptsNumber() {
+        return attemptsNumber;
+    }
+
+    public void setAttemptsNumber(int attemptsNumber) {
+        this.attemptsNumber = attemptsNumber;
     }
 }
