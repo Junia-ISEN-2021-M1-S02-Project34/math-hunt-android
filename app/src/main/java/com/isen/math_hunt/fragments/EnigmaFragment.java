@@ -6,16 +6,13 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 
-import androidx.annotation.LongDef;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,24 +21,20 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.isen.math_hunt.R;
 import com.isen.math_hunt.activities.GameActivity;
 import com.isen.math_hunt.activities.GeoGroupActivity;
-import com.isen.math_hunt.activities.LoginActivity;
 import com.isen.math_hunt.activities.SuccessActivity;
-import com.isen.math_hunt.activities.WaitingActivity;
 import com.isen.math_hunt.adapters.QcmAdapter;
-import com.isen.math_hunt.entities.Progression;
 import com.isen.math_hunt.entities.Proposition;
 import com.isen.math_hunt.entities.Team;
 import com.isen.math_hunt.interfaces.CurrentEnigmaIdInterface;
 import com.isen.math_hunt.interfaces.RadioButtonDataTransfertInterface;
+import com.isen.math_hunt.model.AttemptsNumber;
 import com.isen.math_hunt.model.FullEnigma;
 import com.isen.math_hunt.model.ProgressionPost;
 import com.isen.math_hunt.model.RetrofitClient;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.IntStream;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -72,7 +65,8 @@ public class EnigmaFragment extends Fragment implements RadioButtonDataTransfert
     private int currentEnigmaScore;
     private TextView attemptsTextView;
 
-    private int attemptsValue;
+    private int attemptsEnigmaValue;
+    private int attemptsNumber;
 
 
     private String teamId;
@@ -115,6 +109,9 @@ public class EnigmaFragment extends Fragment implements RadioButtonDataTransfert
         teamId = getArguments().getString("TEAM_ID");
         currentEnigmaId = getArguments().getString("CURRENT_ENIGMA_ID");
         currentGeoGroupId = getArguments().getString("CURRENT_GEOGROUP_ID");
+        attemptsNumber = getArguments().getInt("ATTEMPTS_NUMBER");
+
+        Log.d("Attempts", "ATTEMPTS_NUMBER: " + attemptsNumber);
 
         Log.d("YOLOLO", "onCreateView: " + currentGeoGroupId);
         getFullEnigmaById(currentEnigmaId);
@@ -122,11 +119,11 @@ public class EnigmaFragment extends Fragment implements RadioButtonDataTransfert
         validateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("Attempts", "onClick: " + attemptsValue);
+                Log.d("Attempts", "attemptsEnigmaValue: " + attemptsEnigmaValue);
 
-                if (attemptsValue != 0) {
+                if (attemptsNumber != attemptsEnigmaValue) {
                     newScore = oldScore + currentEnigmaScore;
-                    Log.d("Score", "onClick: " + newScore);
+                    Log.d("Score", "newScore: " + newScore);
 
                     ProgressionPost progressionPost = new ProgressionPost(currentEnigmaId, newScore);
 
@@ -166,11 +163,9 @@ public class EnigmaFragment extends Fragment implements RadioButtonDataTransfert
                         AlertDialog alertDialog = builder.create();
                         alertDialog.show();
                     } else {
-                        attemptsValue--;
-                        Log.d("Attempts", "onClick: " + attemptsValue);
-                        attemptsTextView.setText("Nombre d'essaies restant :" + attemptsValue);
-                        AlertDialog alertDialog = createBadAnswerDialog();
-                        alertDialog.show();
+                        updateAttemptsNumber(teamId);
+                        Log.d("Attempts", "attemptsEnigmaValue: " + attemptsEnigmaValue);
+
                     }
 
                 } else {
@@ -223,8 +218,8 @@ public class EnigmaFragment extends Fragment implements RadioButtonDataTransfert
                     descriptionEnigma.setText(fullEnigma.getEnigma().getDescription());
                     enigmaAnswer = fullEnigma.getAnswer().getSolution();
                     currentEnigmaScore = fullEnigma.getEnigma().getScoreValue();
-                    attemptsTextView.setText("Nombre d'essaies restant :" + Integer.toString(fullEnigma.getAnswer().getAttemptsNumber()));
-                    attemptsValue = fullEnigma.getAnswer().getAttemptsNumber();
+                    attemptsTextView.setText("Nombre d'essaies restant :" + (Integer.toString(fullEnigma.getAnswer().getAttemptsNumber() - attemptsNumber)));
+                    attemptsEnigmaValue = fullEnigma.getAnswer().getAttemptsNumber();
                     if (fullEnigma.getAnswer().isMcq()) {
                         enigmaListView.setVisibility(View.VISIBLE);
                         propositionList = fullEnigma.getProposition();
@@ -299,6 +294,39 @@ public class EnigmaFragment extends Fragment implements RadioButtonDataTransfert
         });
     }
 
+    private void updateAttemptsNumber(String id) {
+
+
+        Call<Integer> call = RetrofitClient.getInstance().getMathHuntApiService().updateAttemptsNumber(id);
+        call.enqueue(new Callback<Integer>() {
+            @Override
+            public void onResponse(Call<Integer> call, Response<Integer> response) {
+
+                try {
+                    Integer attemptsNumberResponse = response.body();
+
+                    attemptsNumber = attemptsNumberResponse.intValue();
+                    Log.d("Attempts", "onResponse: " + attemptsNumber);
+                    attemptsTextView.setText("Nombre d'essaies restant :" +  (attemptsEnigmaValue - attemptsNumber));
+                    AlertDialog alertDialog = createBadAnswerDialog();
+                    alertDialog.show();
+
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<Integer> call, Throwable t) {
+                Toast.makeText(getActivity(), t.getMessage(), Toast.LENGTH_SHORT).show();
+                Log.e("Prout", t.getMessage());
+
+            }
+        });
+    }
+
     /**
      * get data from radioButton QCM Adapter
      *
@@ -331,8 +359,6 @@ public class EnigmaFragment extends Fragment implements RadioButtonDataTransfert
                                                 int which) {
 
                                 Intent intent;//Put your id to your next Intent
-                                Log.d("coucou", "onClick: " + currentGeoGroupId);
-                                Log.d("coucou", "onClick: " + nextGeoGroup);
 
                                 if (!currentGeoGroupId.equals(nextGeoGroup)) {
                                     intent = new Intent(getContext(), GeoGroupActivity.class);
@@ -360,7 +386,7 @@ public class EnigmaFragment extends Fragment implements RadioButtonDataTransfert
                 .Builder(getActivity());
 
         builder.setTitle("Mince mauvaise réponse");
-        builder.setMessage("Il vous reste " + attemptsValue + " essais");
+        builder.setMessage("Il vous reste " + (attemptsEnigmaValue - attemptsNumber) + " essais");
         builder.setCancelable(false);
         builder
                 .setPositiveButton(
