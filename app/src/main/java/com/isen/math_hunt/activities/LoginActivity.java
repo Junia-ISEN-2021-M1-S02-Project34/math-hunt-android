@@ -37,7 +37,6 @@ public class LoginActivity extends AppCompatActivity {
     String loginAccessToken;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -76,9 +75,8 @@ public class LoginActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Passeword vide", Toast.LENGTH_LONG).show();
 
                 } else {
-                    Login login = new Login(userTextField.getEditText().getText().toString(),passwordTextField.getEditText().getText().toString());
-                    Log.d("PROUT", "Username: " + login.getUsername());
-                    Log.d("PROUT", "Password: " + login.getPassword());
+                    Login login = new Login(userTextField.getEditText().getText().toString(), passwordTextField.getEditText().getText().toString());
+
 
                     progressDialog = new ProgressDialog(LoginActivity.this);
                     progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
@@ -92,9 +90,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
-
-
-        private void loginTeam(Login login) {
+    private void loginTeam(Login login) {
         Call<LoginResponse> call = RetrofitClient.getInstance().getMathHuntApiService().loginTeam(login);
         call.enqueue(new Callback<LoginResponse>() {
             @Override
@@ -102,7 +98,6 @@ public class LoginActivity extends AppCompatActivity {
 
                 try {
                     LoginResponse login = response.body();
-                    Log.d("PROUT", "onResponse: " + response);
                     progressDialog.dismiss();
                     loginTeamId = login.getTeamId();
                     loginAccessToken = login.getAccessToken();
@@ -112,6 +107,7 @@ public class LoginActivity extends AppCompatActivity {
                     Bundle b = new Bundle();
                     b.putString("TEAM_ID", loginTeamId);
                     b.putString("ACCESS_TOKEN", loginAccessToken);
+
                     intent.putExtras(b);
                     startActivity(intent);
                     finish();
@@ -119,7 +115,7 @@ public class LoginActivity extends AppCompatActivity {
 
                 } catch (Exception e) {
                     progressDialog.dismiss();
-                    Toast.makeText(getApplicationContext(),"Vérifie tes identifiants ", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Vérifie tes identifiants ", Toast.LENGTH_LONG).show();
 
                 }
             }
@@ -127,7 +123,6 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<LoginResponse> call, Throwable t) {
                 Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
-                Log.e("Coucou", t.getMessage());
 
             }
         });

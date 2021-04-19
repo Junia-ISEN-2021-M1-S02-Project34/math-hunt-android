@@ -13,6 +13,7 @@ import com.isen.math_hunt.entities.Enigma;
 import com.isen.math_hunt.entities.GeoGroup;
 import com.isen.math_hunt.model.EnigmaList;
 import com.isen.math_hunt.model.FullEnigma;
+import com.isen.math_hunt.model.GetGameById;
 import com.isen.math_hunt.model.HintId;
 import com.isen.math_hunt.model.HintList;
 import com.isen.math_hunt.model.ProgressionPost;
@@ -88,7 +89,7 @@ public interface MathHuntApiService {
     Call<Game> getAllGames();
 
     @GET("games/get/game/{id}")
-    Call<Game> getGameById(@Path("id") String id);
+    Call<GetGameById> getGameById(@Path("id") String id);
 
 
     //================================================================================

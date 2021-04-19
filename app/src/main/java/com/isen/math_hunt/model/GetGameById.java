@@ -1,28 +1,30 @@
-package com.isen.math_hunt.entities;
+package com.isen.math_hunt.model;
 
 import com.google.gson.annotations.SerializedName;
 
-import java.util.Date;
-
-public class Game {
-
+public class GetGameById {
+    @SerializedName("isStarted")
+    private boolean isStarted;
     @SerializedName("_id")
     private String _id;
     @SerializedName("name")
     private String name;
-    @SerializedName("startDate")
-    private Date startDate;
     @SerializedName("duration")
     private int duration;
-    @SerializedName("isStarted")
-    private boolean isStarted;
 
-    public Game(String _id, String name, Date startDate, int duration, boolean isStarted) {
+    public GetGameById(boolean isStarted, String _id, String name, int duration) {
+        this.isStarted = isStarted;
         this._id = _id;
         this.name = name;
-        this.startDate = startDate;
         this.duration = duration;
-        this.isStarted = isStarted;
+    }
+
+    public boolean isStarted() {
+        return isStarted;
+    }
+
+    public void setStarted(boolean started) {
+        isStarted = started;
     }
 
     public String get_id() {
@@ -41,27 +43,11 @@ public class Game {
         this.name = name;
     }
 
-    public Date getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(Date startDate) {
-        this.startDate = startDate;
-    }
-
     public int getDuration() {
         return duration;
     }
 
     public void setDuration(int duration) {
         this.duration = duration;
-    }
-
-    public boolean isStarted() {
-        return isStarted;
-    }
-
-    public void setStarted(boolean started) {
-        isStarted = started;
     }
 }
