@@ -187,6 +187,7 @@ public class EnigmaFragment extends Fragment implements RadioButtonDataTransfert
 
                                             updateTeamProgression(teamId, new ProgressionPost(currentEnigmaId, 0));
 
+
                                             dialog.cancel();
 
                                         }
@@ -262,20 +263,43 @@ public class EnigmaFragment extends Fragment implements RadioButtonDataTransfert
                     Team currentTeam = response.body();
                     Log.d("FINISH", "onResponse: " + currentTeam.getGameFinished());
 
-                    if (currentTeam.getGameFinished()) {
-                        Intent intent = new Intent(getContext(), SuccessActivity.class);
+                    currentEnigmaId = currentTeam.getCurrentEnigmaId();
+                    nextGeoGroup = currentTeam.getCurrentGeoGroupId();
+
+
+                    if(progressionPost.getEnigmaScore()==0){
+
+
+                        Intent intent;
+
+                        if (!currentGeoGroupId.equals(nextGeoGroup)) {
+                            intent = new Intent(getContext(), GeoGroupActivity.class);
+
+                        } else {
+                            intent = new Intent(getContext(), GameActivity.class);
+
+                        }
                         Bundle b = new Bundle();
                         b.putString("TEAM_ID", teamId);
                         intent.putExtras(b); //Put your id to your next Intent
                         startActivity(intent);
-                    } else {
-                        Log.d("TAG", "onResponse: " + response);
-                        currentEnigmaId = currentTeam.getCurrentEnigmaId();
-                        nextGeoGroup = currentTeam.getCurrentGeoGroupId();
+                    }else{
+                        if (currentTeam.getGameFinished()) {
+                            Intent intent = new Intent(getContext(), SuccessActivity.class);
+                            Bundle b = new Bundle();
+                            b.putString("TEAM_ID", teamId);
+                            intent.putExtras(b); //Put your id to your next Intent
+                            startActivity(intent);
+                        } else {
+                            Log.d("TAG", "onResponse: " + response);
+                            currentEnigmaId = currentTeam.getCurrentEnigmaId();
+                            nextGeoGroup = currentTeam.getCurrentGeoGroupId();
 
-
-
+                        }
                     }
+
+
+
 
 
                 } catch (Exception e) {
@@ -360,7 +384,7 @@ public class EnigmaFragment extends Fragment implements RadioButtonDataTransfert
                             public void onClick(DialogInterface dialog,
                                                 int which) {
 
-                                Intent intent;//Put your id to your next Intent
+                                Intent intent;
 
                                 if (!currentGeoGroupId.equals(nextGeoGroup)) {
                                     intent = new Intent(getContext(), GeoGroupActivity.class);
@@ -399,6 +423,7 @@ public class EnigmaFragment extends Fragment implements RadioButtonDataTransfert
                             @Override
                             public void onClick(DialogInterface dialog,
                                                 int which) {
+
 
                                 dialog.cancel();
                             }
