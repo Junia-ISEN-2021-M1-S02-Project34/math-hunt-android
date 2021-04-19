@@ -2,6 +2,7 @@ package com.isen.math_hunt.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -50,6 +51,8 @@ public class WaitingActivity extends AppCompatActivity {
                 @Override
                 public void onResponse(Call<Game> call, Response<Game> response) {
 
+                    DialogInterface progressDialog = null;
+                    boolean gameIsStarted;
                     try {
                         Game game = response.body();
                         Log.d("PROUT", "onResponse: " + response);
@@ -58,7 +61,7 @@ public class WaitingActivity extends AppCompatActivity {
 
                         Intent intent = new Intent(WaitingActivity.this, GameActivity.class);
                         Bundle b = new Bundle();
-                        b.putString("GAMESTART", gameIsStarted);
+                        b.putString("GAMESTART", String.valueOf(gameIsStarted));
                         intent.putExtras(b);
                         startActivity(intent);
                         finish();
