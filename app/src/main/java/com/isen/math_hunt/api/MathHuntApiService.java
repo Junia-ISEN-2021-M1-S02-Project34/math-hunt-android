@@ -11,6 +11,7 @@ import com.isen.math_hunt.entities.Team;
 import com.isen.math_hunt.interfaces.Constant;
 import com.isen.math_hunt.entities.Enigma;
 import com.isen.math_hunt.entities.GeoGroup;
+import com.isen.math_hunt.model.AttemptsNumber;
 import com.isen.math_hunt.model.EnigmaList;
 import com.isen.math_hunt.model.FullEnigma;
 import com.isen.math_hunt.model.HintId;
@@ -117,6 +118,10 @@ public interface MathHuntApiService {
     @Headers({"Content-Type: application/json"})
     @PUT("teams/update/team/used/hint/{id}")
     Call<Team> updateTeamUsedHint(@Path("id") String id, @Body HintId hintId);
+
+    @Headers({"Content-Type: application/json"})
+    @PUT("teams/update/team/attemptsNumber/{id}")
+    Call<Integer> updateAttemptsNumber(@Path("id") String id);
 
     //================================================================================
     // HintCall
