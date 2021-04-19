@@ -91,7 +91,6 @@ public class EnigmaFragment extends Fragment implements RadioButtonDataTransfert
 
     private AlertDialog alertDialog;
 
-
     private String teamId;
     private String currentEnigmaId;
     private String currentGeoGroupId;
@@ -99,7 +98,7 @@ public class EnigmaFragment extends Fragment implements RadioButtonDataTransfert
 
     private Number posX;
     private Number posY;
-    private String address;
+    private String addr;
 
 
     private CurrentEnigmaIdInterface currentEnigmaIdInterface = (CurrentEnigmaIdInterface) getActivity();
@@ -137,9 +136,7 @@ public class EnigmaFragment extends Fragment implements RadioButtonDataTransfert
         currentEnigmaId = getArguments().getString("CURRENT_ENIGMA_ID");
         currentGeoGroupId = getArguments().getString("CURRENT_GEOGROUP_ID");
 
-
-        alertDialog.show();
-
+        getLocation();
         getFullEnigmaById(currentEnigmaId);
 
         //FCT ALERT
@@ -211,7 +208,6 @@ public class EnigmaFragment extends Fragment implements RadioButtonDataTransfert
                     progressDialog.dismiss();
 
                     FullEnigma fullEnigma = response.body();
-                    getLocation();
                     posX = fullEnigma.getEnigma().getPositionX();
                     posY = fullEnigma.getEnigma().getPositionY();
 
@@ -384,25 +380,29 @@ public class EnigmaFragment extends Fragment implements RadioButtonDataTransfert
 
     @Override
     public void onLocationChanged(@NonNull Location location) {
+
         Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());
         List<Address> addresses = null;
         try {
             addresses = geocoder.getFromLocation(posX.doubleValue(), posY.doubleValue(), 1);
+            Log.d("oui","adresses : "+ addresses);
+
+            int dist = (int) distance(posX, location.getLatitude(), posY, location.getLongitude());
+            addr = addresses.get(0).getAddressLine(0);
+            Log.d("oui", "distance:" + dist);
+            Log.d("oui","addr : "+ addr);
+
+            if (dist < 5) {
+                alertDialog.dismiss();
+            }
+            while(dist > 5) {
+                alertDialog.show();
+            }
+
         } catch (IOException e) {
             e.printStackTrace();
-            Log.d("tag", "marche pas");
         }
-        int dist = (int) distance(posX, location.getLatitude(), posY, location.getLongitude());
-        address = addresses.get(0).getAddressLine(0);
-        Log.d("tag", "adresse : " + address);
-        Log.d("tag", "distance:" + dist);
 
-        if (dist > 50) {
-            alertDialog.show();
-        }
-        if (dist < 50) {
-            alertDialog.dismiss();
-        }
     }
 
 
@@ -429,8 +429,8 @@ public class EnigmaFragment extends Fragment implements RadioButtonDataTransfert
                 = new AlertDialog
                 .Builder(getContext());
 
-        builder.setTitle("Bravo vous avez réussi cette enigme");
-        builder.setMessage("vous avez gagné " + address);
+        builder.setTitle("Bravo!");
+        builder.setMessage("La prochaine énigme se trouve à l'adresse suivante : \n" + addr);
         builder.setCancelable(false);
         alertDialog = builder.create();
         return alertDialog;
