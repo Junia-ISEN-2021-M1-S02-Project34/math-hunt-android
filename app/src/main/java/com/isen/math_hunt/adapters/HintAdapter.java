@@ -28,6 +28,7 @@ import com.isen.math_hunt.R;
 import com.isen.math_hunt.activities.SuccessActivity;
 import com.isen.math_hunt.entities.Hint;
 import com.isen.math_hunt.entities.Team;
+import com.isen.math_hunt.fragments.EnigmaFragment;
 import com.isen.math_hunt.fragments.HintFragment;
 import com.isen.math_hunt.model.HintId;
 import com.isen.math_hunt.model.ProgressionPost;
@@ -129,6 +130,7 @@ public class HintAdapter extends ArrayAdapter<Hint> {
                                                 // When the user click yes button
                                                 // then app will close
                                                 //Todo : update la bdd
+
                                                 getHintButton.setText("Ouvrir");
                                                 getHintButton.setBackgroundColor(getContext().getColor(R.color.mathHuntTheme));
                                                 updateTeamUsedHint(teamId, new HintId(hintList.get(position).get_id()));

@@ -157,7 +157,6 @@ public class EnigmaFragment extends Fragment implements RadioButtonDataTransfert
                     newScore = oldScore + currentEnigmaScore;
                     Log.d("Score", "newScore: " + newScore);
 
-                    ProgressionPost progressionPost = new ProgressionPost(currentEnigmaId, newScore);
 
                     if (isMcq) {
                         userAnswer = currentMcqAnswerValue.toLowerCase();
@@ -167,6 +166,7 @@ public class EnigmaFragment extends Fragment implements RadioButtonDataTransfert
 
                     if (userAnswer.equals(enigmaAnswer.toLowerCase())) {
 
+                        ProgressionPost progressionPost = new ProgressionPost(currentEnigmaId, newScore);
                         updateTeamProgression(teamId, progressionPost);
                         AlertDialog alertDialog = createGoodAnswerDialog();
                         alertDialog.show();
@@ -218,6 +218,7 @@ public class EnigmaFragment extends Fragment implements RadioButtonDataTransfert
                                         public void onClick(DialogInterface dialog,
                                                             int which) {
 
+                                            ProgressionPost progressionPost = new ProgressionPost(currentEnigmaId, newScore);
                                             updateTeamProgression(teamId, new ProgressionPost(currentEnigmaId, 0));
 
 
@@ -369,6 +370,7 @@ public class EnigmaFragment extends Fragment implements RadioButtonDataTransfert
                 try {
                     Integer attemptsNumberResponse = response.body();
 
+                    updateScore(true,((1/8)*enigmaScoreValue));
                     attemptsNumber = attemptsNumberResponse.intValue();
                     Log.d("Attempts", "onResponse: " + attemptsNumber);
                     attemptsTextView.setText("Nombre d'essaies restant :" + (attemptsEnigmaValue - attemptsNumber));

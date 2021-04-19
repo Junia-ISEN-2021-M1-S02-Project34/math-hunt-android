@@ -41,6 +41,7 @@ public class GameActivity extends AppCompatActivity implements CurrentEnigmaIdIn
     private Team currentTeam;
     private FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
+    private int newScore;
     private ArrayList<String> usedHintsIds;
 
 
@@ -134,7 +135,6 @@ public class GameActivity extends AppCompatActivity implements CurrentEnigmaIdIn
                     currentEnigmaId = currentTeam.getCurrentEnigmaId();
                     currentGeoGroupId = currentTeam.getCurrentGeoGroupId();
 
-
                     List<Progression> progressionList = currentTeam.getProgression();
 
                     getAttemptsNumber(progressionList,currentGeoGroupId,currentEnigmaId);
@@ -193,6 +193,8 @@ public class GameActivity extends AppCompatActivity implements CurrentEnigmaIdIn
     public void updateAttemptsNumber(int attemptsNumber){
         this.attemptsNumber = attemptsNumber;
     }
+
+
 
 
 }
