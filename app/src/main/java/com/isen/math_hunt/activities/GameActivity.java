@@ -72,6 +72,7 @@ public class GameActivity extends AppCompatActivity implements CurrentEnigmaIdIn
                             enigmaBundle.putString("TEAM_ID", teamId);
                             enigmaBundle.putString("CURRENT_ENIGMA_ID", currentEnigmaId);
                             enigmaBundle.putString("CURRENT_GEOGROUP_ID", currentGeoGroupId);
+                            Log.d("attemptsNumber", "attemptsNumber: " + attemptsNumber);
                             enigmaBundle.putInt("ATTEMPTS_NUMBER", attemptsNumber);
 
                             Fragment enigmaFragment = new EnigmaFragment();
@@ -138,12 +139,12 @@ public class GameActivity extends AppCompatActivity implements CurrentEnigmaIdIn
 
                     getAttemptsNumber(progressionList,currentGeoGroupId,currentEnigmaId);
 
-                    Log.d("attemptsNumber", "attemptsNumber: " + attemptsNumber);
 
                     Bundle enigmaBundle = new Bundle();
                     enigmaBundle.putString("TEAM_ID", teamId);
                     enigmaBundle.putString("CURRENT_ENIGMA_ID", currentEnigmaId);
                     enigmaBundle.putString("CURRENT_GEOGROUP_ID", currentGeoGroupId);
+                    enigmaBundle.putInt("ATTEMPTS_NUMBER", attemptsNumber);
 
                     Fragment enigmaFragment = new EnigmaFragment();
                     enigmaFragment.setArguments(enigmaBundle);
@@ -188,4 +189,10 @@ public class GameActivity extends AppCompatActivity implements CurrentEnigmaIdIn
                 }
         );
     }
+
+    public void updateAttemptsNumber(int attemptsNumber){
+        this.attemptsNumber = attemptsNumber;
+    }
+
+
 }

@@ -27,7 +27,6 @@ import com.isen.math_hunt.entities.Proposition;
 import com.isen.math_hunt.entities.Team;
 import com.isen.math_hunt.interfaces.CurrentEnigmaIdInterface;
 import com.isen.math_hunt.interfaces.RadioButtonDataTransfertInterface;
-import com.isen.math_hunt.model.AttemptsNumber;
 import com.isen.math_hunt.model.FullEnigma;
 import com.isen.math_hunt.model.ProgressionPost;
 import com.isen.math_hunt.model.RetrofitClient;
@@ -74,6 +73,7 @@ public class EnigmaFragment extends Fragment implements RadioButtonDataTransfert
     private String currentGeoGroupId;
     private String nextGeoGroup;
 
+
     private CurrentEnigmaIdInterface currentEnigmaIdInterface = (CurrentEnigmaIdInterface) getActivity();
 
 
@@ -119,9 +119,8 @@ public class EnigmaFragment extends Fragment implements RadioButtonDataTransfert
         validateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("Attempts", "attemptsEnigmaValue: " + attemptsEnigmaValue);
 
-                if (attemptsNumber != attemptsEnigmaValue) {
+                if (attemptsNumber != attemptsEnigmaValue-1) {
                     newScore = oldScore + currentEnigmaScore;
                     Log.d("Score", "newScore: " + newScore);
 
@@ -136,6 +135,8 @@ public class EnigmaFragment extends Fragment implements RadioButtonDataTransfert
                     if (userAnswer.equals(enigmaAnswer.toLowerCase())) {
 
                         updateTeamProgression(teamId, progressionPost);
+                        AlertDialog alertDialog = createGoodAnswerDialog();
+                        alertDialog.show();
 
 
                     } else if (userAnswer.isEmpty()) {
@@ -164,8 +165,6 @@ public class EnigmaFragment extends Fragment implements RadioButtonDataTransfert
                         alertDialog.show();
                     } else {
                         updateAttemptsNumber(teamId);
-                        Log.d("Attempts", "attemptsEnigmaValue: " + attemptsEnigmaValue);
-
                     }
 
                 } else {
@@ -187,6 +186,7 @@ public class EnigmaFragment extends Fragment implements RadioButtonDataTransfert
                                                             int which) {
 
                                             updateTeamProgression(teamId, new ProgressionPost(currentEnigmaId, 0));
+
                                             dialog.cancel();
 
                                         }
@@ -274,8 +274,7 @@ public class EnigmaFragment extends Fragment implements RadioButtonDataTransfert
                         nextGeoGroup = currentTeam.getCurrentGeoGroupId();
 
 
-                        AlertDialog alertDialog = createGoodAnswerDialog();
-                        alertDialog.show();
+
                     }
 
 
@@ -310,6 +309,9 @@ public class EnigmaFragment extends Fragment implements RadioButtonDataTransfert
                     attemptsTextView.setText("Nombre d'essaies restant :" +  (attemptsEnigmaValue - attemptsNumber));
                     AlertDialog alertDialog = createBadAnswerDialog();
                     alertDialog.show();
+                    Log.d("attemptsNumber", "attemptsNumberEnigma: " + attemptsNumber);
+
+                    ((GameActivity) getActivity()).updateAttemptsNumber(attemptsNumber);
 
 
                 } catch (Exception e) {
@@ -397,8 +399,7 @@ public class EnigmaFragment extends Fragment implements RadioButtonDataTransfert
                             @Override
                             public void onClick(DialogInterface dialog,
                                                 int which) {
-                                // When the user click yes button
-                                // then app will close
+
                                 dialog.cancel();
                             }
                         });
