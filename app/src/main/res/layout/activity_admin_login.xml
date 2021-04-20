@@ -25,7 +25,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="10dp"
-        android:text="@string/admin"
+        android:text="@string/retour"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -38,7 +38,7 @@
         android:layout_marginTop="200dp"
         android:layout_marginEnd="40dp"
         android:background="@color/white"
-        android:hint="@string/idTeam"
+        android:hint="@string/adminid"
         app:boxStrokeColor="#70000000"
         app:hintTextColor="#70000000"
         app:layout_constraintEnd_toEndOf="parent"

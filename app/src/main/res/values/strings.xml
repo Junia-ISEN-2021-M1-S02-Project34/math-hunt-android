@@ -60,5 +60,7 @@
     <string name="valider">Valider</string>
     <string name="hintTextr">Besoin d’un coup de main? \n Mon grand-père a caché des indices dans ses carnets mais cela vous coûtera quelques clés…</string>
     <string name="progressionText">Alors où en êtes vous? \n J’ai noté pour vous votre progression dans cette chasse aux énigmes.</string>
+    <string name="adminid">AdminId</string>
+    <string name="retour">Retour</string>
 
 </resources>
