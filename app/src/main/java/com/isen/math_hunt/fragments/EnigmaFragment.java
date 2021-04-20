@@ -15,7 +15,6 @@ import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -31,11 +30,8 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.isen.math_hunt.R;
 import com.isen.math_hunt.activities.GameActivity;
 import com.isen.math_hunt.activities.GeoGroupActivity;
-import com.isen.math_hunt.activities.LoginActivity;
 import com.isen.math_hunt.activities.SuccessActivity;
-import com.isen.math_hunt.activities.WaitingActivity;
 import com.isen.math_hunt.adapters.QcmAdapter;
-import com.isen.math_hunt.entities.Progression;
 import com.isen.math_hunt.entities.Proposition;
 import com.isen.math_hunt.entities.Team;
 import com.isen.math_hunt.interfaces.CurrentEnigmaIdInterface;
@@ -43,6 +39,7 @@ import com.isen.math_hunt.interfaces.RadioButtonDataTransfertInterface;
 import com.isen.math_hunt.model.FullEnigma;
 import com.isen.math_hunt.model.ProgressionPost;
 import com.isen.math_hunt.model.RetrofitClient;
+import com.squareup.picasso.Picasso;
 
 import android.location.Address;
 import android.location.Geocoder;
@@ -52,6 +49,7 @@ import android.location.LocationManager;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
@@ -88,13 +86,19 @@ public class EnigmaFragment extends Fragment implements RadioButtonDataTransfert
     private int oldScore;
     private int newScore;
     private int currentEnigmaScore;
+    private TextView attemptsTextView;
 
+    private int attemptsEnigmaValue;
+    private int attemptsNumber;
     private AlertDialog alertDialog;
+
 
     private String teamId;
     private String currentEnigmaId;
     private String currentGeoGroupId;
     private String nextGeoGroup;
+
+    private ImageView enigmaImageView;
 
     private Number posX;
     private Number posY;
@@ -127,71 +131,103 @@ public class EnigmaFragment extends Fragment implements RadioButtonDataTransfert
         descriptionEnigma = (TextView) mView.findViewById(R.id.enigmaDescriptionTextField);
         questionTextView = (TextView) mView.findViewById(R.id.questionTextField);
         validateButton = (Button) mView.findViewById(R.id.validateButton);
+        attemptsTextView = (TextView) mView.findViewById(R.id.attemptsTextView);
+        enigmaImageView = (ImageView) mView.findViewById(R.id.enigmaImageView);
+
         enigmaListView.setVisibility(View.GONE);
         answerTextField.setVisibility(View.GONE);
-
-        //createDialog().show();
+        enigmaImageView.setVisibility(View.GONE);
 
         teamId = getArguments().getString("TEAM_ID");
         currentEnigmaId = getArguments().getString("CURRENT_ENIGMA_ID");
         currentGeoGroupId = getArguments().getString("CURRENT_GEOGROUP_ID");
+        attemptsNumber = getArguments().getInt("ATTEMPTS_NUMBER");
 
         getLocation();
         getFullEnigmaById(currentEnigmaId);
-        //FCT ALERT
-        //alertDialog.show();
 
         validateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                newScore = oldScore + currentEnigmaScore;
+                if (attemptsNumber != attemptsEnigmaValue - 1) {
+                    newScore = oldScore + currentEnigmaScore;
+                    Log.d("Score", "newScore: " + newScore);
 
-                ProgressionPost progressionPost = new ProgressionPost(currentEnigmaId, newScore);
+                    ProgressionPost progressionPost = new ProgressionPost(currentEnigmaId, newScore);
 
-                if (isMcq) {
-                    userAnswer = currentMcqAnswerValue.toLowerCase();
+                    if (isMcq) {
+                        userAnswer = currentMcqAnswerValue.toLowerCase();
 
-                } else
-                    userAnswer = answerTextField.getEditText().getText().toString().toLowerCase();
+                    } else
+                        userAnswer = answerTextField.getEditText().getText().toString().toLowerCase();
 
-                if (userAnswer.equals(enigmaAnswer.toLowerCase())) {
+                    if (userAnswer.equals(enigmaAnswer.toLowerCase())) {
 
-                    updateTeamProgression(teamId, progressionPost);
+                        updateTeamProgression(teamId, progressionPost);
+                        AlertDialog alertDialog = createGoodAnswerDialog();
+                        alertDialog.show();
 
 
-                } else if (userAnswer.isEmpty()) {
+                    } else if (userAnswer.isEmpty()) {
+                        AlertDialog.Builder builder
+                                = new AlertDialog
+                                .Builder(getActivity());
+
+                        builder.setTitle("Oups ...");
+                        builder.setMessage("Il semble que ta réponse est vide !");
+                        builder.setCancelable(false);
+                        builder
+                                .setPositiveButton(
+                                        "Réésayer",
+                                        new DialogInterface
+                                                .OnClickListener() {
+
+                                            @Override
+                                            public void onClick(DialogInterface dialog,
+                                                                int which) {
+                                                // When the user click yes button
+                                                // then app will close
+                                                dialog.cancel();
+                                            }
+                                        });
+                        AlertDialog alertDialog = builder.create();
+                        alertDialog.show();
+                    } else {
+                        updateAttemptsNumber(teamId);
+                    }
+
+                } else {
                     AlertDialog.Builder builder
                             = new AlertDialog
                             .Builder(getActivity());
 
-                    builder.setTitle("Oups ...");
-                    builder.setMessage("Il semble que ta réponse est vide !");
+                    builder.setTitle("Mince vous n'avez plus d'essai disponible");
+                    builder.setMessage("Passer à l'énigme suivante ");
                     builder.setCancelable(false);
                     builder
                             .setPositiveButton(
-                                    "Réésayer",
+                                    "Continuer",
                                     new DialogInterface
                                             .OnClickListener() {
 
                                         @Override
                                         public void onClick(DialogInterface dialog,
                                                             int which) {
-                                            // When the user click yes button
-                                            // then app will close
+
+                                            updateTeamProgression(teamId, new ProgressionPost(currentEnigmaId, 0));
+
+
                                             dialog.cancel();
+
                                         }
                                     });
                     AlertDialog alertDialog = builder.create();
-                    alertDialog.show();
-                } else {
-                    AlertDialog alertDialog = createBadAnswerDialog();
                     alertDialog.show();
                 }
 
             }
         });
-
 
         return mView;
     }
@@ -216,14 +252,27 @@ public class EnigmaFragment extends Fragment implements RadioButtonDataTransfert
                     descriptionEnigma.setText(fullEnigma.getEnigma().getDescription());
                     enigmaAnswer = fullEnigma.getAnswer().getSolution();
                     currentEnigmaScore = fullEnigma.getEnigma().getScoreValue();
+                    attemptsTextView.setText("Nombre d'essaies restant :" + (Integer.toString(fullEnigma.getAnswer().getAttemptsNumber() - attemptsNumber)));
+                    attemptsEnigmaValue = fullEnigma.getAnswer().getAttemptsNumber();
+
+
                     if (fullEnigma.getAnswer().isMcq()) {
+                        if (fullEnigma.getEnigma().getPictureUrl() != null) {
+                            Picasso.with(getContext()).load(fullEnigma.getEnigma().getPictureUrl()).fit().into(enigmaImageView);
+                            enigmaImageView.setVisibility(View.VISIBLE);
+                        }
                         enigmaListView.setVisibility(View.VISIBLE);
                         propositionList = fullEnigma.getProposition();
                         propositionList.add(new Proposition(fullEnigma.getAnswer().getSolution()));
+                        Collections.shuffle(propositionList);
                         qcmAdapter = new QcmAdapter(getActivity(), propositionList, getActivity(), EnigmaFragment.this);
                         enigmaListView.setAdapter(qcmAdapter);
                         isMcq = true;
                     } else {
+                        if (fullEnigma.getEnigma().getPictureUrl() != null) {
+                            Picasso.with(getContext()).load(fullEnigma.getEnigma().getPictureUrl()).fit().into(enigmaImageView);
+                            enigmaImageView.setVisibility(View.VISIBLE);
+                        }
                         answerTextField.setVisibility(View.VISIBLE);
 
                     }
@@ -232,6 +281,7 @@ public class EnigmaFragment extends Fragment implements RadioButtonDataTransfert
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+
 
             }
 
@@ -255,19 +305,39 @@ public class EnigmaFragment extends Fragment implements RadioButtonDataTransfert
                 try {
                     Team currentTeam = response.body();
 
-                    if (currentTeam.getGameFinished()) {
-                        Intent intent = new Intent(getContext(), SuccessActivity.class);
+                    currentEnigmaId = currentTeam.getCurrentEnigmaId();
+                    nextGeoGroup = currentTeam.getCurrentGeoGroupId();
+
+
+                    if (progressionPost.getEnigmaScore() == 0) {
+
+
+                        Intent intent;
+
+                        if (!currentGeoGroupId.equals(nextGeoGroup)) {
+                            intent = new Intent(getContext(), GeoGroupActivity.class);
+
+                        } else {
+                            intent = new Intent(getContext(), GameActivity.class);
+
+                        }
                         Bundle b = new Bundle();
                         b.putString("TEAM_ID", teamId);
                         intent.putExtras(b); //Put your id to your next Intent
                         startActivity(intent);
                     } else {
-                        Log.d("TAG", "onResponse: " + response);
-                        currentEnigmaId = currentTeam.getCurrentEnigmaId();
-                        nextGeoGroup = currentTeam.getCurrentGeoGroupId();
+                        if (currentTeam.getGameFinished()) {
+                            Intent intent = new Intent(getContext(), SuccessActivity.class);
+                            Bundle b = new Bundle();
+                            b.putString("TEAM_ID", teamId);
+                            intent.putExtras(b); //Put your id to your next Intent
+                            startActivity(intent);
+                        } else {
+                            Log.d("TAG", "onResponse: " + response);
+                            currentEnigmaId = currentTeam.getCurrentEnigmaId();
+                            nextGeoGroup = currentTeam.getCurrentGeoGroupId();
 
-                        AlertDialog alertDialog = createGoodAnswerDialog();
-                        alertDialog.show();
+                        }
                     }
 
                 } catch (Exception e) {
@@ -278,6 +348,42 @@ public class EnigmaFragment extends Fragment implements RadioButtonDataTransfert
 
             @Override
             public void onFailure(Call<Team> call, Throwable t) {
+                Toast.makeText(getActivity(), t.getMessage(), Toast.LENGTH_SHORT).show();
+                Log.e("Prout", t.getMessage());
+
+            }
+        });
+    }
+
+    private void updateAttemptsNumber(String id) {
+
+
+        Call<Integer> call = RetrofitClient.getInstance().getMathHuntApiService().updateAttemptsNumber(id);
+        call.enqueue(new Callback<Integer>() {
+            @Override
+            public void onResponse(Call<Integer> call, Response<Integer> response) {
+
+                try {
+                    Integer attemptsNumberResponse = response.body();
+
+                    attemptsNumber = attemptsNumberResponse.intValue();
+                    Log.d("Attempts", "onResponse: " + attemptsNumber);
+                    attemptsTextView.setText("Nombre d'essaies restant :" + (attemptsEnigmaValue - attemptsNumber));
+                    AlertDialog alertDialog = createBadAnswerDialog();
+                    alertDialog.show();
+                    Log.d("attemptsNumber", "attemptsNumberEnigma: " + attemptsNumber);
+
+                    ((GameActivity) getActivity()).updateAttemptsNumber(attemptsNumber);
+
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<Integer> call, Throwable t) {
                 Toast.makeText(getActivity(), t.getMessage(), Toast.LENGTH_SHORT).show();
                 Log.e("Prout", t.getMessage());
 
@@ -315,9 +421,7 @@ public class EnigmaFragment extends Fragment implements RadioButtonDataTransfert
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
 
-                                Intent intent;//Put your id to your next Intent
-                                Log.d("coucou", "onClick: " + currentGeoGroupId);
-                                Log.d("coucou", "onClick: " + nextGeoGroup);
+                                Intent intent;
 
                                 if (!currentGeoGroupId.equals(nextGeoGroup)) {
                                     intent = new Intent(getContext(), GeoGroupActivity.class);
@@ -344,17 +448,18 @@ public class EnigmaFragment extends Fragment implements RadioButtonDataTransfert
                 = new AlertDialog
                 .Builder(getActivity());
 
-        builder.setTitle("Et mince vous êtes nul");
-        builder.setMessage("Vous avez raté cette enigme");
+        builder.setTitle("Mince mauvaise réponse");
+        builder.setMessage("Il vous reste " + (attemptsEnigmaValue - attemptsNumber) + " essais");
         builder.setCancelable(false);
         builder
                 .setPositiveButton(
                         "Continuer", new DialogInterface.OnClickListener() {
 
                             @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                // When the user click yes button
-                                // then app will close
+                            public void onClick(DialogInterface dialog,
+                                                int which) {
+
+
                                 dialog.cancel();
                             }
                         });

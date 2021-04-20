@@ -7,6 +7,21 @@
     android:layout_height="match_parent"
     android:background="@drawable/fondapp">
 
+    <ImageView
+        android:id="@+id/enigmaImageView"
+        android:layout_width="0dp"
+        android:layout_height="140dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="50dp"
+        android:contentDescription="TODO"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:background="@color/white"
+
+        app:layout_constraintTop_toBottomOf="@+id/scrollView2"
+        tools:src="@tools:sample/avatars" />
+
     <TextView
         android:id="@+id/scoreTextField"
         android:layout_width="wrap_content"
@@ -23,6 +38,7 @@
         android:layout_marginStart="80dp"
         android:layout_marginTop="30dp"
         android:layout_marginEnd="80dp"
+        android:background="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/scoreTextField" />
@@ -30,7 +46,7 @@
     <ScrollView
         android:id="@+id/scrollView2"
         android:layout_width="match_parent"
-        android:layout_height="120dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="10dp"
@@ -54,14 +70,14 @@
     <ScrollView
         android:id="@+id/scrollView3"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="100dp"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/scrollView2">
+        app:layout_constraintTop_toBottomOf="@+id/enigmaImageView">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -69,10 +85,10 @@
             android:orientation="vertical">
 
             <TextView
-                android:background="@color/white"
                 android:id="@+id/questionTextField"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:background="@color/white" />
         </LinearLayout>
     </ScrollView>
 
@@ -95,16 +111,17 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
-        android:hint="@string/AnswerTextFieldHint"
         android:background="@color/white"
+        android:hint="@string/AnswerTextFieldHint"
         app:boxStrokeColor="#70000000"
         app:hintTextColor="#70000000"
-        app:layout_constraintBottom_toTopOf="@+id/validateButton"
+        app:layout_constraintBottom_toTopOf="@+id/attemptsTextView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/scrollView3">
 
         <com.google.android.material.textfield.TextInputEditText
+            style="@style/Theme.Mathhunt2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
@@ -120,7 +137,7 @@
         android:layout_marginBottom="20dp"
         app:boxStrokeColor="#70000000"
         app:hintTextColor="#70000000"
-        app:layout_constraintBottom_toTopOf="@+id/validateButton"
+        app:layout_constraintBottom_toTopOf="@+id/attemptsTextView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/scrollView3" />
@@ -134,6 +151,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/logoapp" />
+
+    <TextView
+        android:id="@+id/attemptsTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/validateButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:background="#D3D3D3" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

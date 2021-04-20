@@ -7,39 +7,43 @@ import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.Drawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.isen.math_hunt.R;
-import com.isen.math_hunt.entities.Enigma;
 import com.isen.math_hunt.entities.GeoGroup;
 import com.isen.math_hunt.entities.Team;
 import com.isen.math_hunt.model.RetrofitClient;
+import com.squareup.picasso.Picasso;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 
+import java.io.InputStream;
+import java.net.URL;
 import java.util.List;
 import java.util.Locale;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+
 
 public class GeoGroupActivity extends AppCompatActivity implements LocationListener {
 
@@ -47,49 +51,46 @@ public class GeoGroupActivity extends AppCompatActivity implements LocationListe
     private static final long LOCATION_REFRESH_TIME = 5000;
     private static final float LOCATION_REFRESH_DISTANCE = 5;
 
-    private double latIsen = 50.63418574831333;
-    private double lonIsen = 3.048819125188862;
-
-    private double latFlandres = 50.636597029006495;
-    private double lonFlandres = 3.0694448466392066;
-
     private Number geoGroupPosX; // latitude
     private Number geoGroupPosY; // longitude
     private Number geoGroupRadius; // radius en metres
 
-    private int dist; // en metres
-
 
     //private Button button_location;
     private TextView text_location;
-    private LocationManager locationManager;
     private Button geoGroupContinueButton;
 
+    private ImageView geoGroupImageView;
+
     private String teamId;
-    private String gameId;
+    private String token;
+
+    private String currentGeoGroupId;
+
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_geo_groupe);
 
+        progressDialog = new ProgressDialog(GeoGroupActivity.this);
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressDialog.show();
+
+
         geoGroupContinueButton = findViewById(R.id.geoGroupContinueButton);
         text_location = findViewById(R.id.text_location);
         //button_location = findViewById(R.id.button_location);
 
-        if (ContextCompat.checkSelfPermission(GeoGroupActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(GeoGroupActivity.this, new String[]{
-                    Manifest.permission.ACCESS_FINE_LOCATION
-            }, 100);
-        }
+        geoGroupImageView = (ImageView) findViewById(R.id.geoGroupImageView);
 
         getLocation();
-        getGeoGroupById("607d758eee44240016d4db4f");
+
 
         Bundle b = getIntent().getExtras();
         teamId = b.getString("TEAM_ID");
-        gameId = b.getString("GAME_ID");
+        token = b.getString("ACCESS_TOKEN");
 
         getTeamById(teamId);
         geoGroupContinueButton.setOnClickListener(new View.OnClickListener() {
@@ -98,7 +99,7 @@ public class GeoGroupActivity extends AppCompatActivity implements LocationListe
                 Intent intent = new Intent(GeoGroupActivity.this, GameActivity.class);
                 Bundle b = new Bundle();
                 b.putString("TEAM_ID", teamId);
-                b.putString("GAME_ID", gameId);
+                b.putString("ACCESS_TOKEN", token);
                 intent.putExtras(b); //Put your id to your next Intent
                 startActivity(intent);
                 finish();
@@ -115,9 +116,9 @@ public class GeoGroupActivity extends AppCompatActivity implements LocationListe
 
                 try {
                     Team team = response.body();
-                    Log.d("TAG", "onResponse: " + team.getUsername());
-                    teamId = team.get_id();
+                    currentGeoGroupId = team.getCurrentGeoGroupId();
 
+                    getGeoGroupById(currentGeoGroupId);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -126,7 +127,7 @@ public class GeoGroupActivity extends AppCompatActivity implements LocationListe
 
             @Override
             public void onFailure(Call<Team> call, Throwable t) {
-                Log.d("TAG", t.getMessage());
+                Log.d("onFailure", t.getMessage());
             }
         });
     }
@@ -138,7 +139,8 @@ public class GeoGroupActivity extends AppCompatActivity implements LocationListe
 
     @Override
     public void onLocationChanged(Location location) {
-        dist = (int) distance(geoGroupPosX, location.getLatitude(), geoGroupPosY, location.getLongitude());
+        // en metres
+        int dist = (int) distance(geoGroupPosX, location.getLatitude(), geoGroupPosY, location.getLongitude());
         if (dist > 2000) { // changer la valeur par geoGroupRadius
             geoGroupContinueButton.setEnabled(false);
             geoGroupContinueButton.setText("Encore un peu de marche!");
@@ -149,10 +151,12 @@ public class GeoGroupActivity extends AppCompatActivity implements LocationListe
         }
         //Toast.makeText(this, "vous êtes à : " + dist + "m", Toast.LENGTH_SHORT).show();
         text_location.setText("vous êtes à " + dist + "m");
+        Log.d("tag","heho la");
         try {
             Geocoder geocoder = new Geocoder(GeoGroupActivity.this, Locale.getDefault());
             List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
             String address = addresses.get(0).getAddressLine(0);
+            Log.d("tag",address);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -192,7 +196,7 @@ public class GeoGroupActivity extends AppCompatActivity implements LocationListe
     private void getLocation() {
 
         try {
-            locationManager = (LocationManager) getApplicationContext().getSystemService(LOCATION_SERVICE);
+            LocationManager locationManager = (LocationManager) getApplicationContext().getSystemService(LOCATION_SERVICE);
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, LOCATION_REFRESH_TIME, LOCATION_REFRESH_DISTANCE, GeoGroupActivity.this);
 
         } catch (Exception e) {
@@ -207,11 +211,19 @@ public class GeoGroupActivity extends AppCompatActivity implements LocationListe
             public void onResponse(Call<GeoGroup> call, Response<GeoGroup> response) {
 
                 try {
+                    progressDialog.dismiss();
                     GeoGroup geoGroup = response.body();
 
                     geoGroupPosX = geoGroup.getPositionX();
                     geoGroupPosY = geoGroup.getPositionY();
-                    geoGroupRadius = geoGroup.getRadius();
+
+                    Picasso.with(GeoGroupActivity.this).load(geoGroup.getPictureUrl()).fit().into(geoGroupImageView);
+
+
+                    //geoGroupImageView.setImageDrawable(LoadImageFromWebOperations(geoGroup.getPictureUrl()));
+                    //Log.d("IMAGE", "onResponse: " + geoGroup.getPictureUrl());
+
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -225,6 +237,19 @@ public class GeoGroupActivity extends AppCompatActivity implements LocationListe
             }
         });
     }
+
+    public static Drawable LoadImageFromWebOperations(String url) {
+        try {
+            InputStream is = (InputStream) new URL(url).getContent();
+            Drawable d = Drawable.createFromStream(is, "src name");
+            return d;
+        } catch (Exception e) {
+            return null;
+        }
+
+
+    }
+
 
 
 }

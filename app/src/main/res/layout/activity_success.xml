@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
-        android:text="Félicitation, vous avez terminer le jeu !"
+        android:text="Félicitation, vous avez terminé le jeu !"
         app:layout_constraintBottom_toTopOf="@+id/checklogo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

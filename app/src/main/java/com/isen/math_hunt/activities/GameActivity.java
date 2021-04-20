@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -34,6 +33,8 @@ public class GameActivity extends AppCompatActivity implements CurrentEnigmaIdIn
     private String teamId;
     private String gameId;
 
+    private int attemptsNumber;
+
     private String currentEnigmaId;
     private String currentGeoGroupId;
 
@@ -50,9 +51,10 @@ public class GameActivity extends AppCompatActivity implements CurrentEnigmaIdIn
 
         Bundle b = getIntent().getExtras();
         teamId = b.getString("TEAM_ID");
-        gameId = b.getString("GAME_ID");
+        gameId = b.getString("ACCESS_TOKEN");
 
         getTeamById(teamId);
+
 
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(navigationItemSelectedListener);
@@ -70,6 +72,8 @@ public class GameActivity extends AppCompatActivity implements CurrentEnigmaIdIn
                             enigmaBundle.putString("TEAM_ID", teamId);
                             enigmaBundle.putString("CURRENT_ENIGMA_ID", currentEnigmaId);
                             enigmaBundle.putString("CURRENT_GEOGROUP_ID", currentGeoGroupId);
+                            Log.d("attemptsNumber", "attemptsNumber: " + attemptsNumber);
+                            enigmaBundle.putInt("ATTEMPTS_NUMBER", attemptsNumber);
 
                             Fragment enigmaFragment = new EnigmaFragment();
                             enigmaFragment.setArguments(enigmaBundle);
@@ -121,20 +125,26 @@ public class GameActivity extends AppCompatActivity implements CurrentEnigmaIdIn
         Call<Team> call = RetrofitClient.getInstance().getMathHuntApiService().getTeamById(id);
         call.enqueue(new Callback<Team>() {
             List<EnigmasProgression> enigmasProgression;
+
             @Override
             public void onResponse(Call<Team> call, Response<Team> response) {
 
                 try {
-                     currentTeam = response.body();
+                    currentTeam = response.body();
                     currentEnigmaId = currentTeam.getCurrentEnigmaId();
                     currentGeoGroupId = currentTeam.getCurrentGeoGroupId();
 
-                    Log.d("TAG", "onResponse: " + currentEnigmaId);
+
+                    List<Progression> progressionList = currentTeam.getProgression();
+
+                    getAttemptsNumber(progressionList,currentGeoGroupId,currentEnigmaId);
+
 
                     Bundle enigmaBundle = new Bundle();
                     enigmaBundle.putString("TEAM_ID", teamId);
                     enigmaBundle.putString("CURRENT_ENIGMA_ID", currentEnigmaId);
                     enigmaBundle.putString("CURRENT_GEOGROUP_ID", currentGeoGroupId);
+                    enigmaBundle.putInt("ATTEMPTS_NUMBER", attemptsNumber);
 
                     Fragment enigmaFragment = new EnigmaFragment();
                     enigmaFragment.setArguments(enigmaBundle);
@@ -164,4 +174,25 @@ public class GameActivity extends AppCompatActivity implements CurrentEnigmaIdIn
 
 
     }
+
+
+    public void getAttemptsNumber(final List<Progression> progressionList, final String geoGroupId, final String enigmaId) {
+        progressionList.stream().filter(progression -> progression.getGeoGroupId().equals(geoGroupId)).forEach(
+                progression -> {
+                    List<EnigmasProgression> enigmasProgressionList = progression.getEnigmasProgression();
+
+                    enigmasProgressionList.stream().filter(enigmasProgression -> enigmasProgression.getEnigmaId().equals(enigmaId)).forEach(
+                            enigmasProgression -> {
+                                attemptsNumber = enigmasProgression.getAttemptsNumber();
+                            }
+                    );
+                }
+        );
+    }
+
+    public void updateAttemptsNumber(int attemptsNumber){
+        this.attemptsNumber = attemptsNumber;
+    }
+
+
 }
