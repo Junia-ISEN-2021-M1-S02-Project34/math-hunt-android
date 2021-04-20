@@ -9,7 +9,6 @@ import android.app.ProgressDialog;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.content.Intent;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -26,12 +25,10 @@ import retrofit2.Response;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private String teamId = "6079826ea887560016c30dd3";
-    private String gameId = "6059e4165375a204b13e1e8a";
     private ProgressDialog progressDialog;
 
-    String loginTeamId;
-    String loginAccessToken;
+    private String loginTeamId;
+    private String loginAccessToken;
 
 
     @Override
@@ -79,7 +76,7 @@ public class LoginActivity extends AppCompatActivity {
                     progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
                     progressDialog.show();
 
-                    loginTeam(login);
+                    signInTeam(login);
                 }
 
             }
@@ -87,8 +84,8 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
-    private void loginTeam(Login login) {
-        Call<LoginResponse> call = RetrofitClient.getInstance().getMathHuntApiService().loginTeam(login);
+    private void signInTeam(Login login) {
+        Call<LoginResponse> call = RetrofitClient.getInstance().getMathHuntApiService().signInTeam(login);
         call.enqueue(new Callback<LoginResponse>() {
             @Override
             public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {

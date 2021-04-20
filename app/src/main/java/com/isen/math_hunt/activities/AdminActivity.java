@@ -1,12 +1,14 @@
 package com.isen.math_hunt.activities;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -14,6 +16,8 @@ import com.isen.math_hunt.R;
 import com.isen.math_hunt.adapters.SpinnerAdapter;
 import com.isen.math_hunt.entities.EnigmasProgression;
 import com.isen.math_hunt.entities.Game;
+import com.isen.math_hunt.entities.Login;
+import com.isen.math_hunt.entities.LoginResponse;
 import com.isen.math_hunt.entities.Progression;
 import com.isen.math_hunt.model.GetAllGames;
 import com.isen.math_hunt.model.RetrofitClient;
@@ -59,7 +63,7 @@ public class AdminActivity extends AppCompatActivity implements AdapterView.OnIt
         adminStartButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                startGame(currentChoice);
             }
         });
 
@@ -113,6 +117,12 @@ public class AdminActivity extends AppCompatActivity implements AdapterView.OnIt
                     gameName.add(game.getName());
                     gamesId.add(game.get_id());
                 });
+    }
+
+    private void startGame(String id) {
+        Call<?> call = RetrofitClient.getInstance().getMathHuntApiService().startGame(id, token); }
+
+
     }
 
 }
