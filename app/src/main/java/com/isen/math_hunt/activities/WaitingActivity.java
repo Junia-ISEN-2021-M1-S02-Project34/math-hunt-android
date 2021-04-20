@@ -115,8 +115,6 @@ public class WaitingActivity extends AppCompatActivity {
 
                     getGameById = response.body();
 
-                    Log.d("PROUT", "onResponse: " + getGameById.isStarted());
-
                     if (getGameById.isStarted()) {
                         launchButton.setEnabled(true);
                         launchButton.setClickable(true);
