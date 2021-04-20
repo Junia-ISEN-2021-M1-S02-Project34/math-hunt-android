@@ -5,14 +5,10 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -43,9 +39,9 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         final TextInputLayout userTextField = findViewById(R.id.userIdTextField);
-        final TextInputLayout passwordTextField = findViewById(R.id.passewordTextField);
-        final Button loginButton = findViewById(R.id.loginButton);
-        final Button adminButton = findViewById(R.id.adminButton);
+        final TextInputLayout passwordTextField = findViewById(R.id.passwordTextField);
+        final Button loginButton = findViewById(R.id.AdminLoginButton);
+        final Button adminButton = findViewById(R.id.backButton);
 
         if (ContextCompat.checkSelfPermission(LoginActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -57,7 +53,7 @@ public class LoginActivity extends AppCompatActivity {
         adminButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(LoginActivity.this, AdminActivity.class);
+                Intent intent = new Intent(LoginActivity.this, AdminLoginActivity.class);
                 Bundle b = new Bundle();
                 intent.putExtras(b); //Put your id to your next Intent
                 startActivity(intent);

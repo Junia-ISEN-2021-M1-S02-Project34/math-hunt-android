@@ -14,6 +14,7 @@ import com.isen.math_hunt.entities.GeoGroup;
 import com.isen.math_hunt.model.AttemptsNumber;
 import com.isen.math_hunt.model.EnigmaList;
 import com.isen.math_hunt.model.FullEnigma;
+import com.isen.math_hunt.model.GetAllGames;
 import com.isen.math_hunt.model.GetGameById;
 import com.isen.math_hunt.model.HintId;
 import com.isen.math_hunt.model.HintList;
@@ -87,10 +88,14 @@ public interface MathHuntApiService {
     //================================================================================
 
     @GET("games/get/games")
-    Call<Game> getAllGames();
+    Call<GetAllGames> getAllGames();
 
     @GET("games/get/game/{id}")
     Call<GetGameById> getGameById(@Path("id") String id);
+
+    @Headers({"Content-Type: application/json"})
+    @PUT("start/game/{id}")
+    Call<Game> startGame(@Path("id") String id, @Body Game body);
 
 
     //================================================================================
@@ -107,9 +112,7 @@ public interface MathHuntApiService {
     @GET("teams/get/teams/game/{id}")
     Call<Team> getTeamsByGameId(@Path("id") String id);
 
-    @Headers({"Content-Type: application/json"})
-    @PUT("start/game/{id}")
-    Call<Game> startGame(@Path("id") String id, @Body Game body);
+
 
     @Headers({"Content-Type: application/json"})
     @PUT("teams/update/team/progression/{id}")

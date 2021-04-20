@@ -10,8 +10,7 @@ public class Game {
     private String _id;
     @SerializedName("name")
     private String name;
-    @SerializedName("startDate")
-    private Date startDate;
+
     @SerializedName("duration")
     private int duration;
     @SerializedName("isStarted")
@@ -20,7 +19,6 @@ public class Game {
     public Game(String _id, String name, Date startDate, int duration, boolean isStarted) {
         this._id = _id;
         this.name = name;
-        this.startDate = startDate;
         this.duration = duration;
         this.isStarted = isStarted;
     }
@@ -39,14 +37,6 @@ public class Game {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public Date getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(Date startDate) {
-        this.startDate = startDate;
     }
 
     public int getDuration() {
