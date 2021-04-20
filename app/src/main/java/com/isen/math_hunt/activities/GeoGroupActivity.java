@@ -10,36 +10,39 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.Drawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.isen.math_hunt.R;
-import com.isen.math_hunt.entities.Enigma;
 import com.isen.math_hunt.entities.GeoGroup;
 import com.isen.math_hunt.entities.Team;
 import com.isen.math_hunt.model.RetrofitClient;
+import com.squareup.picasso.Picasso;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 
+import java.io.InputStream;
+import java.net.URL;
 import java.util.List;
 import java.util.Locale;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+
 
 public class GeoGroupActivity extends AppCompatActivity implements LocationListener {
 
@@ -56,8 +59,12 @@ public class GeoGroupActivity extends AppCompatActivity implements LocationListe
     private TextView text_location;
     private Button geoGroupContinueButton;
 
+    private ImageView geoGroupImageView;
+
     private String teamId;
     private String token;
+
+    private String currentGeoGroupId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,8 +75,10 @@ public class GeoGroupActivity extends AppCompatActivity implements LocationListe
         text_location = findViewById(R.id.text_location);
         //button_location = findViewById(R.id.button_location);
 
+        geoGroupImageView = (ImageView) findViewById(R.id.geoGroupImageView);
+
         getLocation();
-        getGeoGroupById("605af6b76df41210dd14d0ef");
+
 
         Bundle b = getIntent().getExtras();
         teamId = b.getString("TEAM_ID");
@@ -99,8 +108,9 @@ public class GeoGroupActivity extends AppCompatActivity implements LocationListe
 
                 try {
                     Team team = response.body();
-                    Log.d("TAG", "onResponse: " + team.getUsername());
+                    currentGeoGroupId = team.getCurrentGeoGroupId();
 
+                    getGeoGroupById(currentGeoGroupId);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -198,7 +208,14 @@ public class GeoGroupActivity extends AppCompatActivity implements LocationListe
 
                     geoGroupPosX = geoGroup.getPositionX();
                     geoGroupPosY = geoGroup.getPositionY();
-                    geoGroupRadius = geoGroup.getRadius();
+
+                    Picasso.with(GeoGroupActivity.this).load(geoGroup.getPictureUrl()).fit().into(geoGroupImageView);
+
+
+                    //geoGroupImageView.setImageDrawable(LoadImageFromWebOperations(geoGroup.getPictureUrl()));
+                    //Log.d("IMAGE", "onResponse: " + geoGroup.getPictureUrl());
+
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -212,6 +229,19 @@ public class GeoGroupActivity extends AppCompatActivity implements LocationListe
             }
         });
     }
+
+    public static Drawable LoadImageFromWebOperations(String url) {
+        try {
+            InputStream is = (InputStream) new URL(url).getContent();
+            Drawable d = Drawable.createFromStream(is, "src name");
+            return d;
+        } catch (Exception e) {
+            return null;
+        }
+
+
+    }
+
 
 
 }
