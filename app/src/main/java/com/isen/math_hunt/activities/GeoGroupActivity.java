@@ -109,7 +109,7 @@ public class GeoGroupActivity extends AppCompatActivity implements LocationListe
     }
 
     private void getTeamById(String id) {
-        Call<Team> call = RetrofitClient.getInstance().getMathHuntApiService().getTeamById(id);
+        Call<Team> call = RetrofitClient.getInstance().getMathHuntApiService().getTeamById(id, token);
         call.enqueue(new Callback<Team>() {
             @Override
             public void onResponse(Call<Team> call, Response<Team> response) {
@@ -205,7 +205,7 @@ public class GeoGroupActivity extends AppCompatActivity implements LocationListe
     }
 
     private void getGeoGroupById(String id) {
-        Call<GeoGroup> call = RetrofitClient.getInstance().getMathHuntApiService().getGeoGroupById(id);
+        Call<GeoGroup> call = RetrofitClient.getInstance().getMathHuntApiService().getGeoGroupById(id,token);
         call.enqueue(new Callback<GeoGroup>() {
             @Override
             public void onResponse(Call<GeoGroup> call, Response<GeoGroup> response) {

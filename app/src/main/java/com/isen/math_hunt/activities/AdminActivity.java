@@ -33,6 +33,8 @@ public class AdminActivity extends AppCompatActivity implements AdapterView.OnIt
     private Spinner spin;
     private ProgressDialog progressDialog;
 
+    private String token;
+
     private String currentChoice;
     private List<String> gamesId = new ArrayList<String>();
 
@@ -41,6 +43,9 @@ public class AdminActivity extends AppCompatActivity implements AdapterView.OnIt
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin);
+
+        Bundle b = getIntent().getExtras();
+        token = b.getString("ACCESS_TOKEN");
 
         progressDialog = new ProgressDialog(AdminActivity.this);
         progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
@@ -73,7 +78,7 @@ public class AdminActivity extends AppCompatActivity implements AdapterView.OnIt
     }
 
     private void getAllGames() {
-        Call<GetAllGames> call = RetrofitClient.getInstance().getMathHuntApiService().getAllGames();
+        Call<GetAllGames> call = RetrofitClient.getInstance().getMathHuntApiService().getAllGames(token);
         call.enqueue(new Callback<GetAllGames>() {
             @Override
             public void onResponse(Call<GetAllGames> call, Response<GetAllGames> response) {

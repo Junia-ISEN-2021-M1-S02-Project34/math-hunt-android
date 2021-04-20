@@ -48,16 +48,18 @@ public class HintAdapter extends ArrayAdapter<Hint> {
     private boolean showHintText = Boolean.FALSE;
     private List<String> usedHintsIds;
     private String teamId;
+    private String token;
 
     private  HintAdapter hintAdapter;
 
 
-    public HintAdapter(@NonNull Context context, List<Hint> hints, List<String> usedHintsIds, String teamId) {
+    public HintAdapter(@NonNull Context context, List<Hint> hints, List<String> usedHintsIds, String teamId, String token) {
         super(context, 0, hints);
         mContext = context;
         this.hintList = hints;
         this.usedHintsIds = usedHintsIds;
         this.teamId = teamId;
+        this.token = token;
     }
 
     @NonNull
@@ -140,12 +142,12 @@ public class HintAdapter extends ArrayAdapter<Hint> {
                                                 if (usedHintsIds==null){
                                                     List<String> newUsedHintsId = new ArrayList<>();
                                                     newUsedHintsId.add(hintList.get(position).get_id());
-                                                    hintAdapter = new HintAdapter(getContext(), hintList, newUsedHintsId, teamId);
+                                                    hintAdapter = new HintAdapter(getContext(), hintList, newUsedHintsId, teamId, token);
                                                     listView.setAdapter(hintAdapter);
                                                     dialog.cancel();
                                                 }else{
                                                     usedHintsIds.add(hintList.get(position).get_id());
-                                                    hintAdapter = new HintAdapter(getContext(), hintList, usedHintsIds, teamId);
+                                                    hintAdapter = new HintAdapter(getContext(), hintList, usedHintsIds, teamId,token);
                                                     listView.setAdapter(hintAdapter);
                                                     dialog.cancel();
                                                 }
@@ -196,12 +198,12 @@ public class HintAdapter extends ArrayAdapter<Hint> {
                                             if (usedHintsIds==null){
                                                 List<String> newUsedHintsId = new ArrayList<>();
                                                 newUsedHintsId.add(hintList.get(position).get_id());
-                                                hintAdapter = new HintAdapter(getContext(), hintList, newUsedHintsId, teamId);
+                                                hintAdapter = new HintAdapter(getContext(), hintList, newUsedHintsId, teamId,token);
                                                 listView.setAdapter(hintAdapter);
                                                 dialog.cancel();
                                             }else{
                                                 usedHintsIds.add(hintList.get(position).get_id());
-                                                hintAdapter = new HintAdapter(getContext(), hintList, usedHintsIds, teamId);
+                                                hintAdapter = new HintAdapter(getContext(), hintList, usedHintsIds, teamId,token);
                                                 listView.setAdapter(hintAdapter);
                                                 dialog.cancel();
                                             }
@@ -243,7 +245,7 @@ public class HintAdapter extends ArrayAdapter<Hint> {
     private void updateTeamUsedHint(String id, HintId hintId) {
 
 
-        Call<Team> call = RetrofitClient.getInstance().getMathHuntApiService().updateTeamUsedHint(id, hintId);
+        Call<Team> call = RetrofitClient.getInstance().getMathHuntApiService().updateTeamUsedHint(id, hintId,token);
         call.enqueue(new Callback<Team>() {
             @Override
             public void onResponse(Call<Team> call, Response<Team> response) {

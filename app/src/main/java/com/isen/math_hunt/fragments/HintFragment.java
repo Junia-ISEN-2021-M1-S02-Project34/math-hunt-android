@@ -42,7 +42,7 @@ public class HintFragment extends Fragment {
     private List<Hint> hintList = new ArrayList<>();
     private List<Progression> progressions;
     private List<EnigmasProgression> enigmasProgression;
-
+    private String token;
 
     private List<String> usedHintsIds;
 
@@ -58,13 +58,14 @@ public class HintFragment extends Fragment {
         super.onCreate(savedInstanceState);
         View mView = inflater.inflate(R.layout.fragment_hint, null);
         teamId = getArguments().getString("TEAM_ID");
+        token = getArguments().getString("ACCESS_TOKEN");
         currentEnigmaId = getArguments().getString("CURRENT_ENIGMA_ID");
         usedHintsIds = getArguments().getStringArrayList("USED_HINTS_IDS");
         progressDialog = new ProgressDialog(getActivity());
         progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         progressDialog.show();
 
-        getTeamById(teamId);
+        getTeamById(teamId, token);
 
         //getHintsByEnigmaId(currentEnigmaId);
 
@@ -73,8 +74,8 @@ public class HintFragment extends Fragment {
         return mView;
     }
 
-    private void getHintsByEnigmaId(String id) {
-        Call<HintList> call = RetrofitClient.getInstance().getMathHuntApiService().getHintsByEnigmaId(id);
+    private void getHintsByEnigmaId(String id, String token) {
+        Call<HintList> call = RetrofitClient.getInstance().getMathHuntApiService().getHintsByEnigmaId(id, token);
         call.enqueue(new Callback<HintList>() {
             @Override
             public void onResponse(Call<HintList> call, Response<HintList> response) {
@@ -86,7 +87,7 @@ public class HintFragment extends Fragment {
 
                     hintList = hints.getHints();
 
-                    hintAdapter = new HintAdapter(getActivity(), hintList, usedHintsIds, teamId);
+                    hintAdapter = new HintAdapter(getActivity(), hintList, usedHintsIds, teamId,token);
                     hintListView.setAdapter(hintAdapter);
 
                 } catch (Exception e) {
@@ -104,8 +105,8 @@ public class HintFragment extends Fragment {
         });
     }
 
-    private void getTeamById(String id) {
-        Call<Team> call = RetrofitClient.getInstance().getMathHuntApiService().getTeamById(id);
+    private void getTeamById(String id, String token) {
+        Call<Team> call = RetrofitClient.getInstance().getMathHuntApiService().getTeamById(id, token);
         call.enqueue(new Callback<Team>() {
             List<EnigmasProgression> enigmasProgression;
 
@@ -133,7 +134,7 @@ public class HintFragment extends Fragment {
                     usedHintsIds = enigmasProgressionList.get(indexOfEnigmaId).getUsedHintsIds();
 
 
-                    getHintsByEnigmaId(currentEnigmaId);
+                    getHintsByEnigmaId(currentEnigmaId, token);
 
                 } catch (Exception e) {
                     e.printStackTrace();

@@ -103,7 +103,7 @@ public class WaitingActivity extends AppCompatActivity {
     }
 
     private void getGameById(String id) {
-        Call<GetGameById> call = RetrofitClient.getInstance().getMathHuntApiService().getGameById(id);
+        Call<GetGameById> call = RetrofitClient.getInstance().getMathHuntApiService().getGameById(id,token);
         call.enqueue(new Callback<GetGameById>() {
             @Override
             public void onResponse(Call<GetGameById> call, Response<GetGameById> response) {
@@ -138,7 +138,7 @@ public class WaitingActivity extends AppCompatActivity {
     }
 
     private void getTeamById(String id) {
-        Call<Team> call = RetrofitClient.getInstance().getMathHuntApiService().getTeamById(id);
+        Call<Team> call = RetrofitClient.getInstance().getMathHuntApiService().getTeamById(id,token);
         call.enqueue(new Callback<Team>() {
 
             @Override

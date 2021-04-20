@@ -31,7 +31,7 @@ import retrofit2.Response;
 public class GameActivity extends AppCompatActivity implements CurrentEnigmaIdInterface {
 
     private String teamId;
-    private String gameId;
+    private String token;
 
     private int attemptsNumber;
 
@@ -52,7 +52,7 @@ public class GameActivity extends AppCompatActivity implements CurrentEnigmaIdIn
 
         Bundle b = getIntent().getExtras();
         teamId = b.getString("TEAM_ID");
-        gameId = b.getString("ACCESS_TOKEN");
+        token = b.getString("ACCESS_TOKEN");
 
         getTeamById(teamId);
 
@@ -73,6 +73,7 @@ public class GameActivity extends AppCompatActivity implements CurrentEnigmaIdIn
                             enigmaBundle.putString("TEAM_ID", teamId);
                             enigmaBundle.putString("CURRENT_ENIGMA_ID", currentEnigmaId);
                             enigmaBundle.putString("CURRENT_GEOGROUP_ID", currentGeoGroupId);
+                            enigmaBundle.putString("ACCESS_TOKEN", token);
                             Log.d("attemptsNumber", "attemptsNumber: " + attemptsNumber);
                             enigmaBundle.putInt("ATTEMPTS_NUMBER", attemptsNumber);
 
@@ -87,6 +88,7 @@ public class GameActivity extends AppCompatActivity implements CurrentEnigmaIdIn
                             Bundle hintBundle = new Bundle();
                             hintBundle.putString("TEAM_ID", teamId);
                             hintBundle.putString("CURRENT_ENIGMA_ID", currentEnigmaId);
+                            hintBundle.putString("ACCESS_TOKEN", token);
 
                             Fragment hintFragment = new HintFragment();
                             hintFragment.setArguments(hintBundle);
@@ -98,6 +100,8 @@ public class GameActivity extends AppCompatActivity implements CurrentEnigmaIdIn
                         case R.id.page_3:
                             Bundle progressionBundle = new Bundle();
                             progressionBundle.putString("TEAM_ID", teamId);
+                            progressionBundle.putString("ACCESS_TOKEN", token);
+
                             Fragment progressionFragment = new ProgressionFragment();
                             progressionFragment.setArguments(progressionBundle);
                             transaction = getSupportFragmentManager().beginTransaction();
@@ -108,6 +112,7 @@ public class GameActivity extends AppCompatActivity implements CurrentEnigmaIdIn
                         case R.id.page_4:
                             Bundle rankingBundle = new Bundle();
                             rankingBundle.putString("TEAM_ID", teamId);
+                            rankingBundle.putString("ACCESS_TOKEN", token);
                             Fragment rankingFragment = new RankingFragment();
                             rankingFragment.setArguments(rankingBundle);
                             transaction = getSupportFragmentManager().beginTransaction();
@@ -123,7 +128,7 @@ public class GameActivity extends AppCompatActivity implements CurrentEnigmaIdIn
             };
 
     private void getTeamById(String id) {
-        Call<Team> call = RetrofitClient.getInstance().getMathHuntApiService().getTeamById(id);
+        Call<Team> call = RetrofitClient.getInstance().getMathHuntApiService().getTeamById(id, token);
         call.enqueue(new Callback<Team>() {
             List<EnigmasProgression> enigmasProgression;
 
@@ -145,6 +150,7 @@ public class GameActivity extends AppCompatActivity implements CurrentEnigmaIdIn
                     enigmaBundle.putString("CURRENT_ENIGMA_ID", currentEnigmaId);
                     enigmaBundle.putString("CURRENT_GEOGROUP_ID", currentGeoGroupId);
                     enigmaBundle.putInt("ATTEMPTS_NUMBER", attemptsNumber);
+                    enigmaBundle.putString("ACCESS_TOKEN", token);
 
                     Fragment enigmaFragment = new EnigmaFragment();
                     enigmaFragment.setArguments(enigmaBundle);
