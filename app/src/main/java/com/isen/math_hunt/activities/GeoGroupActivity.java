@@ -7,6 +7,7 @@ import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -66,10 +67,17 @@ public class GeoGroupActivity extends AppCompatActivity implements LocationListe
 
     private String currentGeoGroupId;
 
+    private ProgressDialog progressDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_geo_groupe);
+
+        progressDialog = new ProgressDialog(GeoGroupActivity.this);
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressDialog.show();
+
 
         geoGroupContinueButton = findViewById(R.id.geoGroupContinueButton);
         text_location = findViewById(R.id.text_location);
@@ -119,7 +127,7 @@ public class GeoGroupActivity extends AppCompatActivity implements LocationListe
 
             @Override
             public void onFailure(Call<Team> call, Throwable t) {
-                Log.d("TAG", t.getMessage());
+                Log.d("onFailure", t.getMessage());
             }
         });
     }
@@ -152,7 +160,6 @@ public class GeoGroupActivity extends AppCompatActivity implements LocationListe
 
         } catch (Exception e) {
             e.printStackTrace();
-            Log.d("tag","adresse marche pas");
         }
     }
 
@@ -204,6 +211,7 @@ public class GeoGroupActivity extends AppCompatActivity implements LocationListe
             public void onResponse(Call<GeoGroup> call, Response<GeoGroup> response) {
 
                 try {
+                    progressDialog.dismiss();
                     GeoGroup geoGroup = response.body();
 
                     geoGroupPosX = geoGroup.getPositionX();

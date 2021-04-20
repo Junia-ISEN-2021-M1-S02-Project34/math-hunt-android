@@ -22,15 +22,17 @@ public class Enigma {
     @SerializedName("positionY")
     private String positionY;
     @SerializedName("scoreValue")
-    private int scoreValue;
+    private Integer scoreValue;
     @SerializedName("isActive")
     private boolean isActive;
     @SerializedName("isLinked")
     private boolean isLinked;
     @SerializedName("nextEnigmaId")
     private int nextEnigmaId;
+    @SerializedName("pictureUrl")
+    private String pictureUrl;
 
-    public Enigma(String _id, String name, String description, String question, String positionX, String positionY, int scoreValue, boolean isActive, boolean isLinked, int nextEnigmaId) {
+    public Enigma(String _id, String name, String description, String question, String positionX, String positionY, int scoreValue, boolean isActive, boolean isLinked, int nextEnigmaId, String pictureUrl) {
         this._id = _id;
         this.name = name;
         this.description = description;
@@ -41,6 +43,7 @@ public class Enigma {
         this.isActive = isActive;
         this.isLinked = isLinked;
         this.nextEnigmaId = nextEnigmaId;
+        this.pictureUrl = pictureUrl;
     }
 
     public String get_id() {
@@ -91,11 +94,11 @@ public class Enigma {
         this.positionY = positionY;
     }
 
-    public int getScoreValue() {
+    public Integer getScoreValue() {
         return scoreValue;
     }
 
-    public void setScoreValue(int scoreValue) {
+    public void setScoreValue(Integer scoreValue) {
         this.scoreValue = scoreValue;
     }
 
@@ -121,5 +124,13 @@ public class Enigma {
 
     public void setNextEnigmaId(int nextEnigmaId) {
         this.nextEnigmaId = nextEnigmaId;
+    }
+
+    public String getPictureUrl() {
+        return pictureUrl;
+    }
+
+    public void setPictureUrl(String pictureUrl) {
+        this.pictureUrl = pictureUrl;
     }
 }
