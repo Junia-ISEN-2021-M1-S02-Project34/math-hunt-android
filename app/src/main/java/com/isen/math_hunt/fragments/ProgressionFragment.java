@@ -35,6 +35,8 @@ public class ProgressionFragment extends Fragment {
     private String teamId;
     private ProgressDialog progressDialog;
 
+    private String token;
+
 
 
     public ProgressionFragment() {
@@ -48,6 +50,7 @@ public class ProgressionFragment extends Fragment {
         View mView = inflater.inflate(R.layout.fragment_progression, null);
 
         teamId = getArguments().getString("TEAM_ID");
+        token = getArguments().getString("ACCESS_TOKEN");
 
         geoGroupsListView = (ListView) mView.findViewById(R.id.geoGroupsListView);
 
@@ -55,14 +58,14 @@ public class ProgressionFragment extends Fragment {
         progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         progressDialog.show();
 
-        getTeamById(teamId);
+        getTeamById(teamId, token);
 
 
         return mView;
     }
 
-    private void getTeamById(String id) {
-        Call<Team> call = RetrofitClient.getInstance().getMathHuntApiService().getTeamById(id);
+    private void getTeamById(String id, String token) {
+        Call<Team> call = RetrofitClient.getInstance().getMathHuntApiService().getTeamById(id, token);
         call.enqueue(new Callback<Team>() {
             @Override
             public void onResponse(Call<Team> call, Response<Team> response) {

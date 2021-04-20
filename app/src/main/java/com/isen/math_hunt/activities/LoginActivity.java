@@ -26,7 +26,7 @@ import retrofit2.Response;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private String teamId = "60783b356336f10016689b6c";
+    private String teamId = "6079826ea887560016c30dd3";
     private String gameId = "6059e4165375a204b13e1e8a";
     private ProgressDialog progressDialog;
 

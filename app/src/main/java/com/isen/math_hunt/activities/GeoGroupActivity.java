@@ -1,23 +1,17 @@
 package com.isen.math_hunt.activities;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -67,16 +61,24 @@ public class GeoGroupActivity extends AppCompatActivity implements LocationListe
 
     private String currentGeoGroupId;
 
-    private ProgressDialog progressDialog;
+    private ProgressDialog geoGroupProgressDialog;
+    private ProgressDialog locationProgressBar;
+
+    private ConstraintLayout layoutGeoGroup;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_geo_groupe);
 
-        progressDialog = new ProgressDialog(GeoGroupActivity.this);
-        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        progressDialog.show();
+        geoGroupProgressDialog = new ProgressDialog(GeoGroupActivity.this);
+        geoGroupProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        geoGroupProgressDialog.show();
+
+        locationProgressBar = new ProgressDialog(GeoGroupActivity.this);
+        locationProgressBar.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        locationProgressBar.show();
 
 
         geoGroupContinueButton = findViewById(R.id.geoGroupContinueButton);
@@ -85,6 +87,8 @@ public class GeoGroupActivity extends AppCompatActivity implements LocationListe
 
         geoGroupImageView = (ImageView) findViewById(R.id.geoGroupImageView);
 
+        layoutGeoGroup = (ConstraintLayout) findViewById(R.id.layoutGeoGroup);
+        layoutGeoGroup.setVisibility(View.INVISIBLE);
         getLocation();
 
 
@@ -109,7 +113,7 @@ public class GeoGroupActivity extends AppCompatActivity implements LocationListe
     }
 
     private void getTeamById(String id) {
-        Call<Team> call = RetrofitClient.getInstance().getMathHuntApiService().getTeamById(id);
+        Call<Team> call = RetrofitClient.getInstance().getMathHuntApiService().getTeamById(id, token);
         call.enqueue(new Callback<Team>() {
             @Override
             public void onResponse(Call<Team> call, Response<Team> response) {
@@ -132,14 +136,14 @@ public class GeoGroupActivity extends AppCompatActivity implements LocationListe
         });
     }
 
-    public void switchActivity(Class activity) {
-        Intent myIntent = new Intent(this, activity);
-        startActivity(myIntent);
-    }
+
 
     @Override
     public void onLocationChanged(Location location) {
         // en metres
+        locationProgressBar.dismiss();
+        layoutGeoGroup.setVisibility(View.VISIBLE);
+
         int dist = (int) distance(geoGroupPosX, location.getLatitude(), geoGroupPosY, location.getLongitude());
         if (dist > 2000) { // changer la valeur par geoGroupRadius
             geoGroupContinueButton.setEnabled(false);
@@ -205,13 +209,13 @@ public class GeoGroupActivity extends AppCompatActivity implements LocationListe
     }
 
     private void getGeoGroupById(String id) {
-        Call<GeoGroup> call = RetrofitClient.getInstance().getMathHuntApiService().getGeoGroupById(id);
+        Call<GeoGroup> call = RetrofitClient.getInstance().getMathHuntApiService().getGeoGroupById(id,token);
         call.enqueue(new Callback<GeoGroup>() {
             @Override
             public void onResponse(Call<GeoGroup> call, Response<GeoGroup> response) {
 
                 try {
-                    progressDialog.dismiss();
+                    geoGroupProgressDialog.dismiss();
                     GeoGroup geoGroup = response.body();
 
                     geoGroupPosX = geoGroup.getPositionX();

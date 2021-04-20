@@ -1,11 +1,14 @@
 package com.isen.math_hunt.fragments;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.location.Geocoder;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
@@ -33,16 +36,28 @@ import com.isen.math_hunt.model.ProgressionPost;
 import com.isen.math_hunt.model.RetrofitClient;
 import com.squareup.picasso.Picasso;
 
+import android.location.Address;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static android.content.Context.LOCATION_SERVICE;
 
-public class EnigmaFragment extends Fragment implements RadioButtonDataTransfertInterface {
+
+public class EnigmaFragment extends Fragment implements RadioButtonDataTransfertInterface/*, LocationListener*/ {
+
+    private static final long LOCATION_REFRESH_TIME = 5000;
+    private static final float LOCATION_REFRESH_DISTANCE = 5;
 
     private ListView enigmaListView;
     private TextView scoreTextView;
@@ -53,7 +68,8 @@ public class EnigmaFragment extends Fragment implements RadioButtonDataTransfert
     private TextInputLayout answerTextField;
     private List<Proposition> propositionList = new ArrayList<>();
     private Button validateButton;
-    private ProgressDialog progressDialog;
+    private LocationManager locationManager;
+    private ProgressDialog enigmaProgressDialog;
     private String currentMcqAnswerValue = "";
     private boolean currentMcqAnswerIsChecked;
     private int enigmaScoreValue;
@@ -68,6 +84,7 @@ public class EnigmaFragment extends Fragment implements RadioButtonDataTransfert
 
     private int attemptsEnigmaValue;
     private int attemptsNumber;
+    private AlertDialog alertDialog;
 
 
     private String teamId;
@@ -76,6 +93,14 @@ public class EnigmaFragment extends Fragment implements RadioButtonDataTransfert
     private String nextGeoGroup;
 
     private ImageView enigmaImageView;
+
+    private Number posX;
+    private Number posY;
+    private String address;
+
+    private String token;
+    private ProgressDialog localisationProgressDialog;
+
 
     private CurrentEnigmaIdInterface currentEnigmaIdInterface = (CurrentEnigmaIdInterface) getActivity();
 
@@ -90,9 +115,16 @@ public class EnigmaFragment extends Fragment implements RadioButtonDataTransfert
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         super.onCreate(savedInstanceState);
-        progressDialog = new ProgressDialog(getActivity());
-        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        progressDialog.show();
+        enigmaProgressDialog = new ProgressDialog(getActivity());
+        enigmaProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        enigmaProgressDialog.show();
+
+
+        /*
+        localisationProgressDialog = new ProgressDialog(getActivity());
+        localisationProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        localisationProgressDialog.show();
+*/
 
         View mView = inflater.inflate(R.layout.fragment_enigma, null);
 
@@ -114,11 +146,13 @@ public class EnigmaFragment extends Fragment implements RadioButtonDataTransfert
         currentEnigmaId = getArguments().getString("CURRENT_ENIGMA_ID");
         currentGeoGroupId = getArguments().getString("CURRENT_GEOGROUP_ID");
         attemptsNumber = getArguments().getInt("ATTEMPTS_NUMBER");
+        token = getArguments().getString("ACCESS_TOKEN");
 
-        Log.d("Attempts", "ATTEMPTS_NUMBER: " + attemptsNumber);
+        // getLocation();
+        getFullEnigmaById(currentEnigmaId, token);
 
-        Log.d("YOLOLO", "onCreateView: " + currentGeoGroupId);
-        getFullEnigmaById(currentEnigmaId);
+
+        //  createDialog("");
 
         validateButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -128,7 +162,6 @@ public class EnigmaFragment extends Fragment implements RadioButtonDataTransfert
                     newScore = oldScore + currentEnigmaScore;
                     Log.d("Score", "newScore: " + newScore);
 
-                    ProgressionPost progressionPost = new ProgressionPost(currentEnigmaId, newScore);
 
                     if (isMcq) {
                         userAnswer = currentMcqAnswerValue.toLowerCase();
@@ -138,7 +171,8 @@ public class EnigmaFragment extends Fragment implements RadioButtonDataTransfert
 
                     if (userAnswer.equals(enigmaAnswer.toLowerCase())) {
 
-                        updateTeamProgression(teamId, progressionPost);
+                        ProgressionPost progressionPost = new ProgressionPost(currentEnigmaId, newScore);
+                        updateTeamProgression(teamId, progressionPost, token);
                         AlertDialog alertDialog = createGoodAnswerDialog();
                         alertDialog.show();
 
@@ -168,7 +202,7 @@ public class EnigmaFragment extends Fragment implements RadioButtonDataTransfert
                         AlertDialog alertDialog = builder.create();
                         alertDialog.show();
                     } else {
-                        updateAttemptsNumber(teamId);
+                        updateAttemptsNumber(teamId, token);
                     }
 
                 } else {
@@ -189,7 +223,8 @@ public class EnigmaFragment extends Fragment implements RadioButtonDataTransfert
                                         public void onClick(DialogInterface dialog,
                                                             int which) {
 
-                                            updateTeamProgression(teamId, new ProgressionPost(currentEnigmaId, 0));
+                                            ProgressionPost progressionPost = new ProgressionPost(currentEnigmaId, newScore);
+                                            updateTeamProgression(teamId, new ProgressionPost(currentEnigmaId, 0), token);
 
 
                                             dialog.cancel();
@@ -207,17 +242,20 @@ public class EnigmaFragment extends Fragment implements RadioButtonDataTransfert
     }
 
 
-    private void getFullEnigmaById(String id) {
-        Call<FullEnigma> call = RetrofitClient.getInstance().getMathHuntApiService().getFullEnigmaById(id);
+    private void getFullEnigmaById(String id, String token) {
+        Call<FullEnigma> call = RetrofitClient.getInstance().getMathHuntApiService().getFullEnigmaById(id, token);
         call.enqueue(new Callback<FullEnigma>() {
             @Override
             public void onResponse(Call<FullEnigma> call, Response<FullEnigma> response) {
 
                 try {
-                    progressDialog.dismiss();
+                    enigmaProgressDialog.dismiss();
 
                     FullEnigma fullEnigma = response.body();
-                    scoreTextView.setText("Score : " + Integer.toString(fullEnigma.getEnigma().getScoreValue()));
+                    posX = fullEnigma.getEnigma().getPositionX();
+                    posY = fullEnigma.getEnigma().getPositionY();
+
+                    scoreTextView.setText(Integer.toString(fullEnigma.getEnigma().getScoreValue()));
                     enigmaTitleTextView.setText(fullEnigma.getEnigma().getName());
                     questionTextView.setText(fullEnigma.getEnigma().getQuestion());
                     descriptionEnigma.setText(fullEnigma.getEnigma().getDescription());
@@ -265,17 +303,14 @@ public class EnigmaFragment extends Fragment implements RadioButtonDataTransfert
         });
     }
 
-    private void updateTeamProgression(String id, ProgressionPost progressionPost) {
-
-
-        Call<Team> call = RetrofitClient.getInstance().getMathHuntApiService().updateTeamProgression(id, progressionPost);
+    private void updateTeamProgression(String id, ProgressionPost progressionPost, String token) {
+        Call<Team> call = RetrofitClient.getInstance().getMathHuntApiService().updateTeamProgression(id, progressionPost, token);
         call.enqueue(new Callback<Team>() {
             @Override
             public void onResponse(Call<Team> call, Response<Team> response) {
 
                 try {
                     Team currentTeam = response.body();
-                    Log.d("FINISH", "onResponse: " + currentTeam.getGameFinished());
 
                     currentEnigmaId = currentTeam.getCurrentEnigmaId();
                     nextGeoGroup = currentTeam.getCurrentGeoGroupId();
@@ -312,7 +347,6 @@ public class EnigmaFragment extends Fragment implements RadioButtonDataTransfert
                         }
                     }
 
-
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -328,10 +362,10 @@ public class EnigmaFragment extends Fragment implements RadioButtonDataTransfert
         });
     }
 
-    private void updateAttemptsNumber(String id) {
+    private void updateAttemptsNumber(String id, String token) {
 
 
-        Call<Integer> call = RetrofitClient.getInstance().getMathHuntApiService().updateAttemptsNumber(id);
+        Call<Integer> call = RetrofitClient.getInstance().getMathHuntApiService().updateAttemptsNumber(id, token);
         call.enqueue(new Callback<Integer>() {
             @Override
             public void onResponse(Call<Integer> call, Response<Integer> response) {
@@ -392,8 +426,7 @@ public class EnigmaFragment extends Fragment implements RadioButtonDataTransfert
                                 .OnClickListener() {
 
                             @Override
-                            public void onClick(DialogInterface dialog,
-                                                int which) {
+                            public void onClick(DialogInterface dialog, int which) {
 
                                 Intent intent;
 
@@ -427,9 +460,7 @@ public class EnigmaFragment extends Fragment implements RadioButtonDataTransfert
         builder.setCancelable(false);
         builder
                 .setPositiveButton(
-                        "Continuer",
-                        new DialogInterface
-                                .OnClickListener() {
+                        "Continuer", new DialogInterface.OnClickListener() {
 
                             @Override
                             public void onClick(DialogInterface dialog,
@@ -443,4 +474,85 @@ public class EnigmaFragment extends Fragment implements RadioButtonDataTransfert
 
         return alertDialog;
     }
+
+/*
+    // On recupere la geolocalisation
+    @SuppressLint("MissingPermission")
+    private void getLocation() {
+
+        try {
+            locationManager = (LocationManager) getActivity().getSystemService(LOCATION_SERVICE);
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, LOCATION_REFRESH_TIME, LOCATION_REFRESH_DISTANCE, EnigmaFragment.this);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }*/
+
+    /*
+    @Override
+    public void onLocationChanged(@NonNull Location location) {
+        Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());
+        List<Address> addresses = null;
+        Log.d("oui","posx: "+ posX);
+        Log.d("oui","posY: "+ posY);
+        try {
+            addresses = geocoder.getFromLocation(posX.doubleValue(), posY.doubleValue(), 1);
+            Log.d("oui","adresses : "+ addresses);
+
+            int dist = (int) distance(posX, location.getLatitude(), posY, location.getLongitude());
+            address = addresses.get(0).getAddressLine(0);
+            Log.d("oui", "distance:" + dist);
+            Log.d("oui","addr : "+ address);
+
+            localisationProgressDialog.dismiss();
+
+            while(address == null){
+                alertDialog.dismiss();
+            }
+            if(dist > 5) {
+                //createDialog(address).show();
+            }
+            if (dist < 5) {
+                alertDialog.dismiss();
+            }
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            Log.d("oui","marche pas");
+        }
+
+    }*/
+
+
+    public static double distance(Number lat1, Number lat2, Number lon1, Number lon2) {
+
+        final int R = 6371; // Radius of the earth
+        //double height = 0;
+        double latDistance = Math.toRadians(lat2.doubleValue() - lat1.doubleValue());
+        double lonDistance = Math.toRadians(lon2.doubleValue() - lon1.doubleValue());
+        double a = Math.sin(latDistance / 2) * Math.sin(latDistance / 2)
+                + Math.cos(Math.toRadians(lat1.doubleValue())) * Math.cos(Math.toRadians(lat2.doubleValue()))
+                * Math.sin(lonDistance / 2) * Math.sin(lonDistance / 2);
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        double distance = R * c * 1000; // convert to meters
+
+        distance = Math.pow(distance, 2)  /* + Math.pow(height, 2) */;
+
+        return Math.sqrt(distance);
+    }
+
+    public AlertDialog createDialog(String address) {
+
+        AlertDialog.Builder builder
+                = new AlertDialog
+                .Builder(getContext());
+
+        builder.setTitle("Bravo!");
+        builder.setMessage("La prochaine énigme se trouve à l'adresse suivante : \n" + address);
+        builder.setCancelable(false);
+        alertDialog = builder.create();
+        return alertDialog;
+    }
+
 }

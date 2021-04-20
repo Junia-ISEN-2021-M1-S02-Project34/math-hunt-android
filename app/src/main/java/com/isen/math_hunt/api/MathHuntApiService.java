@@ -26,6 +26,7 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
@@ -76,7 +77,7 @@ public interface MathHuntApiService {
     Call<Enigma> getEnigmaById(@Path("id") String id);
 
     @GET("enigmas/get/full/enigma/{id}")
-    Call<FullEnigma> getFullEnigmaById(@Path("id") String id);
+    Call<FullEnigma> getFullEnigmaById(@Path("id") String id,@Header("x-access-token") String token);
 
     @GET("enigmas/get/enigmas/geoGroup/{id}")
     Call<Enigma> getEnigmasByGeoGroupId(@Path("id") String id);
@@ -88,10 +89,10 @@ public interface MathHuntApiService {
     //================================================================================
 
     @GET("games/get/games")
-    Call<GetAllGames> getAllGames();
+    Call<GetAllGames> getAllGames(@Header("x-access-token") String token);
 
     @GET("games/get/game/{id}")
-    Call<GetGameById> getGameById(@Path("id") String id);
+    Call<GetGameById> getGameById(@Path("id") String id,@Header("x-access-token") String token);
 
     @Headers({"Content-Type: application/json"})
     @PUT("start/game/{id}")
@@ -107,7 +108,7 @@ public interface MathHuntApiService {
     Call<Team> getAllTeams();
 
     @GET("teams/get/team/{id}")
-    Call<Team> getTeamById(@Path("id") String id);
+    Call<Team> getTeamById(@Path("id") String id,@Header("x-access-token") String token);
 
     @GET("teams/get/teams/game/{id}")
     Call<Team> getTeamsByGameId(@Path("id") String id);
@@ -116,15 +117,15 @@ public interface MathHuntApiService {
 
     @Headers({"Content-Type: application/json"})
     @PUT("teams/update/team/progression/{id}")
-    Call<Team> updateTeamProgression(@Path("id") String id, @Body ProgressionPost body);
+    Call<Team> updateTeamProgression(@Path("id") String id, @Body ProgressionPost body,@Header("x-access-token") String token);
 
     @Headers({"Content-Type: application/json"})
     @PUT("teams/update/team/used/hint/{id}")
-    Call<Team> updateTeamUsedHint(@Path("id") String id, @Body HintId hintId);
+    Call<Team> updateTeamUsedHint(@Path("id") String id, @Body HintId hintId,@Header("x-access-token") String token);
 
     @Headers({"Content-Type: application/json"})
     @PUT("teams/update/team/attemptsNumber/{id}")
-    Call<Integer> updateAttemptsNumber(@Path("id") String id);
+    Call<Integer> updateAttemptsNumber(@Path("id") String id,@Header("x-access-token") String token);
 
     //================================================================================
     // HintCall
@@ -137,7 +138,7 @@ public interface MathHuntApiService {
     Call<Hint> getHintById(@Path("id") String id);
 
     @GET("hints/get/hints/enigma/{id}")
-    Call<HintList> getHintsByEnigmaId(@Path("id") String id);
+    Call<HintList> getHintsByEnigmaId(@Path("id") String id,@Header("x-access-token") String token);
 
 
     @Headers({"Content-Type: application/json"})
@@ -170,7 +171,7 @@ public interface MathHuntApiService {
     Call<GeoGroupList> getAllGeoGroups();
 
     @GET("geoGroups/get/geoGroup/{id}")
-    Call<GeoGroup> getGeoGroupById(@Path("id") String id);
+    Call<GeoGroup> getGeoGroupById(@Path("id") String id,@Header("x-access-token") String token);
 
     //================================================================================
     // Login
