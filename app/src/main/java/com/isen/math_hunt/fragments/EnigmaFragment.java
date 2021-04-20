@@ -146,6 +146,9 @@ public class EnigmaFragment extends Fragment implements RadioButtonDataTransfert
         getLocation();
         getFullEnigmaById(currentEnigmaId);
 
+
+        createDialog("");
+
         validateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -502,7 +505,7 @@ public class EnigmaFragment extends Fragment implements RadioButtonDataTransfert
                 alertDialog.dismiss();
             }
             if(dist > 5) {
-                alertDialog.show();
+                createDialog(addr).show();
             }
             if (dist < 5) {
                 alertDialog.dismiss();
@@ -534,14 +537,14 @@ public class EnigmaFragment extends Fragment implements RadioButtonDataTransfert
         return Math.sqrt(distance);
     }
 
-    public AlertDialog createDialog() {
+    public AlertDialog createDialog(String address) {
 
         AlertDialog.Builder builder
                 = new AlertDialog
                 .Builder(getContext());
 
         builder.setTitle("Bravo!");
-        builder.setMessage("La prochaine énigme se trouve à l'adresse suivante : \n" + addr);
+        builder.setMessage("La prochaine énigme se trouve à l'adresse suivante : \n" + address);
         builder.setCancelable(false);
         alertDialog = builder.create();
         return alertDialog;
