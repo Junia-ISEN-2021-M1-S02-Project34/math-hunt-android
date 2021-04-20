@@ -5,11 +5,11 @@ import java.util.List;
 public class ProgressionPost {
 
     private String finishedEnigma;
-    private int enigmaScore;
+    private boolean isSuccess;
 
-    public ProgressionPost(String finishedEnigma, int enigmaScore) {
+    public ProgressionPost(String finishedEnigma, boolean isSuccess) {
         this.finishedEnigma = finishedEnigma;
-        this.enigmaScore = enigmaScore;
+        this.isSuccess = isSuccess;
     }
 
     public String getFinishedEnigma() {
@@ -20,13 +20,11 @@ public class ProgressionPost {
         this.finishedEnigma = finishedEnigma;
     }
 
-    public int getEnigmaScore() {
-        return enigmaScore;
+    public boolean isSuccess() {
+        return isSuccess;
     }
 
-    public void setEnigmaScore(int enigmaScore) {
-        this.enigmaScore = enigmaScore;
+    public void setSuccess(boolean success) {
+        isSuccess = success;
     }
-
-
 }

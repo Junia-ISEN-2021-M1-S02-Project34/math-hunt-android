@@ -41,7 +41,7 @@ public class GameActivity extends AppCompatActivity implements CurrentEnigmaIdIn
     private Team currentTeam;
     private FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
-    private int newScore;
+    private int score;
     private ArrayList<String> usedHintsIds;
 
 
@@ -53,8 +53,10 @@ public class GameActivity extends AppCompatActivity implements CurrentEnigmaIdIn
         Bundle b = getIntent().getExtras();
         teamId = b.getString("TEAM_ID");
         token = b.getString("ACCESS_TOKEN");
+        currentGeoGroupId = b.getString("CURRENT_GEOGROUP_ID");
 
-        getTeamById(teamId);
+
+        getTeamById(teamId, token);
 
 
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
@@ -76,6 +78,8 @@ public class GameActivity extends AppCompatActivity implements CurrentEnigmaIdIn
                             enigmaBundle.putString("ACCESS_TOKEN", token);
                             Log.d("attemptsNumber", "attemptsNumber: " + attemptsNumber);
                             enigmaBundle.putInt("ATTEMPTS_NUMBER", attemptsNumber);
+                            enigmaBundle.putInt("SCORE", score);
+
 
                             Fragment enigmaFragment = new EnigmaFragment();
                             enigmaFragment.setArguments(enigmaBundle);
@@ -127,18 +131,20 @@ public class GameActivity extends AppCompatActivity implements CurrentEnigmaIdIn
                 }
             };
 
-    private void getTeamById(String id) {
+    private void getTeamById(String id,String token) {
         Call<Team> call = RetrofitClient.getInstance().getMathHuntApiService().getTeamById(id, token);
         call.enqueue(new Callback<Team>() {
-            List<EnigmasProgression> enigmasProgression;
 
             @Override
             public void onResponse(Call<Team> call, Response<Team> response) {
 
                 try {
                     currentTeam = response.body();
+                    Log.d("ET MERDE", "onResponse: " + response);
                     currentEnigmaId = currentTeam.getCurrentEnigmaId();
                     currentGeoGroupId = currentTeam.getCurrentGeoGroupId();
+                    score = currentTeam.getScore();
+                    Log.d("prouti", "onCreateView: " + score);
 
                     List<Progression> progressionList = currentTeam.getProgression();
 
@@ -151,6 +157,8 @@ public class GameActivity extends AppCompatActivity implements CurrentEnigmaIdIn
                     enigmaBundle.putString("CURRENT_GEOGROUP_ID", currentGeoGroupId);
                     enigmaBundle.putInt("ATTEMPTS_NUMBER", attemptsNumber);
                     enigmaBundle.putString("ACCESS_TOKEN", token);
+                    enigmaBundle.putInt("SCORE", score);
+
 
                     Fragment enigmaFragment = new EnigmaFragment();
                     enigmaFragment.setArguments(enigmaBundle);
@@ -200,6 +208,9 @@ public class GameActivity extends AppCompatActivity implements CurrentEnigmaIdIn
         this.attemptsNumber = attemptsNumber;
     }
 
+    public void updateScore(int value){
+        this.attemptsNumber = attemptsNumber;
+    }
 
 
 
