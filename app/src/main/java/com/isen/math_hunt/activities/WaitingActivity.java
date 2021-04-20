@@ -116,6 +116,7 @@ public class WaitingActivity extends AppCompatActivity {
                     getGameById = response.body();
 
                     if (getGameById.isStarted()) {
+                        launchButton.setText("Commencer !");
                         launchButton.setEnabled(true);
                         launchButton.setClickable(true);
                     }

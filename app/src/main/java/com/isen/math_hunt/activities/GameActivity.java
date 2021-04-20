@@ -42,7 +42,7 @@ public class GameActivity extends AppCompatActivity implements CurrentEnigmaIdIn
     private FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
     private int score;
-    private ArrayList<String> usedHintsIds;
+    private List<String> usedHintsIds = new ArrayList<>();
 
 
     @Override
@@ -189,6 +189,21 @@ public class GameActivity extends AppCompatActivity implements CurrentEnigmaIdIn
 
     }
 
+    public void setUsedHintsIds(final List<Progression> progressionList, final String geoGroupId, final String enigmaId) {
+        progressionList.stream().filter(progression -> progression.getGeoGroupId().equals(geoGroupId)).forEach(
+                progression -> {
+                    List<EnigmasProgression> enigmasProgressionList = progression.getEnigmasProgression();
+
+                    enigmasProgressionList.stream().filter(enigmasProgression -> enigmasProgression.getEnigmaId().equals(enigmaId)).forEach(
+                            enigmasProgression -> {
+                                usedHintsIds = enigmasProgression.getUsedHintsIds();
+
+
+                            }
+                    );
+                }
+        );
+    }
 
     public void getAttemptsNumber(final List<Progression> progressionList, final String geoGroupId, final String enigmaId) {
         progressionList.stream().filter(progression -> progression.getGeoGroupId().equals(geoGroupId)).forEach(
@@ -209,7 +224,7 @@ public class GameActivity extends AppCompatActivity implements CurrentEnigmaIdIn
     }
 
     public void updateScore(int value){
-        this.attemptsNumber = attemptsNumber;
+        this.score = this.score + value;
     }
 
 

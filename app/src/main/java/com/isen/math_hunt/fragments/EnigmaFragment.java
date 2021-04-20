@@ -24,6 +24,8 @@ import com.isen.math_hunt.activities.GameActivity;
 import com.isen.math_hunt.activities.GeoGroupActivity;
 import com.isen.math_hunt.activities.SuccessActivity;
 import com.isen.math_hunt.adapters.QcmAdapter;
+import com.isen.math_hunt.entities.EnigmasProgression;
+import com.isen.math_hunt.entities.Progression;
 import com.isen.math_hunt.entities.Proposition;
 import com.isen.math_hunt.entities.Team;
 import com.isen.math_hunt.interfaces.CurrentEnigmaIdInterface;
@@ -141,11 +143,10 @@ public class EnigmaFragment extends Fragment implements RadioButtonDataTransfert
 
         Log.d("prouti", "onCreateView: " + score);
 
-        scoreTextView.setText("Score" + Integer.toString(score));
+        scoreTextView.setText("Score : " + Integer.toString(score));
 
-
+        getTeamById(teamId,token);
         // getLocation();
-        getFullEnigmaById(currentEnigmaId, token);
 
 
         //  createDialog("");
@@ -164,8 +165,7 @@ public class EnigmaFragment extends Fragment implements RadioButtonDataTransfert
 
                     if (userAnswer.equals(enigmaAnswer.toLowerCase())) {
                         ProgressionPost progressionPost = new ProgressionPost(currentEnigmaId, true);
-                        updateTeamProgression(teamId, progressionPost,token);
-
+                        updateTeamProgression(teamId, progressionPost, token);
 
 
                     } else if (userAnswer.isEmpty()) {
@@ -251,8 +251,16 @@ public class EnigmaFragment extends Fragment implements RadioButtonDataTransfert
                     descriptionEnigma.setText(fullEnigma.getEnigma().getDescription());
                     enigmaAnswer = fullEnigma.getAnswer().getSolution();
                     currentEnigmaScore = fullEnigma.getEnigma().getScoreValue();
-                    attemptsTextView.setText("Nombre d'essaies restant :" + (Integer.toString(fullEnigma.getAnswer().getAttemptsNumber() - attemptsNumber)));
+                    Log.d("ET MERDE", "onResponse: " + currentEnigmaScore);
+                    attemptsTextView.setText("Nombre d'essai(s) restant :" + (Integer.toString(fullEnigma.getAnswer().getAttemptsNumber() - attemptsNumber)));
                     attemptsEnigmaValue = fullEnigma.getAnswer().getAttemptsNumber();
+                    currentEnigmaScore = fullEnigma.getEnigma().getScoreValue();
+
+                    if (score + enigmaScoreValue <0){
+                        scoreTextView.setText("Score : " + Integer.toString(0));
+                    }else scoreTextView.setText("Score : " + Integer.toString(score + enigmaScoreValue));
+
+
 
 
                     if (fullEnigma.getAnswer().isMcq()) {
@@ -269,6 +277,7 @@ public class EnigmaFragment extends Fragment implements RadioButtonDataTransfert
                         isMcq = true;
                     } else {
                         if (fullEnigma.getEnigma().getPictureUrl() != null) {
+                            Log.d("proutit" ,"onResponse: " + fullEnigma.getEnigma().getPictureUrl());
                             Picasso.with(getContext()).load(fullEnigma.getEnigma().getPictureUrl()).fit().into(enigmaImageView);
                             enigmaImageView.setVisibility(View.VISIBLE);
                         }
@@ -377,6 +386,12 @@ public class EnigmaFragment extends Fragment implements RadioButtonDataTransfert
                     alertDialog.show();
                     Log.d("attemptsNumber", "attemptsNumberEnigma: " + attemptsNumber);
 
+                    if (score + enigmaScoreValue - (currentEnigmaScore*1/4) <0){
+                        scoreTextView.setText("YOLO : " + Integer.toString(0));
+                    }else {
+                        score = score + enigmaScoreValue - (currentEnigmaScore*1/4);
+                        scoreTextView.setText("Score : " + Integer.toString(score));
+                    }
                     ((GameActivity) getActivity()).updateAttemptsNumber(attemptsNumber);
 
 
@@ -553,4 +568,44 @@ public class EnigmaFragment extends Fragment implements RadioButtonDataTransfert
         return alertDialog;
     }
 
+    private void getTeamById(String id,String token) {
+        Call<Team> call = RetrofitClient.getInstance().getMathHuntApiService().getTeamById(id, token);
+        call.enqueue(new Callback<Team>() {
+
+            @Override
+            public void onResponse(Call<Team> call, Response<Team> response) {
+
+                try {
+                    Team currentTeam = response.body();
+
+                    getScoreProgressionByEnigmaId(currentTeam.getProgression(),currentTeam.getCurrentGeoGroupId(),currentTeam.getCurrentEnigmaId());
+                    getFullEnigmaById(currentEnigmaId, token);
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<Team> call, Throwable t) {
+                Log.d("TAG", t.getMessage());
+
+            }
+        });
+    }
+
+    public void getScoreProgressionByEnigmaId(final List<Progression> progressionList, final String geoGroupId, final String enigmaId) {
+        progressionList.stream().filter(progression -> progression.getGeoGroupId().equals(geoGroupId)).forEach(
+                progression -> {
+                    List<EnigmasProgression> enigmasProgressionList = progression.getEnigmasProgression();
+
+                    enigmasProgressionList.stream().filter(enigmasProgression -> enigmasProgression.getEnigmaId().equals(enigmaId)).forEach(
+                            enigmasProgression -> {
+                                enigmaScoreValue = enigmasProgression.getScore();
+                            }
+                    );
+                }
+        );
+    }
 }

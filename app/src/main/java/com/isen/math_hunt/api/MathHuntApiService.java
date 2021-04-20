@@ -135,7 +135,7 @@ public interface MathHuntApiService {
     Call<Hint> getAllHints();
 
     @GET("hints/get/hint/{id}")
-    Call<Hint> getHintById(@Path("id") String id);
+    Call<Hint> getHintById(@Path("id") String id,@Header("x-access-token") String token);
 
     @GET("hints/get/hints/enigma/{id}")
     Call<HintList> getHintsByEnigmaId(@Path("id") String id,@Header("x-access-token") String token);
