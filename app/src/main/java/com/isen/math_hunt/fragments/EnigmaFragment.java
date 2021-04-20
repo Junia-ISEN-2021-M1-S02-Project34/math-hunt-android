@@ -130,7 +130,7 @@ public class EnigmaFragment extends Fragment implements RadioButtonDataTransfert
         enigmaListView.setVisibility(View.GONE);
         answerTextField.setVisibility(View.GONE);
 
-        createDialog().show();
+        //createDialog().show();
 
         teamId = getArguments().getString("TEAM_ID");
         currentEnigmaId = getArguments().getString("CURRENT_ENIGMA_ID");
@@ -138,7 +138,6 @@ public class EnigmaFragment extends Fragment implements RadioButtonDataTransfert
 
         getLocation();
         getFullEnigmaById(currentEnigmaId);
-
         //FCT ALERT
         //alertDialog.show();
 
@@ -372,7 +371,7 @@ public class EnigmaFragment extends Fragment implements RadioButtonDataTransfert
         try {
             locationManager = (LocationManager) getActivity().getSystemService(LOCATION_SERVICE);
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, LOCATION_REFRESH_TIME, LOCATION_REFRESH_DISTANCE, EnigmaFragment.this);
-
+            Log.d("oui","getlocation");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -383,6 +382,8 @@ public class EnigmaFragment extends Fragment implements RadioButtonDataTransfert
 
         Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());
         List<Address> addresses = null;
+        Log.d("oui","posx: "+ posX);
+        Log.d("oui","posY: "+ posY);
         try {
             addresses = geocoder.getFromLocation(posX.doubleValue(), posY.doubleValue(), 1);
             Log.d("oui","adresses : "+ addresses);
@@ -392,15 +393,20 @@ public class EnigmaFragment extends Fragment implements RadioButtonDataTransfert
             Log.d("oui", "distance:" + dist);
             Log.d("oui","addr : "+ addr);
 
+            while(addr == null){
+                alertDialog.dismiss();
+            }
+            if(dist > 5) {
+                alertDialog.show();
+            }
             if (dist < 5) {
                 alertDialog.dismiss();
             }
-            while(dist > 5) {
-                alertDialog.show();
-            }
+
 
         } catch (IOException e) {
             e.printStackTrace();
+            Log.d("oui","marche pas");
         }
 
     }
