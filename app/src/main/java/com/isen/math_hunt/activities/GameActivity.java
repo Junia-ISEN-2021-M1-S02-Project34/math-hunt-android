@@ -223,9 +223,6 @@ public class GameActivity extends AppCompatActivity implements CurrentEnigmaIdIn
         this.attemptsNumber = attemptsNumber;
     }
 
-    public void updateScore(int value){
-        this.score = this.score + value;
-    }
 
 
 
