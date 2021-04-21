@@ -37,6 +37,8 @@ public class RankingFragment extends Fragment {
     private String token;
     private String gameId;
 
+
+
     public RankingFragment() {
     }
 
@@ -51,20 +53,17 @@ public class RankingFragment extends Fragment {
         ArrayList<Team> teamList = new ArrayList<>();
 
 
-        token = getArguments().getString("TOKEN");
+        token = getArguments().getString("ACCESS_TOKEN");
         gameId = getArguments().getString("GAME_ID");
 
-        Log.d("getRanking", "token: " + token );
-        Log.d("getRanking", "gameId: " + gameId );
+        getRanking(gameId, token);
 
 
-        rankAdapter = new RankAdapter(getActivity(),teamList);
-        rankListView.setAdapter(rankAdapter);
 
         return mView;
     }
 
-    private void getRanking(String id,String token) {
+    private void getRanking(String id, String token) {
         Call<RankingResponse> call = RetrofitClient.getInstance().getMathHuntApiService().getRanking(id, token);
         call.enqueue(new Callback<RankingResponse>() {
             @Override
@@ -72,10 +71,10 @@ public class RankingFragment extends Fragment {
 
                 try {
                     RankingResponse rank = response.body();
-                    Log.d("getRanking", "onResponse: " + response );
-                    Log.d("getRanking", "onResponse: " + rank.getUserName() );
+                    Log.d("getRanking", "onResponse: " + rank.getRankList().get(0).getUserName());
 
-
+                    rankAdapter = new RankAdapter(getActivity(), rank.getRankList());
+                    rankListView.setAdapter(rankAdapter);
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -91,7 +90,6 @@ public class RankingFragment extends Fragment {
             }
         });
     }
-
 
 
 }

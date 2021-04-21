@@ -55,7 +55,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class EnigmaFragment extends Fragment implements RadioButtonDataTransfertInterface, LocationListener {
+public class EnigmaFragment extends Fragment implements RadioButtonDataTransfertInterface/*, LocationListener*/ {
 
     private static final long LOCATION_REFRESH_TIME = 1000;
     private static final float LOCATION_REFRESH_DISTANCE = 2;
@@ -129,7 +129,7 @@ public class EnigmaFragment extends Fragment implements RadioButtonDataTransfert
 
         localisationProgressDialog = new ProgressDialog(getActivity());
         localisationProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        localisationProgressDialog.show();
+        //localisationProgressDialog.show();
 
 
         View mView = inflater.inflate(R.layout.fragment_enigma, null);
@@ -158,7 +158,8 @@ public class EnigmaFragment extends Fragment implements RadioButtonDataTransfert
         scoreTextView.setText("Score : " + Integer.toString(score));
 
         getTeamById(teamId, token);
-        getLocation();
+
+       // getLocation();
 
 
          alertDialog = createDialog("");
@@ -497,7 +498,7 @@ public class EnigmaFragment extends Fragment implements RadioButtonDataTransfert
         return alertDialog;
     }
 
-
+/*
     // On recupere la geolocalisation
     @SuppressLint("MissingPermission")
     private void getLocation() {
@@ -508,10 +509,10 @@ public class EnigmaFragment extends Fragment implements RadioButtonDataTransfert
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
+    }*/
 
 
-    @Override
+   /* @Override
     public void onLocationChanged(@NonNull Location location) {
         Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());
         List<Address> addresses = null;
@@ -547,7 +548,7 @@ public class EnigmaFragment extends Fragment implements RadioButtonDataTransfert
         }
 
     }
-
+*/
 
     public static double distance(Number lat1, Number lat2, Number lon1, Number lon2) {
 

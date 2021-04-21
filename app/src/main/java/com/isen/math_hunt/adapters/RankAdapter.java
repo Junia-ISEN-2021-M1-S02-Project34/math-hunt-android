@@ -11,15 +11,16 @@ import androidx.annotation.Nullable;
 
 import com.isen.math_hunt.R;
 import com.isen.math_hunt.entities.Team;
+import com.isen.math_hunt.model.RankingResponse;
 
 import java.util.List;
 
-public class RankAdapter extends ArrayAdapter<Team> {
+public class RankAdapter extends ArrayAdapter<RankingResponse.Rank> {
 
     private Context mContext;
-    private List<Team> rankList;
+    private List<RankingResponse.Rank> rankList;
 
-    public RankAdapter(@NonNull Context context, List<Team> rankList) {
+    public RankAdapter(@NonNull Context context, List<RankingResponse.Rank> rankList) {
         super(context, 0, rankList);
         mContext = context;
         this.rankList = rankList;
@@ -32,13 +33,13 @@ public class RankAdapter extends ArrayAdapter<Team> {
         if(listItem == null)
             listItem = LayoutInflater.from(mContext).inflate(R.layout.item_ranking,parent,false);
 
-        Team currentTeam = rankList.get(position);
+        RankingResponse.Rank currentRank = rankList.get(position);
 
         TextView teamNameTextView = (TextView)listItem.findViewById(R.id.teamNameTextView);
-        teamNameTextView.setText(currentTeam.getUsername());
+        teamNameTextView.setText(currentRank.getUserName());
 
         TextView teamScoreTextView = (TextView) listItem.findViewById(R.id.geoGroupScore_textView);
-        teamScoreTextView.setText(String.valueOf(currentTeam.getScore()));
+        teamScoreTextView.setText(String.valueOf(currentRank.getScore()));
 
 
         return listItem;

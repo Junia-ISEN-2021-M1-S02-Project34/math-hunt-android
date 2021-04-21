@@ -2,53 +2,71 @@ package com.isen.math_hunt.model;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
 public class RankingResponse {
 
-    @SerializedName("score")
-    private Number score;
-    @SerializedName("gameIsFinished")
-    private boolean gameIsFinished;
-    @SerializedName("_id")
-    private String _id;
-    @SerializedName("userName")
-    private String userName;
+    private List<Rank> teams;
 
-    public RankingResponse(Number score, boolean gameIsFinished, String _id, String userName) {
-        this.score = score;
-        this.gameIsFinished = gameIsFinished;
-        this._id = _id;
-        this.userName = userName;
+    public RankingResponse(List<Rank> teams) {
+        this.teams = teams;
     }
 
-    public Number getScore() {
-        return score;
+    public List<Rank> getRankList() {
+        return teams;
     }
 
-    public void setScore(Number score) {
-        this.score = score;
+    public void setRankList(List<Rank> teams) {
+        this.teams = teams;
     }
 
-    public boolean isGameIsFinished() {
-        return gameIsFinished;
-    }
+    public class Rank{
+        @SerializedName("score")
+        private Number score;
+        @SerializedName("gameFinished")
+        private boolean gameFinished;
+        @SerializedName("_id")
+        private String _id;
+        @SerializedName("username")
+        private String username;
 
-    public void setGameIsFinished(boolean gameIsFinished) {
-        this.gameIsFinished = gameIsFinished;
-    }
+        public Rank(Number score, boolean gameIsFinished, String _id, String username) {
+            this.score = score;
+            this.gameFinished = gameIsFinished;
+            this._id = _id;
+            this.username = username;
+        }
 
-    public String get_id() {
-        return _id;
-    }
+        public Number getScore() {
+            return score;
+        }
 
-    public void set_id(String _id) {
-        this._id = _id;
-    }
+        public void setScore(Number score) {
+            this.score = score;
+        }
 
-    public String getUserName() {
-        return userName;
-    }
+        public boolean isGameIsFinished() {
+            return gameFinished;
+        }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+        public void setGameIsFinished(boolean gameIsFinished) {
+            this.gameFinished = gameIsFinished;
+        }
+
+        public String get_id() {
+            return _id;
+        }
+
+        public void set_id(String _id) {
+            this._id = _id;
+        }
+
+        public String getUserName() {
+            return username;
+        }
+
+        public void setUserName(String userName) {
+            this.username = userName;
+        }
     }
 }
