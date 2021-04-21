@@ -34,6 +34,9 @@ public class RankingFragment extends Fragment {
     private ListView rankListView;
     private RankAdapter rankAdapter;
 
+    private String token;
+    private String gameId;
+
     public RankingFragment() {
     }
 
@@ -46,6 +49,13 @@ public class RankingFragment extends Fragment {
 
         rankListView = (ListView) mView.findViewById(R.id.rankList);
         ArrayList<Team> teamList = new ArrayList<>();
+
+
+        token = getArguments().getString("TOKEN");
+        gameId = getArguments().getString("GAME_ID");
+
+        Log.d("getRanking", "token: " + token );
+        Log.d("getRanking", "gameId: " + gameId );
 
 
         rankAdapter = new RankAdapter(getActivity(),teamList);
@@ -62,6 +72,8 @@ public class RankingFragment extends Fragment {
 
                 try {
                     RankingResponse rank = response.body();
+                    Log.d("getRanking", "onResponse: " + response );
+                    Log.d("getRanking", "onResponse: " + rank.getUserName() );
 
 
 
