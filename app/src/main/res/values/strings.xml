@@ -65,5 +65,6 @@
     <string name="start_game">START GAME</string>
     <string name="stop_game">STOP GAME</string>
     <string name="rankingText">Faites vite pour trouver l’énigme finale avant les autres équipes et obtenir le plus de clés possibles!</string>
+    <string name="sucessMessage">Félicitations! \n Vous êtes arrivés au bout de cette chasse aux énigmes.\n Vous avez réussi à collecter les clés cachées par mon grand-père.\n Ces clés vous offriront la réussite absolue dans vos études qui commencent aujourd\'hui.\n\n Bonne continuation à vous et à bientôt autour d’un nouveau mystère…\n\n Elise Ségard</string>
 
 </resources>
