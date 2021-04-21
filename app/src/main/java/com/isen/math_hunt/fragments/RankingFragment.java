@@ -48,7 +48,6 @@ public class RankingFragment extends Fragment {
         ArrayList<Team> teamList = new ArrayList<>();
 
 
-
         rankAdapter = new RankAdapter(getActivity(),teamList);
         rankListView.setAdapter(rankAdapter);
 
@@ -62,7 +61,7 @@ public class RankingFragment extends Fragment {
             public void onResponse(Call<RankingResponse> call, Response<RankingResponse> response) {
 
                 try {
-                    RankingResponse currentTeam = response.body();
+                    RankingResponse rank = response.body();
 
 
 
