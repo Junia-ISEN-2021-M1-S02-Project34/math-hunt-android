@@ -1,11 +1,18 @@
 package com.isen.math_hunt.fragments;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationListener;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
@@ -37,19 +44,21 @@ import com.squareup.picasso.Picasso;
 
 import android.location.LocationManager;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class EnigmaFragment extends Fragment implements RadioButtonDataTransfertInterface/*, LocationListener*/ {
+public class EnigmaFragment extends Fragment implements RadioButtonDataTransfertInterface, LocationListener {
 
-    private static final long LOCATION_REFRESH_TIME = 5000;
-    private static final float LOCATION_REFRESH_DISTANCE = 5;
+    private static final long LOCATION_REFRESH_TIME = 1000;
+    private static final float LOCATION_REFRESH_DISTANCE = 2;
 
     private ListView enigmaListView;
     private TextView scoreTextView;
@@ -73,6 +82,8 @@ public class EnigmaFragment extends Fragment implements RadioButtonDataTransfert
     private int currentEnigmaScore;
     private TextView attemptsTextView;
 
+    private int dist;
+
 
     private int attemptsEnigmaValue;
     private int attemptsNumber;
@@ -89,6 +100,8 @@ public class EnigmaFragment extends Fragment implements RadioButtonDataTransfert
     private Number posX;
     private Number posY;
     private String address;
+    private AlertDialog alertDialogLocation;
+
 
     private String token;
     private ProgressDialog localisationProgressDialog;
@@ -113,11 +126,11 @@ public class EnigmaFragment extends Fragment implements RadioButtonDataTransfert
         enigmaProgressDialog.show();
 
 
-        /*
+
         localisationProgressDialog = new ProgressDialog(getActivity());
         localisationProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         localisationProgressDialog.show();
-*/
+
 
         View mView = inflater.inflate(R.layout.fragment_enigma, null);
 
@@ -145,10 +158,10 @@ public class EnigmaFragment extends Fragment implements RadioButtonDataTransfert
         scoreTextView.setText("Score : " + Integer.toString(score));
 
         getTeamById(teamId, token);
-        // getLocation();
+        getLocation();
 
 
-        //  createDialog("");
+         alertDialog = createDialog("");
 
         validateButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -484,20 +497,20 @@ public class EnigmaFragment extends Fragment implements RadioButtonDataTransfert
         return alertDialog;
     }
 
-/*
+
     // On recupere la geolocalisation
     @SuppressLint("MissingPermission")
     private void getLocation() {
 
         try {
-            locationManager = (LocationManager) getActivity().getSystemService(LOCATION_SERVICE);
+            locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, LOCATION_REFRESH_TIME, LOCATION_REFRESH_DISTANCE, EnigmaFragment.this);
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }*/
+    }
 
-    /*
+
     @Override
     public void onLocationChanged(@NonNull Location location) {
         Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());
@@ -508,7 +521,7 @@ public class EnigmaFragment extends Fragment implements RadioButtonDataTransfert
             addresses = geocoder.getFromLocation(posX.doubleValue(), posY.doubleValue(), 1);
             Log.d("oui","adresses : "+ addresses);
 
-            int dist = (int) distance(posX, location.getLatitude(), posY, location.getLongitude());
+             dist = (int) distance(posX, location.getLatitude(), posY, location.getLongitude());
             address = addresses.get(0).getAddressLine(0);
             Log.d("oui", "distance:" + dist);
             Log.d("oui","addr : "+ address);
@@ -518,10 +531,12 @@ public class EnigmaFragment extends Fragment implements RadioButtonDataTransfert
             while(address == null){
                 alertDialog.dismiss();
             }
-            if(dist > 5) {
-                //createDialog(address).show();
+            if(dist > 1030) {
+                alertDialog.dismiss();
+                alertDialog = createDialog(address);
+                alertDialog.show();
             }
-            if (dist < 5) {
+            if (dist < 1030) {
                 alertDialog.dismiss();
             }
 
@@ -531,7 +546,7 @@ public class EnigmaFragment extends Fragment implements RadioButtonDataTransfert
             Log.d("oui","marche pas");
         }
 
-    }*/
+    }
 
 
     public static double distance(Number lat1, Number lat2, Number lon1, Number lon2) {
@@ -558,7 +573,7 @@ public class EnigmaFragment extends Fragment implements RadioButtonDataTransfert
                 .Builder(getContext());
 
         builder.setTitle("Bravo!");
-        builder.setMessage("La prochaine énigme se trouve à l'adresse suivante : \n" + address);
+        builder.setMessage("La prochaine énigme se trouve à l'adresse suivante : \n" + address + "\nVous êtes à : " + dist + "m");
         builder.setCancelable(false);
         alertDialog = builder.create();
         return alertDialog;
