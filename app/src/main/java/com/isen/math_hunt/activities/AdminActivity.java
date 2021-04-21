@@ -37,7 +37,6 @@ public class AdminActivity extends AppCompatActivity implements AdapterView.OnIt
 
     private String currentChoice;
     private String currentId;
-    private boolean currentGameIsStarted;
 
     private List<String> gamesId = new ArrayList<>();
 
@@ -73,19 +72,9 @@ public class AdminActivity extends AppCompatActivity implements AdapterView.OnIt
 
         getAllGames();
 
-        adminStartButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startGame(currentId, token);
-            }
-        });
+        adminStartButton.setOnClickListener(v -> startGame(currentId, token));
 
-        adminStopButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                stopGame(currentId, token);
-            }
-        });
+        adminStopButton.setOnClickListener(v -> stopGame(currentId, token));
 
     }
 
@@ -93,7 +82,7 @@ public class AdminActivity extends AppCompatActivity implements AdapterView.OnIt
     public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
         currentChoice = gameName.get(position);
         currentId = gamesId.get(position);
-        currentGameIsStarted = gameIsStarted.get(position);
+        boolean currentGameIsStarted = gameIsStarted.get(position);
 
         Log.d("TAG", "currentChoice: " + currentChoice);
         Log.d("TAG", "currentId: " + currentId);
@@ -170,8 +159,6 @@ public class AdminActivity extends AppCompatActivity implements AdapterView.OnIt
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
 
-                Log.d("startGame", "onResponse: " + id);
-                Log.d("startGame", "onResponse: " + response);
                 Toast.makeText(getApplicationContext(), "Partie commencée", Toast.LENGTH_SHORT).show();
 
                 adminStartButton.setClickable(false);
