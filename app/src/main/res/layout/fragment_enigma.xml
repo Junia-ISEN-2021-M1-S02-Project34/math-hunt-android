@@ -156,11 +156,20 @@
         android:id="@+id/attemptsTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="10dp"
+        android:background="#D3D3D3"
+        app:layout_constraintBottom_toTopOf="@+id/enigmaScorePrevision"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/enigmaScorePrevision"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
         app:layout_constraintBottom_toTopOf="@+id/validateButton"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:background="#D3D3D3" />
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 
