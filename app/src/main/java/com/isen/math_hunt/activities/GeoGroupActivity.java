@@ -122,6 +122,7 @@ public class GeoGroupActivity extends AppCompatActivity implements LocationListe
                     Team team = response.body();
                     currentGeoGroupId = team.getCurrentGeoGroupId();
 
+
                     getGeoGroupById(currentGeoGroupId);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -145,7 +146,7 @@ public class GeoGroupActivity extends AppCompatActivity implements LocationListe
         layoutGeoGroup.setVisibility(View.VISIBLE);
 
         int dist = (int) distance(geoGroupPosX, location.getLatitude(), geoGroupPosY, location.getLongitude());
-        if (dist > 2000) { // changer la valeur par geoGroupRadius
+        if (dist > geoGroupRadius.intValue()) { // changer la valeur par geoGroupRadius
             geoGroupContinueButton.setEnabled(false);
             geoGroupContinueButton.setText("Encore un peu de marche!");
 
@@ -220,7 +221,7 @@ public class GeoGroupActivity extends AppCompatActivity implements LocationListe
 
                     geoGroupPosX = geoGroup.getPositionX();
                     geoGroupPosY = geoGroup.getPositionY();
-
+                    geoGroupRadius = geoGroup.getRadius();
                     Picasso.with(GeoGroupActivity.this).load(geoGroup.getPictureUrl()).fit().into(geoGroupImageView);
 
 

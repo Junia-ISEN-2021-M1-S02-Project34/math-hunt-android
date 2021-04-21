@@ -74,19 +74,13 @@ public class WaitingActivity extends AppCompatActivity {
 
         //Declare the timer
         Timer t = new Timer();
-//Set the schedule function and rate
         t.scheduleAtFixedRate(new TimerTask() {
 
                                   @Override
-                                  public void run() {
-                                      getTeamById(teamId);
+                                  public void run() { getTeamById(teamId);
                                   }
 
-                              },
-//Set how long before to start calling the TimerTask (in milliseconds)
-                0,
-//Set the amount of time between each execution (in milliseconds)
-                5000);
+                              }, 0, 5000);
 
         launchButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,6 +90,7 @@ public class WaitingActivity extends AppCompatActivity {
                 b.putString("TEAM_ID", teamId);
                 b.putString("ACCESS_TOKEN", token);
                 intent.putExtras(b); //Put your id to your next Intent
+                t.cancel();
                 startActivity(intent);
                 finish();
             }
@@ -103,7 +98,7 @@ public class WaitingActivity extends AppCompatActivity {
     }
 
     private void getGameById(String id) {
-        Call<GetGameById> call = RetrofitClient.getInstance().getMathHuntApiService().getGameById(id,token);
+        Call<GetGameById> call = RetrofitClient.getInstance().getMathHuntApiService().getGameById(id, token);
         call.enqueue(new Callback<GetGameById>() {
             @Override
             public void onResponse(Call<GetGameById> call, Response<GetGameById> response) {
@@ -139,7 +134,7 @@ public class WaitingActivity extends AppCompatActivity {
     }
 
     private void getTeamById(String id) {
-        Call<Team> call = RetrofitClient.getInstance().getMathHuntApiService().getTeamById(id,token);
+        Call<Team> call = RetrofitClient.getInstance().getMathHuntApiService().getTeamById(id, token);
         call.enqueue(new Callback<Team>() {
 
             @Override

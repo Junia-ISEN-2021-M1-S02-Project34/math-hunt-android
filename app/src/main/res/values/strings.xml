@@ -62,5 +62,7 @@
     <string name="progressionText">Alors où en êtes vous? \n J’ai noté pour vous votre progression dans cette chasse aux énigmes.</string>
     <string name="adminid">AdminId</string>
     <string name="retour">Retour</string>
+    <string name="start_game">START GAME</string>
+    <string name="stop_game">STOP GAME</string>
 
 </resources>

@@ -20,6 +20,7 @@ import com.isen.math_hunt.model.HintId;
 import com.isen.math_hunt.model.HintList;
 import com.isen.math_hunt.model.ProgressionPost;
 import com.isen.math_hunt.model.GeoGroupList;
+import com.isen.math_hunt.model.RankingResponse;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -95,9 +96,15 @@ public interface MathHuntApiService {
     Call<GetGameById> getGameById(@Path("id") String id,@Header("x-access-token") String token);
 
     @Headers({"Content-Type: application/json"})
-    @PUT("start/game/{id}")
-    Call<Game> startGame(@Path("id") String id, @Body Game body);
+    @PUT("games/start/game/{id}")
+    Call<ResponseBody> startGame(@Path("id") String id,@Header("x-access-token") String token);
 
+    @Headers({"Content-Type: application/json"})
+    @PUT("games/stop/game/{id}")
+    Call<ResponseBody> stopGame(@Path("id") String id,@Header("x-access-token") String token);
+
+    @GET("games/get/teams/ranking/game/{id}")
+    Call<RankingResponse> getRanking(@Path("id") String id, @Header("x-access-token") String token);
 
     //================================================================================
     // TeamCall
@@ -178,7 +185,10 @@ public interface MathHuntApiService {
     //================================================================================
 
     @POST("auth/sign-in/team")
-    Call<LoginResponse> loginTeam(@Body Login login);
+    Call<LoginResponse> signInTeam(@Body Login login);
+
+    @POST("auth/sign-in/admin")
+    Call<LoginResponse> signInAdmin(@Body Login login);
 
     //================================================================================
     //
