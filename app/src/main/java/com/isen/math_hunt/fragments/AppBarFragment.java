@@ -1,9 +1,9 @@
 package com.isen.math_hunt.fragments;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,10 +12,7 @@ import android.widget.ImageButton;
 import androidx.fragment.app.Fragment;
 
 import com.isen.math_hunt.R;
-import com.isen.math_hunt.activities.GameActivity;
-import com.isen.math_hunt.activities.GeoGroupActivity;
 import com.isen.math_hunt.activities.LoginActivity;
-import com.isen.math_hunt.activities.SuccessActivity;
 
 
 public class AppBarFragment extends Fragment {
@@ -30,21 +27,17 @@ public class AppBarFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        View mView = inflater.inflate(R.layout.widget_app_bar, null);
+        @SuppressLint("InflateParams") View mView = inflater.inflate(R.layout.widget_app_bar, null);
 
 
         ImageButton logOutButton = (ImageButton) mView.findViewById(R.id.logOutButton);
 
-        logOutButton.setOnClickListener(v -> {
-            Log.d("buttondd", "onCreateView: ");
-            AlertDialog logOutDialog = createLogOutDialog();
-            logOutDialog.show();
-        });
+        logOutButton.setOnClickListener(v -> createLogOutDialog());
         return mView;
     }
 
 
-    public AlertDialog createLogOutDialog() {
+    public void createLogOutDialog() {
         AlertDialog.Builder builder
                 = new AlertDialog
                 .Builder(getActivity());
@@ -62,14 +55,9 @@ public class AppBarFragment extends Fragment {
                         });
         builder.setNegativeButton(
                 "Non",
-                (dialog, which) -> {
-
-                    dialog.cancel();
-
-                });
+                (dialog, which) -> dialog.cancel());
         AlertDialog alertDialog = builder.create();
-
-        return alertDialog;
+        alertDialog.show();
     }
 
 }
