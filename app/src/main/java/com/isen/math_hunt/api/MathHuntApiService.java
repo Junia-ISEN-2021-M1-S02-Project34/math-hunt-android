@@ -20,6 +20,7 @@ import com.isen.math_hunt.model.HintId;
 import com.isen.math_hunt.model.HintList;
 import com.isen.math_hunt.model.ProgressionPost;
 import com.isen.math_hunt.model.GeoGroupList;
+import com.isen.math_hunt.model.RankingResponse;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -101,6 +102,9 @@ public interface MathHuntApiService {
     @Headers({"Content-Type: application/json"})
     @PUT("games/stop/game/{id}")
     Call<ResponseBody> stopGame(@Path("id") String id,@Header("x-access-token") String token);
+
+    @GET("games/get/teams/ranking/game/{id}")
+    Call<RankingResponse> getRanking(@Path("id") String id, @Header("x-access-token") String token);
 
     //================================================================================
     // TeamCall

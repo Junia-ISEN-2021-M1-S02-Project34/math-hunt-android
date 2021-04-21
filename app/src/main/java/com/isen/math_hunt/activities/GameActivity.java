@@ -44,6 +44,8 @@ public class GameActivity extends AppCompatActivity implements CurrentEnigmaIdIn
     private int score;
     private List<String> usedHintsIds = new ArrayList<>();
 
+    private String gameId;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,6 +119,7 @@ public class GameActivity extends AppCompatActivity implements CurrentEnigmaIdIn
                             Bundle rankingBundle = new Bundle();
                             rankingBundle.putString("TEAM_ID", teamId);
                             rankingBundle.putString("ACCESS_TOKEN", token);
+                            rankingBundle.putString("GAME_ID", gameId);
                             Fragment rankingFragment = new RankingFragment();
                             rankingFragment.setArguments(rankingBundle);
                             transaction = getSupportFragmentManager().beginTransaction();
@@ -140,11 +143,10 @@ public class GameActivity extends AppCompatActivity implements CurrentEnigmaIdIn
 
                 try {
                     currentTeam = response.body();
-                    Log.d("ET MERDE", "onResponse: " + response);
                     currentEnigmaId = currentTeam.getCurrentEnigmaId();
                     currentGeoGroupId = currentTeam.getCurrentGeoGroupId();
+                    gameId = currentTeam.getGameId();
                     score = currentTeam.getScore();
-                    Log.d("prouti", "onCreateView: " + score);
 
                     List<Progression> progressionList = currentTeam.getProgression();
 
@@ -158,6 +160,7 @@ public class GameActivity extends AppCompatActivity implements CurrentEnigmaIdIn
                     enigmaBundle.putInt("ATTEMPTS_NUMBER", attemptsNumber);
                     enigmaBundle.putString("ACCESS_TOKEN", token);
                     enigmaBundle.putInt("SCORE", score);
+                    enigmaBundle.putString("GAME_ID", gameId);
 
 
                     Fragment enigmaFragment = new EnigmaFragment();
@@ -189,21 +192,7 @@ public class GameActivity extends AppCompatActivity implements CurrentEnigmaIdIn
 
     }
 
-    public void setUsedHintsIds(final List<Progression> progressionList, final String geoGroupId, final String enigmaId) {
-        progressionList.stream().filter(progression -> progression.getGeoGroupId().equals(geoGroupId)).forEach(
-                progression -> {
-                    List<EnigmasProgression> enigmasProgressionList = progression.getEnigmasProgression();
 
-                    enigmasProgressionList.stream().filter(enigmasProgression -> enigmasProgression.getEnigmaId().equals(enigmaId)).forEach(
-                            enigmasProgression -> {
-                                usedHintsIds = enigmasProgression.getUsedHintsIds();
-
-
-                            }
-                    );
-                }
-        );
-    }
 
     public void getAttemptsNumber(final List<Progression> progressionList, final String geoGroupId, final String enigmaId) {
         progressionList.stream().filter(progression -> progression.getGeoGroupId().equals(geoGroupId)).forEach(
