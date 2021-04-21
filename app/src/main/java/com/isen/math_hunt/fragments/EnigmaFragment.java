@@ -159,81 +159,53 @@ public class EnigmaFragment extends Fragment implements RadioButtonDataTransfert
             @Override
             public void onClick(View v) {
 
-                Log.d("TAG", "onClick: " + attemptsEnigmaValue);
+                Log.d("attemptsNumber", "attemptsEnigmaValue: " + attemptsEnigmaValue);
                 Log.d("attemptsNumber", "attemptsNumber: " + attemptsNumber);
 
-                if (attemptsNumber < attemptsEnigmaValue) {
 
-                    if (isMcq) {
-                        userAnswer = currentMcqAnswerValue.toLowerCase();
+                if (isMcq) {
+                    userAnswer = currentMcqAnswerValue.toLowerCase();
 
-                    } else
-                        userAnswer = answerTextField.getEditText().getText().toString().toLowerCase();
+                } else
+                    userAnswer = answerTextField.getEditText().getText().toString().toLowerCase();
 
-                    if (userAnswer.equals(enigmaAnswer.toLowerCase())) {
-                        ProgressionPost progressionPost = new ProgressionPost(currentEnigmaId, true);
-                        updateTeamProgression(teamId, progressionPost, token);
+                if (userAnswer.equals(enigmaAnswer.toLowerCase())) {
+                    ProgressionPost progressionPost = new ProgressionPost(currentEnigmaId, true);
+                    updateTeamProgression(teamId, progressionPost, token);
 
 
-                    } else if (userAnswer.isEmpty()) {
-                        AlertDialog.Builder builder
-                                = new AlertDialog
-                                .Builder(getActivity());
-
-                        builder.setTitle("Oups ...");
-                        builder.setMessage("Il semble que ta réponse est vide !");
-                        builder.setCancelable(false);
-                        builder
-                                .setPositiveButton(
-                                        "Réésayer",
-                                        new DialogInterface
-                                                .OnClickListener() {
-
-                                            @Override
-                                            public void onClick(DialogInterface dialog,
-                                                                int which) {
-                                                // When the user click yes button
-                                                // then app will close
-                                                dialog.cancel();
-                                            }
-                                        });
-                        AlertDialog alertDialog = builder.create();
-                        alertDialog.show();
-                    } else {
-                        updateAttemptsNumber(teamId, token);
-                    }
-
-                } else {
+                } else if (userAnswer.isEmpty()) {
                     AlertDialog.Builder builder
                             = new AlertDialog
                             .Builder(getActivity());
 
-                    builder.setTitle("Mince vous n'avez plus d'essai disponible");
-                    builder.setMessage("Passer à l'énigme suivante ");
+                    builder.setTitle("Oups ...");
+                    builder.setMessage("Il semble que ta réponse est vide !");
                     builder.setCancelable(false);
                     builder
                             .setPositiveButton(
-                                    "Continuer",
+                                    "Réésayer",
                                     new DialogInterface
                                             .OnClickListener() {
 
                                         @Override
                                         public void onClick(DialogInterface dialog,
                                                             int which) {
-
-                                            ProgressionPost progressionPost = new ProgressionPost(currentEnigmaId, false);
-                                            updateTeamProgression(teamId, progressionPost, token);
-
-
+                                            // When the user click yes button
+                                            // then app will close
                                             dialog.cancel();
-
                                         }
                                     });
                     AlertDialog alertDialog = builder.create();
                     alertDialog.show();
+                } else {
+                    updateAttemptsNumber(teamId, token);
                 }
 
+
             }
+
+
         });
 
         return mView;
@@ -262,9 +234,8 @@ public class EnigmaFragment extends Fragment implements RadioButtonDataTransfert
                     attemptsEnigmaValue = fullEnigma.getAnswer().getAttemptsNumber();
                     currentEnigmaScore = fullEnigma.getEnigma().getScoreValue();
 
-                    teamEnigmaScoreValue =  currentEnigmaScore+ teamEnigmaScoreValue;
+                    teamEnigmaScoreValue = currentEnigmaScore + teamEnigmaScoreValue;
                     enigmaScorePrevision.setText("Vous pouvez gagner : " + (teamEnigmaScoreValue));
-
 
 
                     if (fullEnigma.getAnswer().isMcq()) {
@@ -386,25 +357,51 @@ public class EnigmaFragment extends Fragment implements RadioButtonDataTransfert
                     attemptsNumber = attemptsNumberResponse.intValue();
                     attemptsTextView.setText("Nombre d'essaies restant :" + (attemptsEnigmaValue - attemptsNumber));
 
-                    Log.d("SCOREWTG", "teamEnigmaScoreValueAvant: " + teamEnigmaScoreValue);
-                    Log.d("SCOREWTG", "currentEnigmaScore: " + currentEnigmaScore);
-                    Log.d("SCOREWTG", + teamEnigmaScoreValue + "-" + (currentEnigmaScore * 1 / 4));
+
+                    Log.d("attemptsNumber", "Quand j'ai update la valeur est attempt : " + attemptsNumber);
 
 
-
-                    if ((teamEnigmaScoreValue - (currentEnigmaScore * 1 / 4))<0){
+                    if ((teamEnigmaScoreValue - (currentEnigmaScore * 1 / 4)) < 0) {
                         teamEnigmaScoreValue = 0;
-                    }else {teamEnigmaScoreValue = (teamEnigmaScoreValue - (currentEnigmaScore * 1 / 4));
+                    } else {
+                        teamEnigmaScoreValue = (teamEnigmaScoreValue - (currentEnigmaScore * 1 / 4));
 
                     }
 
                     enigmaScorePrevision.setText("Vous D gagner : " + Integer.toString(teamEnigmaScoreValue));
-                    Log.d("SCOREWTG", "teamEnigmaScoreValueAprès: " + teamEnigmaScoreValue);
 
-                    ((GameActivity) getActivity()).updateAttemptsNumber(attemptsNumber);
-                    AlertDialog alertDialog = createBadAnswerDialog();
-                    alertDialog.show();
+                    if (attemptsNumber>=attemptsEnigmaValue){
+                        AlertDialog.Builder builder
+                                = new AlertDialog
+                                .Builder(getActivity());
 
+                        builder.setTitle("Mince vous n'avez plus d'essai disponible");
+                        builder.setMessage("Passer à l'énigme suivante ");
+                        builder.setCancelable(false);
+                        builder
+                                .setPositiveButton(
+                                        "Continuer",
+                                        new DialogInterface
+                                                .OnClickListener() {
+
+                                            @Override
+                                            public void onClick(DialogInterface dialog,
+                                                                int which) {
+
+                                                ProgressionPost progressionPost = new ProgressionPost(currentEnigmaId, false);
+                                                updateTeamProgression(teamId, progressionPost, token);
+
+
+                                                dialog.cancel();
+
+                                            }
+                                        });
+                        AlertDialog alertDialog = builder.create();
+                        alertDialog.show();
+                    }else {
+                        AlertDialog alertDialog = createBadAnswerDialog();
+                        alertDialog.show();
+                    }
 
                     ((GameActivity) getActivity()).updateAttemptsNumber(attemptsNumber);
 
