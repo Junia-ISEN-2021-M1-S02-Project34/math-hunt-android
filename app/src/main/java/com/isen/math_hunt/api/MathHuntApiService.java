@@ -95,9 +95,12 @@ public interface MathHuntApiService {
     Call<GetGameById> getGameById(@Path("id") String id,@Header("x-access-token") String token);
 
     @Headers({"Content-Type: application/json"})
-    @PUT("start/game/{id}")
-    Call<?> startGame(@Path("id") String id,@Header("x-access-token") String token);
+    @PUT("games/start/game/{id}")
+    Call<ResponseBody> startGame(@Path("id") String id,@Header("x-access-token") String token);
 
+    @Headers({"Content-Type: application/json"})
+    @PUT("games/stop/game/{id}")
+    Call<ResponseBody> stopGame(@Path("id") String id,@Header("x-access-token") String token);
 
     //================================================================================
     // TeamCall

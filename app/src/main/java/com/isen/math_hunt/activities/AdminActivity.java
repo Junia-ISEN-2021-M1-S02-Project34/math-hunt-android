@@ -1,7 +1,6 @@
 package com.isen.math_hunt.activities;
 
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -14,17 +13,14 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.isen.math_hunt.R;
 import com.isen.math_hunt.adapters.SpinnerAdapter;
-import com.isen.math_hunt.entities.EnigmasProgression;
 import com.isen.math_hunt.entities.Game;
-import com.isen.math_hunt.entities.Login;
-import com.isen.math_hunt.entities.LoginResponse;
-import com.isen.math_hunt.entities.Progression;
 import com.isen.math_hunt.model.GetAllGames;
 import com.isen.math_hunt.model.RetrofitClient;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -33,14 +29,22 @@ public class AdminActivity extends AppCompatActivity implements AdapterView.OnIt
 
     private GetAllGames games;
     private List<String> gameName = new ArrayList<>();
-    ;
+
     private Spinner spin;
     private ProgressDialog progressDialog;
 
     private String token;
 
     private String currentChoice;
-    private List<String> gamesId = new ArrayList<String>();
+    private String currentId;
+    private boolean currentGameIsStarted;
+
+    private List<String> gamesId = new ArrayList<>();
+
+    Button adminStartButton;
+    Button adminStopButton;
+
+    private List<Boolean> gameIsStarted = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,22 +62,58 @@ public class AdminActivity extends AppCompatActivity implements AdapterView.OnIt
         spin = (Spinner) findViewById(R.id.spinnerParty);
         spin.setOnItemSelectedListener(this);
 
-        Button adminStartButton = (Button) findViewById(R.id.adminStartButton);
+         adminStartButton = (Button) findViewById(R.id.adminStartButton);
+         adminStopButton = (Button) findViewById(R.id.adminStopButton);
+
+        adminStopButton.setClickable(false);
+        adminStopButton.setEnabled(false);
+
+        adminStartButton.setClickable(false);
+        adminStartButton.setEnabled(false);
+
+        getAllGames();
 
         adminStartButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startGame(currentChoice);
+                startGame(currentId, token);
             }
         });
 
+        adminStopButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                stopGame(currentId, token);
+            }
+        });
 
-        getAllGames();
     }
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
-        String currentChoice = gameName.get(position);
+        currentChoice = gameName.get(position);
+        currentId = gamesId.get(position);
+        currentGameIsStarted = gameIsStarted.get(position);
+
+        Log.d("TAG", "currentChoice: " + currentChoice);
+        Log.d("TAG", "currentId: " + currentId);
+
+        if (currentGameIsStarted){
+            adminStartButton.setClickable(false);
+            adminStartButton.setEnabled(false);
+
+            adminStopButton.setClickable(true);
+            adminStopButton.setEnabled(true);
+
+        }else {
+            adminStartButton.setClickable(true);
+            adminStartButton.setEnabled(true);
+
+            adminStopButton.setClickable(false);
+            adminStopButton.setEnabled(false);
+        }
+
+
     }
 
     @Override
@@ -92,7 +132,8 @@ public class AdminActivity extends AppCompatActivity implements AdapterView.OnIt
                     games = response.body();
 
 
-                    getGameName(games.getGames());
+                    Log.d("getAllGames", "onResponse: good" );
+                    getGameInfo(games.getGames());
 
                     SpinnerAdapter customAdapter = new SpinnerAdapter(getApplicationContext(), gameName);
                     spin.setAdapter(customAdapter);
@@ -111,19 +152,75 @@ public class AdminActivity extends AppCompatActivity implements AdapterView.OnIt
         });
     }
 
-    public void getGameName(final List<Game> gameList) {
+    public void getGameInfo(final List<Game> gameList) {
+        Log.d("getGameInfo", "onResponse: good" );
+
         gameList.stream().forEach(
                 game -> {
                     gameName.add(game.getName());
                     gamesId.add(game.get_id());
+                    gameIsStarted.add(game.isStarted());
+
                 });
     }
 
-    private void startGame(String id) {
-        Call<?> call = RetrofitClient.getInstance().getMathHuntApiService().startGame(id, token); }
+    private void startGame(String id, String token) {
+        Call<ResponseBody> call = RetrofitClient.getInstance().getMathHuntApiService().startGame(id, token);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+
+                Log.d("startGame", "onResponse: " + id);
+                Log.d("startGame", "onResponse: " + response);
+                Toast.makeText(getApplicationContext(), "Partie commencée", Toast.LENGTH_SHORT).show();
+
+                adminStartButton.setClickable(false);
+                adminStartButton.setEnabled(false);
+
+                adminStopButton.setClickable(true);
+                adminStopButton.setEnabled(true);
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+
+            }
+        });
 
 
     }
 
+    private void stopGame(String id, String token) {
+        Call<ResponseBody> call = RetrofitClient.getInstance().getMathHuntApiService().stopGame(id, token);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+
+                Log.d("startGame", "onResponse: " + id);
+                Log.d("startGame", "onResponse: " + response);
+                Toast.makeText(getApplicationContext(), "Partie arrêtée", Toast.LENGTH_SHORT).show();
+
+                adminStartButton.setClickable(true);
+                adminStartButton.setEnabled(true);
+
+                adminStopButton.setClickable(false);
+                adminStopButton.setEnabled(false);
+
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+
+    }
+
+
 }
+
+
 
