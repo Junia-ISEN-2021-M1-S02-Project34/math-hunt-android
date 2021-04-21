@@ -1,18 +1,11 @@
 package com.isen.math_hunt.fragments;
 
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.location.Address;
-import android.location.Geocoder;
-import android.location.Location;
-import android.location.LocationListener;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
@@ -44,11 +37,9 @@ import com.squareup.picasso.Picasso;
 
 import android.location.LocationManager;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Locale;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -82,6 +73,7 @@ public class EnigmaFragment extends Fragment implements RadioButtonDataTransfert
     private int currentEnigmaScore;
     private TextView attemptsTextView;
 
+    private List<Progression> progressionList;
     private int dist;
 
 
@@ -126,7 +118,6 @@ public class EnigmaFragment extends Fragment implements RadioButtonDataTransfert
         enigmaProgressDialog.show();
 
 
-
         localisationProgressDialog = new ProgressDialog(getActivity());
         localisationProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         //localisationProgressDialog.show();
@@ -159,16 +150,19 @@ public class EnigmaFragment extends Fragment implements RadioButtonDataTransfert
 
         getTeamById(teamId, token);
 
-       // getLocation();
+        // getLocation();
 
 
-         alertDialog = createDialog("");
+        alertDialog = createDialog("");
 
         validateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                if (attemptsNumber != attemptsEnigmaValue - 1) {
+                Log.d("TAG", "onClick: " + attemptsEnigmaValue);
+                Log.d("attemptsNumber", "attemptsNumber: " + attemptsNumber);
+
+                if (attemptsNumber < attemptsEnigmaValue) {
 
                     if (isMcq) {
                         userAnswer = currentMcqAnswerValue.toLowerCase();
@@ -254,6 +248,7 @@ public class EnigmaFragment extends Fragment implements RadioButtonDataTransfert
 
                 try {
                     enigmaProgressDialog.dismiss();
+                    getScoreProgression();
 
                     FullEnigma fullEnigma = response.body();
                     posX = fullEnigma.getEnigma().getPositionX();
@@ -267,7 +262,9 @@ public class EnigmaFragment extends Fragment implements RadioButtonDataTransfert
                     attemptsEnigmaValue = fullEnigma.getAnswer().getAttemptsNumber();
                     currentEnigmaScore = fullEnigma.getEnigma().getScoreValue();
 
-                    enigmaScorePrevision.setText("Vous pouvez gagner : " + (currentEnigmaScore + teamEnigmaScoreValue));
+                    teamEnigmaScoreValue =  currentEnigmaScore+ teamEnigmaScoreValue;
+                    enigmaScorePrevision.setText("Vous pouvez gagner : " + (teamEnigmaScoreValue));
+
 
 
                     if (fullEnigma.getAnswer().isMcq()) {
@@ -387,19 +384,26 @@ public class EnigmaFragment extends Fragment implements RadioButtonDataTransfert
                     Integer attemptsNumberResponse = response.body();
 
                     attemptsNumber = attemptsNumberResponse.intValue();
-                    Log.d("Attempts", "onResponse: " + attemptsNumber);
                     attemptsTextView.setText("Nombre d'essaies restant :" + (attemptsEnigmaValue - attemptsNumber));
 
-                    teamEnigmaScoreValue =currentEnigmaScore + teamEnigmaScoreValue - (currentEnigmaScore * 1 / 4);
-                    enigmaScorePrevision.setText("Vous pouvez gagner : " + Integer.toString(teamEnigmaScoreValue));
+                    Log.d("SCOREWTG", "teamEnigmaScoreValueAvant: " + teamEnigmaScoreValue);
+                    Log.d("SCOREWTG", "currentEnigmaScore: " + currentEnigmaScore);
+                    Log.d("SCOREWTG", + teamEnigmaScoreValue + "-" + (currentEnigmaScore * 1 / 4));
+
+
+
+                    if ((teamEnigmaScoreValue - (currentEnigmaScore * 1 / 4))<0){
+                        teamEnigmaScoreValue = 0;
+                    }else {teamEnigmaScoreValue = (teamEnigmaScoreValue - (currentEnigmaScore * 1 / 4));
+
+                    }
+
+                    enigmaScorePrevision.setText("Vous D gagner : " + Integer.toString(teamEnigmaScoreValue));
+                    Log.d("SCOREWTG", "teamEnigmaScoreValueAprès: " + teamEnigmaScoreValue);
 
                     ((GameActivity) getActivity()).updateAttemptsNumber(attemptsNumber);
                     AlertDialog alertDialog = createBadAnswerDialog();
                     alertDialog.show();
-                    Log.d("attemptsNumber", "attemptsNumberEnigma: " + attemptsNumber);
-
-                    Log.d("ALORS", "onResponse: " + teamEnigmaScoreValue);
-
 
 
                     ((GameActivity) getActivity()).updateAttemptsNumber(attemptsNumber);
@@ -589,8 +593,9 @@ public class EnigmaFragment extends Fragment implements RadioButtonDataTransfert
 
                 try {
                     Team currentTeam = response.body();
-
-                    getScoreProgressionByEnigmaId(currentTeam.getProgression(), currentTeam.getCurrentGeoGroupId(), currentTeam.getCurrentEnigmaId());
+                    currentGeoGroupId = currentTeam.getCurrentGeoGroupId();
+                    currentEnigmaId = currentTeam.getCurrentEnigmaId();
+                    progressionList = currentTeam.getProgression();
                     getFullEnigmaById(currentEnigmaId, token);
 
                 } catch (Exception e) {
@@ -607,12 +612,12 @@ public class EnigmaFragment extends Fragment implements RadioButtonDataTransfert
         });
     }
 
-    public void getScoreProgressionByEnigmaId(final List<Progression> progressionList, final String geoGroupId, final String enigmaId) {
-        progressionList.stream().filter(progression -> progression.getGeoGroupId().equals(geoGroupId)).forEach(
+    public void getScoreProgression() {
+        progressionList.stream().filter(progression -> progression.getGeoGroupId().equals(currentGeoGroupId)).forEach(
                 progression -> {
                     List<EnigmasProgression> enigmasProgressionList = progression.getEnigmasProgression();
 
-                    enigmasProgressionList.stream().filter(enigmasProgression -> enigmasProgression.getEnigmaId().equals(enigmaId)).forEach(
+                    enigmasProgressionList.stream().filter(enigmasProgression -> enigmasProgression.getEnigmaId().equals(currentEnigmaId)).forEach(
                             enigmasProgression -> {
                                 teamEnigmaScoreValue = enigmasProgression.getScore();
                             }

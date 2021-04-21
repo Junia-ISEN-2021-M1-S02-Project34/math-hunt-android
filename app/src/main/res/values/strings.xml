@@ -64,5 +64,6 @@
     <string name="retour">Retour</string>
     <string name="start_game">START GAME</string>
     <string name="stop_game">STOP GAME</string>
+    <string name="rankingText">Faites vite pour trouver l’énigme finale avant les autres équipes et obtenir le plus de clés possibles!</string>
 
 </resources>
