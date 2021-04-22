@@ -433,8 +433,7 @@ public class EnigmaFragment extends Fragment implements RadioButtonDataTransfert
                 .Builder(getActivity());
 
         builder.setTitle("Bravo vous avez réussi cette enigme");
-        builder.setMessage("vous avez gagné " + teamEnigmaScoreValue + " point \n" +
-                "Maintenant rendez vous ici : " + nextEnigmaAddress);
+        builder.setMessage("vous avez gagné " + teamEnigmaScoreValue + " clés \n \n Maintenant passer à l'énigme suivante" );
         builder.setCancelable(false);
         builder
                 .setPositiveButton(
