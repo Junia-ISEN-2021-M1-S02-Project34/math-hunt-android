@@ -575,6 +575,17 @@ public class EnigmaFragment extends Fragment implements RadioButtonDataTransfert
                     progressionList = currentTeam.getProgression();
                     getFullEnigmaById(currentEnigmaId, token);
 
+                    boolean gameIsFinish = currentTeam.getGameFinished();
+
+                    if (gameIsFinish){
+                        Intent intent = new Intent(getContext(), SuccessActivity.class);
+                        Bundle b = new Bundle();
+                        b.putString("TEAM_ID", teamId);
+                        b.putString("ACCESS_TOKEN", token);
+                        intent.putExtras(b); //Put your id to your next Intent
+                        startActivity(intent);
+                    }
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

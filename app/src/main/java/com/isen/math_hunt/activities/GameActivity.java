@@ -87,7 +87,6 @@ public class GameActivity extends AppCompatActivity implements CurrentEnigmaIdIn
                             enigmaFragment.setArguments(enigmaBundle);
                             transaction = getSupportFragmentManager().beginTransaction();
                             transaction.replace(R.id.gameContainer, enigmaFragment);
-                            transaction.addToBackStack(null);
                             transaction.commit();
                             break;
                         case R.id.page_2:
@@ -100,7 +99,6 @@ public class GameActivity extends AppCompatActivity implements CurrentEnigmaIdIn
                             hintFragment.setArguments(hintBundle);
                             transaction = getSupportFragmentManager().beginTransaction();
                             transaction.replace(R.id.gameContainer, hintFragment);
-                            transaction.addToBackStack(null);
                             transaction.commit();
                             break;
                         case R.id.page_3:
@@ -112,7 +110,6 @@ public class GameActivity extends AppCompatActivity implements CurrentEnigmaIdIn
                             progressionFragment.setArguments(progressionBundle);
                             transaction = getSupportFragmentManager().beginTransaction();
                             transaction.replace(R.id.gameContainer, progressionFragment);
-                            transaction.addToBackStack(null);
                             transaction.commit();
                             break;
                         case R.id.page_4:
@@ -124,7 +121,6 @@ public class GameActivity extends AppCompatActivity implements CurrentEnigmaIdIn
                             rankingFragment.setArguments(rankingBundle);
                             transaction = getSupportFragmentManager().beginTransaction();
                             transaction.replace(R.id.gameContainer, rankingFragment);
-                            transaction.addToBackStack(null);
                             transaction.commit();
                             break;
                     }

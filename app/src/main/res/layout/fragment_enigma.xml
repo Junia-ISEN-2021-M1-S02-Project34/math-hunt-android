@@ -155,16 +155,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/scrollView3" />
 
-    <ImageView
-        android:id="@+id/imageView4"
-        android:layout_width="65dp"
-        android:layout_height="60dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/logoapp" />
-
     <TextView
         android:id="@+id/attemptsTextView"
         android:layout_width="wrap_content"
