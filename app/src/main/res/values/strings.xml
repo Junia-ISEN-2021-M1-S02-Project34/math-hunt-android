@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">math-hunt</string>
+    <string name="id_team">idTeam</string>
+    <string name="admin_button">admin</string>
+    <string name="login_button">login</string>
+    <string name="password">password</string>
+    <string name="classement_title">CLASSEMENT</string>
+    <string name="imagetest">imagetest</string>
+    <string name="Progression" />
+    <string name="Indices" />
+    <string name="Enigmes" />
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="drawerhunt1" />
+    <string name="drawerhunt2" />
+    <string name="drawerhunt3" />
+    <string name="hint_fragm" />
+    <string name="debloquer">Debloquer</string>
+    <string name="score">score</string>
+    <string name="enigma_rank">enigma rank</string>
+    <string name="enigma_title">enigma title</string>
+    <string name="description_enigma">description enigma</string>
+    <string name="question_enigma">question</string>
+    <string name="validate_button">question</string>
+    <string name="validateButton">Validate</string>
+    <string name="geogroupe_text">A la découverte de ...</string>
+    <string name="geogroupe_explication">Où se trouve cette image ? Rendez-vous dans cette zone pour découvrir les énigmes qui s\'y cache. N\'hésitez pas à demander de l\'aide aux passants !</string>
+    <string name="geogroup_distance">Vous êtes à x mètres de la zone !</string>
+    <string name="geogroup_button">Vous y êtes !</string>
+    <string name="continueButtonText">Vous y êtes</string>
+    <string name="geoGroupDistanceTextField">Vous êtes à x mètre de la zone</string>
+    <string name="geoGroupTitleTextField">A la découverte de ...</string>
+    <string name="geoGroupDescriptionTextField">D\'où vient cette image ? Rendez-vous dans cette zone pour débuter les énigmes ! N\'hésitez pas à demander de l\'aide aux passants !</string>
+    <string name="story">Histoire et introduction au jeu de pistes</string>
+    <string name="launchGame">Lancer la partie</string>
+    <string name="hint">indice</string>
+    <string name="enigma">enigme</string>
+    <string name="progression">progression</string>
+    <string name="leaderBoard">classement</string>
+    <string name="radioButtonAnswer">Answer</string>
+    <string name="AnswerTextFieldHint">Réponse</string>
+    <string name="idTeam">idTeam</string>
+    <string name="textProgression">Alors, vous en êtes où? \n  J\'ai noté pour vous  votre progression dans cette chasse aux énigmes.</string>
+    <string name="textHint">Besoin d\'un coup de main? \n Mon grand-père a caché des indices dans ses carnets mais cela vous coûtera quelque clés... </string>
+    <string-array name="parties">
+        <item>Partie1</item>
+        <item>Partie2</item>
+        <item>Partie3</item>
+        <item>Partie4</item>
+        <item>Partie5</item>
+        <item>Partie6</item>
+    </string-array>
+    <string name="login">Login</string>
+    <string name="admin">Admin</string>
+    <string name="introduction">Chers étudiants,\n\n Vous ne me connaissez pas, mais vous avez sûrement entendu le nom de mon grand-père, Norbert Ségard. \n J\'ai une certaine passion pour les sciences et les mathématiques et voyez-vous, c\'est une passion familiale. Mon grand-père m\'a transmis tous ses carnets de notes avant de mourir et j\'y ai découvert pleins d\'expériences et de mystères scientifiques qu\'il a étudié tout au long de sa vie. \n Mais alors quel rapport avec vous? Et bien il y a peu, j\'ai découvert dans un de ses carnets qu\'après avoir créé une certaine école d\'ingénieur appelé ISEN en 1956, il a dissimulé plusieurs énigmes mathématiques un peu partout dans la ville de Lille. \n Il précise que ceux qui réussiraient à les trouver et les résoudre obtiendrait la clé d\'un réussite inexplicable dans leurs études. A condition d’être assez rapide et de récolter assez de clés. \n \n Alors que diriez-vous d\'une chasse aux maths? \n\n Elise Ségard</string>
+    <string name="delockButton">Débloquer</string>
+    <string name="nextIndice">Votre indice est le suivant</string>
+    <string name="valider">Valider</string>
+    <string name="hintTextr">Besoin d’un coup de main? \n Mon grand-père a caché des indices dans ses carnets mais cela vous coûtera quelques clés…</string>
+    <string name="progressionText">Alors où en êtes vous? \n J’ai noté pour vous votre progression dans cette chasse aux énigmes.</string>
+    <string name="adminid">AdminId</string>
+    <string name="retour">Retour</string>
+    <string name="start_game">START GAME</string>
+    <string name="stop_game">STOP GAME</string>
+    <string name="rankingText">Faites vite pour trouver l’énigme finale avant les autres équipes et obtenir le plus de clés possibles!</string>
+    <string name="sucessMessage">Félicitations! \n Vous êtes arrivés au bout de cette chasse aux énigmes.\n Vous avez réussi à collecter les clés cachées par mon grand-père.\n Ces clés vous offriront la réussite absolue dans vos études qui commencent aujourd\'hui.\n\n Bonne continuation à vous et à bientôt autour d’un nouveau mystère…\n\n Elise Ségard</string>
+
+</resources>

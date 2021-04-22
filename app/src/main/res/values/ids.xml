@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="list_links" type="id" />
+    <item name="hintNameTextView" type="id" />
+    <item name="hintPenaltyTextView" type="id" />
+    <item name="hintListView" type="id" />
+    <item name="disconnectButton" type="id" />
+    <item name="imageView2" type="id" />
+    <item name="toolbar" type="id" />
+    <item name="appbar" type="id" />
+    <item name="appBarMathHunt" type="id" />
+</resources>
