@@ -1,34 +1,21 @@
 package com.isen.math_hunt.activities;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ScrollView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.isen.math_hunt.api.MathHuntApiService;
+import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.material.textfield.TextInputLayout;
 import com.isen.math_hunt.R;
-import com.isen.math_hunt.entities.EnigmasProgression;
-import com.isen.math_hunt.entities.Game;
-import com.isen.math_hunt.entities.GeoGroup;
-import com.isen.math_hunt.entities.Login;
-import com.isen.math_hunt.entities.LoginResponse;
 import com.isen.math_hunt.entities.Team;
-import com.isen.math_hunt.fragments.EnigmaFragment;
 import com.isen.math_hunt.model.GetGameById;
 import com.isen.math_hunt.model.RetrofitClient;
 
-import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -42,9 +29,11 @@ public class WaitingActivity extends AppCompatActivity {
     private String token;
 
     private Button launchButton;
-    private ProgressDialog progressDialog;
 
     private GetGameById getGameById;
+    private Timer t;
+
+    private ProgressBar waitingProgressBar;
 
 
     @Override
@@ -54,9 +43,10 @@ public class WaitingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_waiting);
 
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        progressDialog.show();
+
+
+        waitingProgressBar = (ProgressBar) findViewById(R.id.waitingProgressBar);
+        waitingProgressBar.setVisibility(View.VISIBLE);
 
         Bundle b = getIntent().getExtras();
         teamId = b.getString("TEAM_ID");
@@ -73,7 +63,7 @@ public class WaitingActivity extends AppCompatActivity {
         getTeamById(teamId);
 
         //Declare the timer
-        Timer t = new Timer();
+         t = new Timer();
         t.scheduleAtFixedRate(new TimerTask() {
 
                                   @Override
@@ -106,7 +96,7 @@ public class WaitingActivity extends AppCompatActivity {
                 boolean gameIsStarted;
                 try {
 
-                    progressDialog.dismiss();
+                    waitingProgressBar.setVisibility(View.INVISIBLE);
 
                     getGameById = response.body();
 
@@ -142,8 +132,21 @@ public class WaitingActivity extends AppCompatActivity {
 
                 try {
                     Team currentTeam = response.body();
+                    boolean gameIsFinish = currentTeam.getGameFinished();
 
-                    getGameById(currentTeam.getGameId());
+                    if (gameIsFinish){
+                        Intent intent = new Intent(WaitingActivity.this, SuccessActivity.class);
+                        Bundle b = new Bundle();
+                        b.putString("TEAM_ID", teamId);
+                        b.putString("ACCESS_TOKEN", token);
+                        intent.putExtras(b); //Put your id to your next Intent
+                        t.cancel();
+                        startActivity(intent);
+                        finish();
+                    }else{
+                        getGameById(currentTeam.getGameId());
+
+                    }
 
                 } catch (Exception e) {
                     e.printStackTrace();

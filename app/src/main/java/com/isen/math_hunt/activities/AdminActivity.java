@@ -1,11 +1,11 @@
 package com.isen.math_hunt.activities;
 
-import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -31,8 +31,7 @@ public class AdminActivity extends AppCompatActivity implements AdapterView.OnIt
     private List<String> gameName = new ArrayList<>();
 
     private Spinner spin;
-    private ProgressDialog progressDialog;
-
+    private ProgressBar activityAdminProgressBar;
     private String token;
 
     private String currentChoice;
@@ -54,15 +53,14 @@ public class AdminActivity extends AppCompatActivity implements AdapterView.OnIt
         Bundle b = getIntent().getExtras();
         token = b.getString("ACCESS_TOKEN");
 
-        progressDialog = new ProgressDialog(AdminActivity.this);
-        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        progressDialog.show();
+        activityAdminProgressBar = (ProgressBar) findViewById(R.id.activityAdminProgressBar);
+        activityAdminProgressBar.setVisibility(View.INVISIBLE);
 
         spin = (Spinner) findViewById(R.id.spinnerParty);
         spin.setOnItemSelectedListener(this);
 
-         adminStartButton = (Button) findViewById(R.id.adminStartButton);
-         adminStopButton = (Button) findViewById(R.id.adminStopButton);
+        adminStartButton = (Button) findViewById(R.id.adminStartButton);
+        adminStopButton = (Button) findViewById(R.id.adminStopButton);
 
         adminStopButton.setClickable(false);
         adminStopButton.setEnabled(false);
@@ -87,14 +85,14 @@ public class AdminActivity extends AppCompatActivity implements AdapterView.OnIt
         Log.d("TAG", "currentChoice: " + currentChoice);
         Log.d("TAG", "currentId: " + currentId);
 
-        if (currentGameIsStarted){
+        if (currentGameIsStarted) {
             adminStartButton.setClickable(false);
             adminStartButton.setEnabled(false);
 
             adminStopButton.setClickable(true);
             adminStopButton.setEnabled(true);
 
-        }else {
+        } else {
             adminStartButton.setClickable(true);
             adminStartButton.setEnabled(true);
 
@@ -117,11 +115,11 @@ public class AdminActivity extends AppCompatActivity implements AdapterView.OnIt
             public void onResponse(Call<GetAllGames> call, Response<GetAllGames> response) {
 
                 try {
-                    progressDialog.dismiss();
+                    activityAdminProgressBar.setVisibility(View.INVISIBLE);
                     games = response.body();
 
 
-                    Log.d("getAllGames", "onResponse: good" );
+                    Log.d("getAllGames", "onResponse: good");
                     getGameInfo(games.getGames());
 
                     SpinnerAdapter customAdapter = new SpinnerAdapter(getApplicationContext(), gameName);
@@ -142,7 +140,7 @@ public class AdminActivity extends AppCompatActivity implements AdapterView.OnIt
     }
 
     public void getGameInfo(final List<Game> gameList) {
-        Log.d("getGameInfo", "onResponse: good" );
+        Log.d("getGameInfo", "onResponse: good");
 
         gameList.stream().forEach(
                 game -> {

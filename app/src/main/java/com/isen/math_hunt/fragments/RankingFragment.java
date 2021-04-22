@@ -1,27 +1,20 @@
 package com.isen.math_hunt.fragments;
 
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
 import com.isen.math_hunt.R;
-import com.isen.math_hunt.activities.GameActivity;
-import com.isen.math_hunt.activities.GeoGroupActivity;
-import com.isen.math_hunt.activities.SuccessActivity;
-import com.isen.math_hunt.adapters.HintAdapter;
 import com.isen.math_hunt.adapters.RankAdapter;
-import com.isen.math_hunt.entities.Hint;
 import com.isen.math_hunt.entities.Team;
-import com.isen.math_hunt.model.ProgressionPost;
 import com.isen.math_hunt.model.RankingResponse;
 import com.isen.math_hunt.model.RetrofitClient;
 
@@ -40,6 +33,7 @@ public class RankingFragment extends Fragment {
 
     private ProgressDialog progressDialog;
 
+    private ProgressBar rankingProgressBar;
 
     public RankingFragment() {
     }
@@ -51,9 +45,10 @@ public class RankingFragment extends Fragment {
         super.onCreate(savedInstanceState);
         View mView = inflater.inflate(R.layout.fragment_ranking, null);
 
-         progressDialog = new ProgressDialog(getActivity());
-        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        progressDialog.show();
+
+        rankingProgressBar = (ProgressBar) mView.findViewById(R.id.rankingProgressBar);
+        rankingProgressBar.setVisibility(View.VISIBLE);
+
 
         rankListView = (ListView) mView.findViewById(R.id.rankList);
         ArrayList<Team> teamList = new ArrayList<>();
@@ -65,7 +60,6 @@ public class RankingFragment extends Fragment {
         getRanking(gameId, token);
 
 
-
         return mView;
     }
 
@@ -75,7 +69,7 @@ public class RankingFragment extends Fragment {
             @Override
             public void onResponse(Call<RankingResponse> call, Response<RankingResponse> response) {
 
-                progressDialog.dismiss();
+                rankingProgressBar.setVisibility(View.INVISIBLE);
                 try {
                     RankingResponse rank = response.body();
                     Log.d("getRanking", "onResponse: " + rank.getRankList().get(0).getUserName());

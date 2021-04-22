@@ -7,6 +7,16 @@
     android:background="@drawable/fondapp"
     tools:context=".activities.AdminActivity">
 
+    <ProgressBar
+        android:id="@+id/activityAdminProgressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <fragment
         android:id="@+id/fragment2"
         android:name="com.isen.math_hunt.fragments.AppBarFragment"

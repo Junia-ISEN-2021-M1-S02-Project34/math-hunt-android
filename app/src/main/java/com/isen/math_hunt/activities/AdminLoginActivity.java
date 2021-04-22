@@ -1,11 +1,11 @@
 package com.isen.math_hunt.activities;
 
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,7 +22,7 @@ import retrofit2.Response;
 
 public class AdminLoginActivity extends AppCompatActivity {
 
-    private ProgressDialog progressDialog;
+    private ProgressBar adminLoginProgressBar;
 
     private String adminLoginAccessToken;
 
@@ -39,6 +39,10 @@ public class AdminLoginActivity extends AppCompatActivity {
         final TextInputLayout passwordTextField = findViewById(R.id.passwordTextField);
         final Button loginButton = findViewById(R.id.AdminLoginButton);
         final Button adminButton = findViewById(R.id.backButton);
+
+        adminLoginProgressBar = (ProgressBar) findViewById(R.id.adminLoginProgressBar);
+        adminLoginProgressBar.setVisibility(View.INVISIBLE);
+
 
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -62,10 +66,7 @@ public class AdminLoginActivity extends AppCompatActivity {
                 } else {
                     Login login = new Login(userTextField.getEditText().getText().toString(), passwordTextField.getEditText().getText().toString());
 
-
-                    progressDialog = new ProgressDialog(AdminLoginActivity.this);
-                    progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                    progressDialog.show();
+                    adminLoginProgressBar.setVisibility(View.VISIBLE);
 
                     signInAdmin(login);
 
@@ -84,7 +85,7 @@ public class AdminLoginActivity extends AppCompatActivity {
 
                 try {
                     LoginResponse login = response.body();
-                    progressDialog.dismiss();
+                    adminLoginProgressBar.setVisibility(View.INVISIBLE);
                     adminLoginAccessToken = login.getAccessToken();
                     Toast.makeText(getApplicationContext(), "Tu es bien connecté", Toast.LENGTH_SHORT).show();
 
@@ -98,7 +99,7 @@ public class AdminLoginActivity extends AppCompatActivity {
 
 
                 } catch (Exception e) {
-                    progressDialog.dismiss();
+                    adminLoginProgressBar.setVisibility(View.INVISIBLE);
                     Toast.makeText(getApplicationContext(), "Vérifie tes identifiants ", Toast.LENGTH_LONG).show();
 
                 }
