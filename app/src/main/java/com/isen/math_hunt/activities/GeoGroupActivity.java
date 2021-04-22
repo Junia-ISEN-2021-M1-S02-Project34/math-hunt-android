@@ -18,6 +18,7 @@ import android.view.View;
 import android.widget.Button;
 
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,7 +37,6 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.List;
 import java.util.Locale;
-
 
 
 public class GeoGroupActivity extends AppCompatActivity implements LocationListener {
@@ -66,19 +66,17 @@ public class GeoGroupActivity extends AppCompatActivity implements LocationListe
 
     private ConstraintLayout layoutGeoGroup;
 
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_geo_groupe);
 
-        geoGroupProgressDialog = new ProgressDialog(GeoGroupActivity.this);
-        geoGroupProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        geoGroupProgressDialog.show();
+        progressBar = (ProgressBar) findViewById(R.id.geooGroupProgressBar);
+        progressBar.setVisibility(View.VISIBLE);
 
-        locationProgressBar = new ProgressDialog(GeoGroupActivity.this);
-        locationProgressBar.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        locationProgressBar.show();
+
 
 
         geoGroupContinueButton = findViewById(R.id.geoGroupContinueButton);
@@ -88,7 +86,6 @@ public class GeoGroupActivity extends AppCompatActivity implements LocationListe
         geoGroupImageView = (ImageView) findViewById(R.id.geoGroupImageView);
 
         layoutGeoGroup = (ConstraintLayout) findViewById(R.id.layoutGeoGroup);
-        layoutGeoGroup.setVisibility(View.INVISIBLE);
         getLocation();
 
 
@@ -138,11 +135,10 @@ public class GeoGroupActivity extends AppCompatActivity implements LocationListe
     }
 
 
-
     @Override
     public void onLocationChanged(Location location) {
         // en metres
-        locationProgressBar.dismiss();
+        progressBar.setVisibility(View.INVISIBLE);
         layoutGeoGroup.setVisibility(View.VISIBLE);
 
         int dist = (int) distance(geoGroupPosX, location.getLatitude(), geoGroupPosY, location.getLongitude());
@@ -156,12 +152,12 @@ public class GeoGroupActivity extends AppCompatActivity implements LocationListe
         }
         //Toast.makeText(this, "vous êtes à : " + dist + "m", Toast.LENGTH_SHORT).show();
         text_location.setText("vous êtes à " + dist + "m");
-        Log.d("tag","heho la");
+        Log.d("tag", "heho la");
         try {
             Geocoder geocoder = new Geocoder(GeoGroupActivity.this, Locale.getDefault());
             List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
             String address = addresses.get(0).getAddressLine(0);
-            Log.d("tag",address);
+            Log.d("tag", address);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -210,13 +206,13 @@ public class GeoGroupActivity extends AppCompatActivity implements LocationListe
     }
 
     private void getGeoGroupById(String id) {
-        Call<GeoGroup> call = RetrofitClient.getInstance().getMathHuntApiService().getGeoGroupById(id,token);
+        Call<GeoGroup> call = RetrofitClient.getInstance().getMathHuntApiService().getGeoGroupById(id, token);
         call.enqueue(new Callback<GeoGroup>() {
             @Override
             public void onResponse(Call<GeoGroup> call, Response<GeoGroup> response) {
 
                 try {
-                    geoGroupProgressDialog.dismiss();
+                    progressBar.setVisibility(View.INVISIBLE);
                     GeoGroup geoGroup = response.body();
 
                     geoGroupPosX = geoGroup.getPositionX();
@@ -254,7 +250,6 @@ public class GeoGroupActivity extends AppCompatActivity implements LocationListe
 
 
     }
-
 
 
 }

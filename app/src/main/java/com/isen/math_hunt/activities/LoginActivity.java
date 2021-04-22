@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.content.Intent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputLayout;
@@ -30,6 +31,8 @@ public class LoginActivity extends AppCompatActivity {
     private String loginTeamId;
     private String loginAccessToken;
 
+    private ProgressBar progressBar;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +43,10 @@ public class LoginActivity extends AppCompatActivity {
         final TextInputLayout passwordTextField = findViewById(R.id.passwordTextField);
         final Button loginButton = findViewById(R.id.AdminLoginButton);
         final Button adminButton = findViewById(R.id.backButton);
+        progressBar = (ProgressBar) findViewById(R.id.loginProgressBar);
+
+        progressBar.setVisibility(View.INVISIBLE);
+
 
         if (ContextCompat.checkSelfPermission(LoginActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -72,9 +79,7 @@ public class LoginActivity extends AppCompatActivity {
                     Login login = new Login(userTextField.getEditText().getText().toString(), passwordTextField.getEditText().getText().toString());
 
 
-                    progressDialog = new ProgressDialog(LoginActivity.this);
-                    progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                    progressDialog.show();
+                    progressBar.setVisibility(View.VISIBLE);
 
                     signInTeam(login);
                 }
@@ -92,7 +97,7 @@ public class LoginActivity extends AppCompatActivity {
 
                 try {
                     LoginResponse login = response.body();
-                    progressDialog.dismiss();
+                    progressBar.setVisibility(View.INVISIBLE);
                     loginTeamId = login.getTeamId();
                     loginAccessToken = login.getAccessToken();
                     Toast.makeText(getApplicationContext(), "Tu es bien connecté", Toast.LENGTH_SHORT).show();
@@ -108,7 +113,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
                 } catch (Exception e) {
-                    progressDialog.dismiss();
+                    progressBar.setVisibility(View.INVISIBLE);
                     Toast.makeText(getApplicationContext(), "Vérifie tes identifiants ", Toast.LENGTH_LONG).show();
 
                 }
