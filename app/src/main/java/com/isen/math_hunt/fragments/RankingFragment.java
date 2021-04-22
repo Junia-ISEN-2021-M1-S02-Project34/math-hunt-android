@@ -1,6 +1,7 @@
 package com.isen.math_hunt.fragments;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -37,6 +38,7 @@ public class RankingFragment extends Fragment {
     private String token;
     private String gameId;
 
+    private ProgressDialog progressDialog;
 
 
     public RankingFragment() {
@@ -48,6 +50,10 @@ public class RankingFragment extends Fragment {
 
         super.onCreate(savedInstanceState);
         View mView = inflater.inflate(R.layout.fragment_ranking, null);
+
+         progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressDialog.show();
 
         rankListView = (ListView) mView.findViewById(R.id.rankList);
         ArrayList<Team> teamList = new ArrayList<>();
@@ -69,6 +75,7 @@ public class RankingFragment extends Fragment {
             @Override
             public void onResponse(Call<RankingResponse> call, Response<RankingResponse> response) {
 
+                progressDialog.dismiss();
                 try {
                     RankingResponse rank = response.body();
                     Log.d("getRanking", "onResponse: " + rank.getRankList().get(0).getUserName());

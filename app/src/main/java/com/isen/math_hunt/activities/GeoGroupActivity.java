@@ -146,7 +146,7 @@ public class GeoGroupActivity extends AppCompatActivity implements LocationListe
         layoutGeoGroup.setVisibility(View.VISIBLE);
 
         int dist = (int) distance(geoGroupPosX, location.getLatitude(), geoGroupPosY, location.getLongitude());
-        if (dist > geoGroupRadius.intValue()) { // changer la valeur par geoGroupRadius
+        if (dist > 2000) { // changer la valeur par geoGroupRadius
             geoGroupContinueButton.setEnabled(false);
             geoGroupContinueButton.setText("Encore un peu de marche!");
 
