@@ -89,6 +89,8 @@ public class GeoGroupActivity extends AppCompatActivity implements LocationListe
         getLocation();
 
 
+        geoGroupContinueButton.setVisibility(View.INVISIBLE);
+
         Bundle b = getIntent().getExtras();
         teamId = b.getString("TEAM_ID");
         token = b.getString("ACCESS_TOKEN");
@@ -138,11 +140,12 @@ public class GeoGroupActivity extends AppCompatActivity implements LocationListe
     @Override
     public void onLocationChanged(Location location) {
         // en metres
-        progressBar.setVisibility(View.INVISIBLE);
         layoutGeoGroup.setVisibility(View.VISIBLE);
+        geoGroupContinueButton.setVisibility(View.VISIBLE);
+
 
         int dist = (int) distance(geoGroupPosX, location.getLatitude(), geoGroupPosY, location.getLongitude());
-        if (dist > geoGroupRadius.intValue()) { // changer la valeur par geoGroupRadius
+        if (dist > geoGroupRadius) { // changer la valeur par geoGroupRadius
             geoGroupContinueButton.setEnabled(false);
             geoGroupContinueButton.setText("Encore un peu de marche!");
 
@@ -150,7 +153,7 @@ public class GeoGroupActivity extends AppCompatActivity implements LocationListe
             geoGroupContinueButton.setEnabled(true);
             geoGroupContinueButton.setText("Vous y êtes! ");
         }
-        //Toast.makeText(this, "vous êtes à : " + dist + "m", Toast.LENGTH_SHORT).show();
+        progressBar.setVisibility(View.INVISIBLE);
         text_location.setText("vous êtes à " + dist + "m");
         Log.d("tag", "heho la");
         try {
@@ -199,6 +202,7 @@ public class GeoGroupActivity extends AppCompatActivity implements LocationListe
         try {
             LocationManager locationManager = (LocationManager) getApplicationContext().getSystemService(LOCATION_SERVICE);
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, LOCATION_REFRESH_TIME, LOCATION_REFRESH_DISTANCE, GeoGroupActivity.this);
+
 
         } catch (Exception e) {
             e.printStackTrace();
