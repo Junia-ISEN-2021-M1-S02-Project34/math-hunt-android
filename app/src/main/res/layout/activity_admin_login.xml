@@ -8,6 +8,16 @@
     android:singleLine="true"
     tools:context=".activities.LoginActivity">
 
+    <ProgressBar
+        android:id="@+id/adminLoginProgressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <Button
         android:id="@+id/AdminLoginButton"
         android:layout_width="wrap_content"
@@ -56,6 +66,7 @@
         android:id="@+id/passwordTextField"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
+        android:inputType="textPassword"
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"
         android:layout_marginTop="9dp"
@@ -71,7 +82,8 @@
         <com.google.android.material.textfield.TextInputEditText
             style="@style/Theme.Mathhunt2"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 

@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
@@ -46,6 +47,7 @@ public class HintFragment extends Fragment {
 
     private List<String> usedHintsIds;
 
+    private ProgressBar hintProgressBar;
 
     public HintFragment() {
         // Required empty public constructor
@@ -61,9 +63,9 @@ public class HintFragment extends Fragment {
         token = getArguments().getString("ACCESS_TOKEN");
         currentEnigmaId = getArguments().getString("CURRENT_ENIGMA_ID");
         usedHintsIds = getArguments().getStringArrayList("USED_HINTS_IDS");
-        progressDialog = new ProgressDialog(getActivity());
-        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        progressDialog.show();
+
+        hintProgressBar = (ProgressBar) mView.findViewById(R.id.hintProgressBar);
+        hintProgressBar.setVisibility(View.VISIBLE);
 
         getTeamById(teamId, token);
 
@@ -81,7 +83,7 @@ public class HintFragment extends Fragment {
             public void onResponse(Call<HintList> call, Response<HintList> response) {
 
                 try {
-                    progressDialog.dismiss();
+                    hintProgressBar.setVisibility(View.INVISIBLE);
 
                     HintList hints = response.body();
 

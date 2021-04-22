@@ -43,8 +43,8 @@ public class LoginActivity extends AppCompatActivity {
         final TextInputLayout passwordTextField = findViewById(R.id.passwordTextField);
         final Button loginButton = findViewById(R.id.AdminLoginButton);
         final Button adminButton = findViewById(R.id.backButton);
-        progressBar = (ProgressBar) findViewById(R.id.loginProgressBar);
 
+        progressBar = (ProgressBar) findViewById(R.id.loginProgressBar);
         progressBar.setVisibility(View.INVISIBLE);
 
 

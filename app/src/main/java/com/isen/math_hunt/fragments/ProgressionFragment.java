@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 
 import androidx.fragment.app.Fragment;
 
@@ -27,15 +28,13 @@ import retrofit2.Response;
 public class ProgressionFragment extends Fragment {
 
     private ListView  geoGroupsListView;
-    private ListView  enigmaListView;
     private ProgressionAdapter progressionAdapter;
-    private EnigmaAdapter enigmaAdapter;
     private List<Progression> progressions;
-    private List<EnigmasProgression> enigmasProgression;
     private String teamId;
-    private ProgressDialog progressDialog;
 
     private String token;
+
+    private ProgressBar progressionProgressBar;
 
 
 
@@ -54,9 +53,10 @@ public class ProgressionFragment extends Fragment {
 
         geoGroupsListView = (ListView) mView.findViewById(R.id.geoGroupsListView);
 
-        progressDialog = new ProgressDialog(getActivity());
-        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        progressDialog.show();
+
+
+        progressionProgressBar = (ProgressBar) mView.findViewById(R.id.progressionProgressBar);
+        progressionProgressBar.setVisibility(View.VISIBLE);
 
         getTeamById(teamId, token);
 
@@ -71,7 +71,7 @@ public class ProgressionFragment extends Fragment {
             public void onResponse(Call<Team> call, Response<Team> response) {
 
                 try {
-                    progressDialog.dismiss();
+                    progressionProgressBar.setVisibility(View.INVISIBLE);
                     Team team = response.body();
                     progressions = team.getProgression();
 
