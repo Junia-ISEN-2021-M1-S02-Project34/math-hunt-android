@@ -63,7 +63,7 @@ public class WaitingActivity extends AppCompatActivity {
         getTeamById(teamId);
 
         //Declare the timer
-         t = new Timer();
+        t = new Timer();
         t.scheduleAtFixedRate(new TimerTask() {
 
                                   @Override
@@ -104,6 +104,10 @@ public class WaitingActivity extends AppCompatActivity {
                         launchButton.setText("Commencer !");
                         launchButton.setEnabled(true);
                         launchButton.setClickable(true);
+                    }else {
+                        launchButton.setText("Patientez");
+                        launchButton.setEnabled(false);
+                        launchButton.setClickable(false);
                     }
 
 

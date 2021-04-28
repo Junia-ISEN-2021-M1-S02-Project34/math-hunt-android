@@ -42,8 +42,8 @@ import java.util.Locale;
 public class GeoGroupActivity extends AppCompatActivity implements LocationListener {
 
 
-    private static final long LOCATION_REFRESH_TIME = 5000;
-    private static final float LOCATION_REFRESH_DISTANCE = 5;
+    private static final long LOCATION_REFRESH_TIME = 1000;
+    private static final float LOCATION_REFRESH_DISTANCE = 1;
 
     private Number geoGroupPosX; // latitude
     private Number geoGroupPosY; // longitude
@@ -68,6 +68,7 @@ public class GeoGroupActivity extends AppCompatActivity implements LocationListe
 
     private ProgressBar progressBar;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,8 +78,6 @@ public class GeoGroupActivity extends AppCompatActivity implements LocationListe
         progressBar.setVisibility(View.VISIBLE);
 
 
-
-
         geoGroupContinueButton = findViewById(R.id.geoGroupContinueButton);
         text_location = findViewById(R.id.text_location);
         //button_location = findViewById(R.id.button_location);
@@ -86,16 +85,19 @@ public class GeoGroupActivity extends AppCompatActivity implements LocationListe
         geoGroupImageView = (ImageView) findViewById(R.id.geoGroupImageView);
 
         layoutGeoGroup = (ConstraintLayout) findViewById(R.id.layoutGeoGroup);
+
+
+        geoGroupContinueButton.setEnabled(false);
+        geoGroupContinueButton.setText("Encore un peu de marche!");
+
         getLocation();
-
-
-        geoGroupContinueButton.setVisibility(View.INVISIBLE);
 
         Bundle b = getIntent().getExtras();
         teamId = b.getString("TEAM_ID");
         token = b.getString("ACCESS_TOKEN");
 
         getTeamById(teamId);
+
         geoGroupContinueButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
