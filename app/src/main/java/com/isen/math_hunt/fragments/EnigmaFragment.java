@@ -504,16 +504,13 @@ public class EnigmaFragment extends Fragment implements RadioButtonDataTransfert
     public void onLocationChanged(@NonNull Location location) {
         Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());
         List<Address> addresses = null;
-        Log.d("oui","posx: "+ posX);
-        Log.d("oui","posY: "+ posY);
         try {
             addresses = geocoder.getFromLocation(posX.doubleValue(), posY.doubleValue(), 1);
             Log.d("oui","adresses : "+ addresses);
 
-             dist = (int) distance(posX, location.getLatitude(), posY, location.getLongitude());
+            dist = (int) distance(posX, location.getLatitude(), posY, location.getLongitude());
             address = addresses.get(0).getAddressLine(0);
-            Log.d("oui", "distance:" + dist);
-            Log.d("oui","addr : "+ address);
+
 
             localisationProgressDialog.dismiss();
 
@@ -524,15 +521,13 @@ public class EnigmaFragment extends Fragment implements RadioButtonDataTransfert
                 alertDialog.dismiss();
                 alertDialog = createDialog(address);
                 alertDialog.show();
-            }
-            if (dist < 20) {
+            }else{
                 alertDialog.dismiss();
             }
 
 
         } catch (IOException e) {
             e.printStackTrace();
-            Log.d("oui","marche pas");
         }
 
     }

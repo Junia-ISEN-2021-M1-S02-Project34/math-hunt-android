@@ -145,19 +145,27 @@ public class GeoGroupActivity extends AppCompatActivity implements LocationListe
         layoutGeoGroup.setVisibility(View.VISIBLE);
         geoGroupContinueButton.setVisibility(View.VISIBLE);
 
-
-        int dist = (int) distance(geoGroupPosX, location.getLatitude(), geoGroupPosY, location.getLongitude());
-        if (dist > geoGroupRadius.intValue()) { // changer la valeur par geoGroupRadius
+        if (geoGroupPosX ==null || geoGroupPosY==null ){
+            text_location.setText("chargement");
             geoGroupContinueButton.setEnabled(false);
             geoGroupContinueButton.setText("Encore un peu de marche!");
 
-        } else {
-            geoGroupContinueButton.setEnabled(true);
-            geoGroupContinueButton.setText("Vous y êtes! ");
+        }else{
+
+            int dist = (int) distance(geoGroupPosX, location.getLatitude(), geoGroupPosY, location.getLongitude());
+            if (dist > geoGroupRadius.doubleValue()) { // changer la valeur par geoGroupRadius
+                geoGroupContinueButton.setEnabled(false);
+                geoGroupContinueButton.setText("Encore un peu de marche!");
+
+            } else {
+                geoGroupContinueButton.setEnabled(true);
+                geoGroupContinueButton.setText("Vous y êtes! ");
+            }
+            progressBar.setVisibility(View.INVISIBLE);
+            text_location.setText("vous êtes à " + dist + "m");
+            Log.d("tag", "heho la");
         }
-        progressBar.setVisibility(View.INVISIBLE);
-        text_location.setText("vous êtes à " + dist + "m");
-        Log.d("tag", "heho la");
+
         try {
             Geocoder geocoder = new Geocoder(GeoGroupActivity.this, Locale.getDefault());
             List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
