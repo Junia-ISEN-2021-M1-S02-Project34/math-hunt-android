@@ -153,7 +153,7 @@ public class GeoGroupActivity extends AppCompatActivity implements LocationListe
         }else{
 
             int dist = (int) distance(geoGroupPosX, location.getLatitude(), geoGroupPosY, location.getLongitude());
-            if (dist > geoGroupRadius.doubleValue()) { // changer la valeur par geoGroupRadius
+            if (dist > geoGroupRadius.doubleValue()) { // ICI VALEUR DU GEOGROUPE A CHANGER POUR LES TESTS SI BESOIN (Distance en mètre)
                 geoGroupContinueButton.setEnabled(false);
                 geoGroupContinueButton.setText("Encore un peu de marche!");
 

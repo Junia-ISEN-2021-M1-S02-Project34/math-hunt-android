@@ -36,6 +36,7 @@ import com.isen.math_hunt.entities.EnigmasProgression;
 import com.isen.math_hunt.entities.Progression;
 import com.isen.math_hunt.entities.Proposition;
 import com.isen.math_hunt.entities.Team;
+import com.isen.math_hunt.interfaces.Constant;
 import com.isen.math_hunt.interfaces.CurrentEnigmaIdInterface;
 import com.isen.math_hunt.interfaces.RadioButtonDataTransfertInterface;
 import com.isen.math_hunt.model.FullEnigma;
@@ -517,7 +518,7 @@ public class EnigmaFragment extends Fragment implements RadioButtonDataTransfert
             while(address == null){
                 alertDialog.dismiss();
             }
-            if(dist > 20) {
+            if(dist > Constant.ENIGMA_RADIUS) {
                 alertDialog.dismiss();
                 alertDialog = createDialog(address);
                 alertDialog.show();
