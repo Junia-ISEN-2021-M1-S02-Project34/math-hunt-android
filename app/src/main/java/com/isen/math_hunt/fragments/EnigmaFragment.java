@@ -10,11 +10,8 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,6 +22,9 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 
 import com.google.android.material.textfield.TextInputLayout;
 import com.isen.math_hunt.R;
@@ -37,14 +37,11 @@ import com.isen.math_hunt.entities.Progression;
 import com.isen.math_hunt.entities.Proposition;
 import com.isen.math_hunt.entities.Team;
 import com.isen.math_hunt.interfaces.Constant;
-import com.isen.math_hunt.interfaces.CurrentEnigmaIdInterface;
 import com.isen.math_hunt.interfaces.RadioButtonDataTransfertInterface;
 import com.isen.math_hunt.model.FullEnigma;
 import com.isen.math_hunt.model.ProgressionPost;
 import com.isen.math_hunt.model.RetrofitClient;
 import com.squareup.picasso.Picasso;
-
-import android.location.LocationManager;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -63,23 +60,17 @@ public class EnigmaFragment extends Fragment implements RadioButtonDataTransfert
     private static final float LOCATION_REFRESH_DISTANCE = 2;
 
     private ListView enigmaListView;
-    private TextView scoreTextView;
     private TextView enigmaTitleTextView;
     private TextView questionTextView;
     private TextView descriptionEnigma;
     private QcmAdapter qcmAdapter;
     private TextInputLayout answerTextField;
     private List<Proposition> propositionList = new ArrayList<>();
-    private Button validateButton;
-    private LocationManager locationManager;
     private String currentMcqAnswerValue = "";
-    private boolean currentMcqAnswerIsChecked;
     private int teamEnigmaScoreValue;
-    private String nextEnigmaAddress = "ISEN LILLE";
     private String userAnswer;
     private Boolean isMcq = false;
     private String enigmaAnswer;
-    private int score;
     private int currentEnigmaScore;
     private TextView attemptsTextView;
 
@@ -101,13 +92,10 @@ public class EnigmaFragment extends Fragment implements RadioButtonDataTransfert
 
     private Number posX;
     private Number posY;
-    private String address;
-    private AlertDialog alertDialogLocation;
 
 
     private String token;
 
-    private ProgressDialog enigmaProgressDialog;
     private ProgressDialog localisationProgressDialog;
 
     private ProgressBar  progressBar;
@@ -142,11 +130,11 @@ public class EnigmaFragment extends Fragment implements RadioButtonDataTransfert
 
         enigmaListView = (ListView) mView.findViewById(R.id.answersListView);
         answerTextField = (TextInputLayout) mView.findViewById(R.id.answerTextField);
-        scoreTextView = (TextView) mView.findViewById(R.id.scoreTextView);
+        TextView scoreTextView = (TextView) mView.findViewById(R.id.scoreTextView);
         enigmaTitleTextView = (TextView) mView.findViewById(R.id.enigmaTitleTextField);
         descriptionEnigma = (TextView) mView.findViewById(R.id.enigmaDescriptionTextField);
         questionTextView = (TextView) mView.findViewById(R.id.questionTextField);
-        validateButton = (Button) mView.findViewById(R.id.validateButton);
+        Button validateButton = (Button) mView.findViewById(R.id.validateButton);
         attemptsTextView = (TextView) mView.findViewById(R.id.attemptsTextView);
         enigmaImageView = (ImageView) mView.findViewById(R.id.enigmaImageView);
         enigmaScorePrevision = (TextView) mView.findViewById(R.id.enigmaScorePrevision);
@@ -159,9 +147,9 @@ public class EnigmaFragment extends Fragment implements RadioButtonDataTransfert
         currentGeoGroupId = getArguments().getString("CURRENT_GEOGROUP_ID");
         attemptsNumber = getArguments().getInt("ATTEMPTS_NUMBER");
         token = getArguments().getString("ACCESS_TOKEN");
-        score = getArguments().getInt("SCORE");
+        int score = getArguments().getInt("SCORE");
 
-        scoreTextView.setText("Score : " + Integer.toString(score));
+        scoreTextView.setText("Score : " + score);
 
         getTeamById(teamId, token);
 
@@ -197,16 +185,10 @@ public class EnigmaFragment extends Fragment implements RadioButtonDataTransfert
                 builder
                         .setPositiveButton(
                                 "Réessayer",
-                                new DialogInterface
-                                        .OnClickListener() {
-
-                                    @Override
-                                    public void onClick(DialogInterface dialog,
-                                                        int which) {
-                                        // When the user click yes button
-                                        // then app will close
-                                        dialog.cancel();
-                                    }
+                                (dialog, which) -> {
+                                    // When the user click yes button
+                                    // then app will close
+                                    dialog.cancel();
                                 });
                 AlertDialog alertDialog = builder.create();
                 alertDialog.show();
@@ -224,6 +206,7 @@ public class EnigmaFragment extends Fragment implements RadioButtonDataTransfert
     private void getFullEnigmaById(String id, String token) {
         Call<FullEnigma> call = RetrofitClient.getInstance().getMathHuntApiService().getFullEnigmaById(id, token);
         call.enqueue(new Callback<FullEnigma>() {
+            @SuppressLint("SetTextI18n")
             @Override
             public void onResponse(Call<FullEnigma> call, Response<FullEnigma> response) {
 
@@ -239,7 +222,7 @@ public class EnigmaFragment extends Fragment implements RadioButtonDataTransfert
                     questionTextView.setText(fullEnigma.getEnigma().getQuestion());
                     descriptionEnigma.setText(fullEnigma.getEnigma().getDescription());
                     enigmaAnswer = fullEnigma.getAnswer().getSolution();
-                    attemptsTextView.setText("Nombre d'essai(s) restant :" + (Integer.toString(fullEnigma.getAnswer().getAttemptsNumber() - attemptsNumber)));
+                    attemptsTextView.setText("Nombre d'essai(s) restant :" + ((fullEnigma.getAnswer().getAttemptsNumber() - attemptsNumber)));
                     attemptsEnigmaValue = fullEnigma.getAnswer().getAttemptsNumber();
                     currentEnigmaScore = fullEnigma.getEnigma().getScoreValue();
 
@@ -280,7 +263,6 @@ public class EnigmaFragment extends Fragment implements RadioButtonDataTransfert
             @Override
             public void onFailure(Call<FullEnigma> call, Throwable t) {
                 Toast.makeText(getActivity(), t.getMessage(), Toast.LENGTH_SHORT).show();
-                Log.e("Prout", t.getMessage());
 
             }
         });
@@ -357,23 +339,23 @@ public class EnigmaFragment extends Fragment implements RadioButtonDataTransfert
 
         Call<Integer> call = RetrofitClient.getInstance().getMathHuntApiService().updateAttemptsNumber(id, token);
         call.enqueue(new Callback<Integer>() {
+            @SuppressLint("SetTextI18n")
             @Override
             public void onResponse(@NonNull Call<Integer> call,@NonNull Response<Integer> response) {
 
                 try {
-                    Integer attemptsNumberResponse = response.body();
 
-                    attemptsNumber = attemptsNumberResponse.intValue();
+                    attemptsNumber = response.body();
                     attemptsTextView.setText("Nombre d'essaies restant :" + (attemptsEnigmaValue - attemptsNumber));
 
 
                     Log.d("attemptsNumber", "Quand j'ai update la valeur est attempt : " + attemptsNumber);
 
 
-                    if ((teamEnigmaScoreValue - (currentEnigmaScore * 1 / 4)) < 0) {
+                    if ((teamEnigmaScoreValue - (currentEnigmaScore / 4)) < 0) {
                         teamEnigmaScoreValue = 0;
                     } else {
-                        teamEnigmaScoreValue = (teamEnigmaScoreValue - (currentEnigmaScore * 1 / 4));
+                        teamEnigmaScoreValue = (teamEnigmaScoreValue - (currentEnigmaScore / 4));
 
                     }
 
@@ -424,15 +406,9 @@ public class EnigmaFragment extends Fragment implements RadioButtonDataTransfert
         });
     }
 
-    /**
-     * get data from radioButton QCM Adapter
-     *
-     * @param isChecked
-     * @param value
-     */
+
     @Override
     public void onSetValues(Boolean isChecked, String value) {
-        this.currentMcqAnswerIsChecked = isChecked;
         this.currentMcqAnswerValue = value;
     }
 
@@ -482,9 +458,8 @@ public class EnigmaFragment extends Fragment implements RadioButtonDataTransfert
         builder
                 .setPositiveButton(
                         "Continuer", (dialog, which) -> dialog.cancel());
-        AlertDialog alertDialog = builder.create();
 
-        return alertDialog;
+        return builder.create();
     }
 
 
@@ -493,7 +468,7 @@ public class EnigmaFragment extends Fragment implements RadioButtonDataTransfert
     private void getLocation() {
 
         try {
-            locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+            LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, LOCATION_REFRESH_TIME, LOCATION_REFRESH_DISTANCE, EnigmaFragment.this);
         } catch (Exception e) {
             e.printStackTrace();
@@ -506,25 +481,28 @@ public class EnigmaFragment extends Fragment implements RadioButtonDataTransfert
         Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());
         List<Address> addresses = null;
         try {
-            addresses = geocoder.getFromLocation(posX.doubleValue(), posY.doubleValue(), 1);
-            Log.d("oui","adresses : "+ addresses);
+            if (posX !=null || posY !=null){
+                addresses = geocoder.getFromLocation(posX.doubleValue(), posY.doubleValue(), 1);
+                Log.d("oui","adresses : "+ addresses);
 
-            dist = (int) distance(posX, location.getLatitude(), posY, location.getLongitude());
-            address = addresses.get(0).getAddressLine(0);
+                dist = (int) distance(posX, location.getLatitude(), posY, location.getLongitude());
+                String address = addresses.get(0).getAddressLine(0);
 
 
-            localisationProgressDialog.dismiss();
+                localisationProgressDialog.dismiss();
 
-            while(address == null){
-                alertDialog.dismiss();
+                while(address == null){
+                    alertDialog.dismiss();
+                }
+                if(dist > Constant.ENIGMA_RADIUS) {
+                    alertDialog.dismiss();
+                    alertDialog = createDialog(address);
+                    alertDialog.show();
+                }else{
+                    alertDialog.dismiss();
+                }
             }
-            if(dist > Constant.ENIGMA_RADIUS) {
-                alertDialog.dismiss();
-                alertDialog = createDialog(address);
-                alertDialog.show();
-            }else{
-                alertDialog.dismiss();
-            }
+
 
 
         } catch (IOException e) {
