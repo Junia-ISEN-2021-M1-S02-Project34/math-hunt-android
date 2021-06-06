@@ -1,7 +1,9 @@
 package com.isen.math_hunt.activities;
 
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -89,11 +91,14 @@ public class AdminLoginActivity extends AppCompatActivity {
                     adminLoginAccessToken = login.getAccessToken();
                     Toast.makeText(getApplicationContext(), "Tu es bien connecté", Toast.LENGTH_SHORT).show();
 
-                    Intent intent = new Intent(AdminLoginActivity.this, AdminActivity.class);
-                    Bundle b = new Bundle();
-                    b.putString("ACCESS_TOKEN", adminLoginAccessToken);
+                    SharedPreferences myPrefs = AdminLoginActivity.this.getSharedPreferences("USER_PREFERENCES", MODE_PRIVATE);
+                    SharedPreferences.Editor editor = myPrefs.edit();
+                    editor.putString("ACCESS_TOKEN", adminLoginAccessToken);
 
-                    intent.putExtras(b);
+                    editor.apply();
+
+                    Intent intent = new Intent(AdminLoginActivity.this, AdminActivity.class);
+
                     startActivity(intent);
                     finish();
 

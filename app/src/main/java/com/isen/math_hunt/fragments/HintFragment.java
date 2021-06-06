@@ -1,6 +1,8 @@
 package com.isen.math_hunt.fragments;
 
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -59,17 +61,18 @@ public class HintFragment extends Fragment {
 
         super.onCreate(savedInstanceState);
         View mView = inflater.inflate(R.layout.fragment_hint, null);
-        teamId = getArguments().getString("TEAM_ID");
-        token = getArguments().getString("ACCESS_TOKEN");
-        currentEnigmaId = getArguments().getString("CURRENT_ENIGMA_ID");
-        usedHintsIds = getArguments().getStringArrayList("USED_HINTS_IDS");
+        SharedPreferences myPrefs = this.getActivity().getSharedPreferences("USER_PREFERENCES", Context.MODE_PRIVATE);
+        teamId = myPrefs.getString("TEAM_ID","");
+        token = myPrefs.getString("ACCESS_TOKEN","");
+        currentEnigmaId = myPrefs.getString("CURRENT_ENIGMA_ID","");
+
+        Log.d("HINTS", "onCreateView: " + teamId + token + currentEnigmaId);
+
 
         hintProgressBar = (ProgressBar) mView.findViewById(R.id.hintProgressBar);
         hintProgressBar.setVisibility(View.VISIBLE);
 
         getTeamById(teamId, token);
-
-        //getHintsByEnigmaId(currentEnigmaId);
 
         hintListView = (ListView) mView.findViewById(R.id.hintListView);
 

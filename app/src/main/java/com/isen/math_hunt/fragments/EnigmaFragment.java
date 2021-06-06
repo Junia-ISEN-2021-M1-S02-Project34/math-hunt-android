@@ -4,8 +4,8 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -56,9 +56,6 @@ import retrofit2.Response;
 
 public class EnigmaFragment extends Fragment implements RadioButtonDataTransfertInterface, LocationListener {
 
-    private static final long LOCATION_REFRESH_TIME = 1000;
-    private static final float LOCATION_REFRESH_DISTANCE = 2;
-
     private ListView enigmaListView;
     private TextView enigmaTitleTextView;
     private TextView questionTextView;
@@ -104,6 +101,7 @@ public class EnigmaFragment extends Fragment implements RadioButtonDataTransfert
 
 
 
+
     public EnigmaFragment() {
         // Required empty public constructor
     }
@@ -114,9 +112,6 @@ public class EnigmaFragment extends Fragment implements RadioButtonDataTransfert
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         super.onCreate(savedInstanceState);
-
-
-
 
         localisationProgressDialog = new ProgressDialog(getActivity());
         localisationProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
@@ -142,12 +137,16 @@ public class EnigmaFragment extends Fragment implements RadioButtonDataTransfert
         answerTextField.setVisibility(View.GONE);
         enigmaImageView.setVisibility(View.GONE);
 
-        teamId = getArguments().getString("TEAM_ID");
-        currentEnigmaId = getArguments().getString("CURRENT_ENIGMA_ID");
-        currentGeoGroupId = getArguments().getString("CURRENT_GEOGROUP_ID");
-        attemptsNumber = getArguments().getInt("ATTEMPTS_NUMBER");
-        token = getArguments().getString("ACCESS_TOKEN");
-        int score = getArguments().getInt("SCORE");
+        SharedPreferences myPrefs = this.getActivity().getSharedPreferences("USER_PREFERENCES",Context.MODE_PRIVATE);
+        teamId = myPrefs.getString("TEAM_ID","");
+        token = myPrefs.getString("ACCESS_TOKEN","");
+        currentEnigmaId = myPrefs.getString("CURRENT_ENIGMA_ID","");
+        currentGeoGroupId = myPrefs.getString("CURRENT_GEOGROUP_ID","");
+        attemptsNumber = myPrefs.getInt("ATTEMPTS_NUMBER",0);
+
+        int score = myPrefs.getInt("SCORE",0);
+
+
 
         scoreTextView.setText("Score : " + score);
 
@@ -469,7 +468,7 @@ public class EnigmaFragment extends Fragment implements RadioButtonDataTransfert
 
         try {
             LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, LOCATION_REFRESH_TIME, LOCATION_REFRESH_DISTANCE, EnigmaFragment.this);
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, EnigmaFragment.this);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -478,12 +477,13 @@ public class EnigmaFragment extends Fragment implements RadioButtonDataTransfert
 
     @Override
     public void onLocationChanged(@NonNull Location location) {
-        Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());
+
         List<Address> addresses = null;
+        Geocoder geocoder = new Geocoder(getActivity(), Locale.getDefault());
+
         try {
             if (posX !=null || posY !=null){
                 addresses = geocoder.getFromLocation(posX.doubleValue(), posY.doubleValue(), 1);
-                Log.d("oui","adresses : "+ addresses);
 
                 dist = (int) distance(posX, location.getLatitude(), posY, location.getLongitude());
                 String address = addresses.get(0).getAddressLine(0);
@@ -510,6 +510,7 @@ public class EnigmaFragment extends Fragment implements RadioButtonDataTransfert
         }
 
     }
+
 
 
     public static double distance(Number lat1, Number lat2, Number lon1, Number lon2) {

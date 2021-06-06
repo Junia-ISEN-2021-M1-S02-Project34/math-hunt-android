@@ -28,12 +28,13 @@
 
     <TextView
         android:id="@+id/partySelector"
-        android:layout_width="153dp"
-        android:layout_height="24dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:text="Choisissez la partie : "
-        app:layout_constraintEnd_toEndOf="parent"
+        android:textSize="24sp"
 
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.585"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/fragment2"
@@ -41,14 +42,14 @@
 
     <Spinner
         android:id="@+id/spinnerParty"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"
         android:layout_marginEnd="40dp"
+        android:background="@color/white"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:background="@color/white"
         app:layout_constraintTop_toBottomOf="@+id/partySelector" />
 
     <LinearLayout
@@ -83,6 +84,26 @@
             tools:layout_editor_absoluteY="540dp" />
 
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="50dp"
+        android:text="Partie choisie :  "
+        app:layout_constraintBottom_toTopOf="@+id/spinnerParty"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:text="(Cliquez sur le nom pour choisir la partie)"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spinnerParty" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

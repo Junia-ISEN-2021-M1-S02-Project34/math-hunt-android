@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="TEAM_ID" />
+    <string name="ACCESS_TOKEN" />
+    <string name="CURRENT_GEOGROUP_ID" />
+    <string name="CURRENT_ENIGMA_ID" />
+    <string name="ATTEMPTS_NUMBER" />
+    <string name="SCORE" />
+    <string name="GAME_ID" />
 
     <string name="app_name">math-hunt</string>
     <string name="id_team">idTeam</string>

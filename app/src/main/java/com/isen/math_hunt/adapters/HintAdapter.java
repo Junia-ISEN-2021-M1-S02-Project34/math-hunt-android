@@ -1,12 +1,7 @@
 package com.isen.math_hunt.adapters;
 
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.graphics.Color;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,21 +12,13 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentTransaction;
 
 import com.isen.math_hunt.R;
-import com.isen.math_hunt.activities.SuccessActivity;
 import com.isen.math_hunt.entities.Hint;
 import com.isen.math_hunt.entities.Team;
-import com.isen.math_hunt.fragments.EnigmaFragment;
-import com.isen.math_hunt.fragments.HintFragment;
 import com.isen.math_hunt.model.HintId;
-import com.isen.math_hunt.model.ProgressionPost;
 import com.isen.math_hunt.model.RetrofitClient;
 
 import java.util.ArrayList;
@@ -99,78 +86,17 @@ public class HintAdapter extends ArrayAdapter<Hint> {
         hintTextView.setText(currentHint.getText());
 
 
-        getHintButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        getHintButton.setOnClickListener(v -> {
 
-                View parentRow = (View) v.getParent();
-                ListView listView = (ListView) parentRow.getParent();
-                final int position = listView.getPositionForView(parentRow);
+            View parentRow = (View) v.getParent();
+            ListView listView = (ListView) parentRow.getParent();
+            final int position1 = listView.getPositionForView(parentRow);
 
-                Hint currentHint = hintList.get(position);
+            Hint currentHint1 = hintList.get(position1);
 
-                if (usedHintsIds != null) {
-                    if (usedHintsIds.contains(currentHint.get_id())) {
-                        showHint(hintTextView);
-                    } else {
-                        AlertDialog.Builder builder
-                                = new AlertDialog
-                                .Builder(getContext());
-
-                        builder.setTitle("Débloquer indice");
-                        builder.setMessage("Voulez vous vraiment débloquer cette indice ?");
-                        builder.setCancelable(false);
-                        builder
-                                .setPositiveButton(
-                                        "Oui",
-                                        new DialogInterface
-                                                .OnClickListener() {
-
-                                            @Override
-                                            public void onClick(DialogInterface dialog,
-                                                                int which) {
-                                                // When the user click yes button
-                                                // then app will close
-                                                //Todo : update la bdd
-
-                                                getHintButton.setText("Ouvrir");
-                                                getHintButton.setBackgroundColor(getContext().getColor(R.color.mathHuntTheme));
-                                                updateTeamUsedHint(teamId, new HintId(hintList.get(position).get_id()));
-                                                usedHintsIds.add(hintList.get(position).get_id());
-
-
-                                                if (usedHintsIds==null){
-                                                    List<String> newUsedHintsId = new ArrayList<>();
-                                                    newUsedHintsId.add(hintList.get(position).get_id());
-                                                    hintAdapter = new HintAdapter(getContext(), hintList, newUsedHintsId, teamId, token);
-                                                    listView.setAdapter(hintAdapter);
-                                                    dialog.cancel();
-                                                }else{
-                                                    usedHintsIds.add(hintList.get(position).get_id());
-                                                    hintAdapter = new HintAdapter(getContext(), hintList, usedHintsIds, teamId,token);
-                                                    listView.setAdapter(hintAdapter);
-                                                    dialog.cancel();
-                                                }
-                                            }
-                                        });
-                        builder
-                                .setNegativeButton(
-                                        "Annuler",
-                                        new DialogInterface
-                                                .OnClickListener() {
-
-                                            @Override
-                                            public void onClick(DialogInterface dialog,
-                                                                int which) {
-                                                // When the user click yes button
-                                                // then app will close
-                                                dialog.cancel();
-                                            }
-                                        });
-                        AlertDialog alertDialog = builder.create();
-                        alertDialog.show();
-
-                    }
+            if (usedHintsIds != null) {
+                if (usedHintsIds.contains(currentHint1.get_id())) {
+                    showHint(hintTextView);
                 } else {
                     AlertDialog.Builder builder
                             = new AlertDialog
@@ -182,55 +108,86 @@ public class HintAdapter extends ArrayAdapter<Hint> {
                     builder
                             .setPositiveButton(
                                     "Oui",
-                                    new DialogInterface
-                                            .OnClickListener() {
+                                    (dialog, which) -> {
 
-                                        @Override
-                                        public void onClick(DialogInterface dialog,
-                                                            int which) {
-                                            // When the user click yes button
-                                            // then app will close
-                                            getHintButton.setText("Ouvrir");
-                                            getHintButton.setBackgroundColor(getContext().getColor(R.color.mathHuntTheme));
-                                            updateTeamUsedHint(teamId, new HintId(hintList.get(position).get_id()));
-                                            Log.d("Need", "onClick: " + hintList.get(position).get_id());
-
-                                            if (usedHintsIds==null){
-                                                List<String> newUsedHintsId = new ArrayList<>();
-                                                newUsedHintsId.add(hintList.get(position).get_id());
-                                                hintAdapter = new HintAdapter(getContext(), hintList, newUsedHintsId, teamId,token);
-                                                listView.setAdapter(hintAdapter);
-                                                dialog.cancel();
-                                            }else{
-                                                usedHintsIds.add(hintList.get(position).get_id());
-                                                hintAdapter = new HintAdapter(getContext(), hintList, usedHintsIds, teamId,token);
-                                                listView.setAdapter(hintAdapter);
-                                                dialog.cancel();
-                                            }
+                                        getHintButton.setText("Ouvrir");
+                                        getHintButton.setBackgroundColor(getContext().getColor(R.color.mathHuntTheme));
+                                        updateTeamUsedHint(teamId, new HintId(hintList.get(position1).get_id()));
+                                        usedHintsIds.add(hintList.get(position1).get_id());
 
 
+                                        if (usedHintsIds==null){
+                                            List<String> newUsedHintsId = new ArrayList<>();
+                                            newUsedHintsId.add(hintList.get(position1).get_id());
+                                            hintAdapter = new HintAdapter(getContext(), hintList, newUsedHintsId, teamId, token);
+                                            listView.setAdapter(hintAdapter);
+                                            dialog.cancel();
+                                        }else{
+                                            usedHintsIds.add(hintList.get(position1).get_id());
+                                            hintAdapter = new HintAdapter(getContext(), hintList, usedHintsIds, teamId,token);
+                                            listView.setAdapter(hintAdapter);
+                                            dialog.cancel();
                                         }
                                     });
                     builder
                             .setNegativeButton(
                                     "Annuler",
-                                    new DialogInterface
-                                            .OnClickListener() {
-
-                                        @Override
-                                        public void onClick(DialogInterface dialog,
-                                                            int which) {
-                                            // When the user click yes button
-                                            // then app will close
-                                            dialog.cancel();
-                                        }
+                                    (dialog, which) -> {
+                                        // When the user click yes button
+                                        // then app will close
+                                        dialog.cancel();
                                     });
                     AlertDialog alertDialog = builder.create();
                     alertDialog.show();
 
                 }
+            } else {
+                AlertDialog.Builder builder
+                        = new AlertDialog
+                        .Builder(getContext());
+
+                builder.setTitle("Débloquer indice");
+                builder.setMessage("Voulez vous vraiment débloquer cette indice ?");
+                builder.setCancelable(false);
+                builder
+                        .setPositiveButton(
+                                "Oui",
+                                (dialog, which) -> {
+                                    // When the user click yes button
+                                    // then app will close
+                                    getHintButton.setText("Ouvrir");
+                                    getHintButton.setBackgroundColor(getContext().getColor(R.color.mathHuntTheme));
+                                    updateTeamUsedHint(teamId, new HintId(hintList.get(position1).get_id()));
+                                    Log.d("Need", "onClick: " + hintList.get(position1).get_id());
+
+                                    if (usedHintsIds==null){
+                                        List<String> newUsedHintsId = new ArrayList<>();
+                                        newUsedHintsId.add(hintList.get(position1).get_id());
+                                        hintAdapter = new HintAdapter(getContext(), hintList, newUsedHintsId, teamId,token);
+                                        listView.setAdapter(hintAdapter);
+                                        dialog.cancel();
+                                    }else{
+                                        usedHintsIds.add(hintList.get(position1).get_id());
+                                        hintAdapter = new HintAdapter(getContext(), hintList, usedHintsIds, teamId,token);
+                                        listView.setAdapter(hintAdapter);
+                                        dialog.cancel();
+                                    }
+
+
+                                });
+                builder
+                        .setNegativeButton(
+                                "Annuler",
+                                (dialog, which) -> {
+                                    // When the user click yes button
+                                    // then app will close
+                                    dialog.cancel();
+                                });
+                AlertDialog alertDialog = builder.create();
+                alertDialog.show();
 
             }
+
         });
 
 
@@ -252,10 +209,6 @@ public class HintAdapter extends ArrayAdapter<Hint> {
 
                 try {
                     Team currentTeam = response.body();
-
-                    Bundle hintBundle = new Bundle();
-                    hintBundle.putString("TEAM_ID", teamId);
-                    hintBundle.putString("CURRENT_ENIGMA_ID", currentTeam.getCurrentEnigmaId());
 
 
                 } catch (Exception e) {

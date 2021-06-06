@@ -1,5 +1,7 @@
 package com.isen.math_hunt.activities;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -50,8 +52,8 @@ public class AdminActivity extends AppCompatActivity implements AdapterView.OnIt
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin);
 
-        Bundle b = getIntent().getExtras();
-        token = b.getString("ACCESS_TOKEN");
+        SharedPreferences myPrefs = this.getSharedPreferences("USER_PREFERENCES",Context.MODE_PRIVATE);
+        token = myPrefs.getString("ACCESS_TOKEN","");
 
         activityAdminProgressBar = (ProgressBar) findViewById(R.id.activityAdminProgressBar);
         activityAdminProgressBar.setVisibility(View.INVISIBLE);

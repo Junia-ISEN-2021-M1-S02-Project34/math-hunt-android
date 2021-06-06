@@ -1,7 +1,9 @@
 package com.isen.math_hunt.activities;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -39,6 +41,10 @@ public class WaitingActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
+        SharedPreferences myPrefs = this.getSharedPreferences("USER_PREFERENCES", MODE_PRIVATE);
+        teamId = myPrefs.getString("TEAM_ID","");
+        token = myPrefs.getString("ACCESS_TOKEN","");
+
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_waiting);
@@ -47,11 +53,6 @@ public class WaitingActivity extends AppCompatActivity {
 
         waitingProgressBar = (ProgressBar) findViewById(R.id.waitingProgressBar);
         waitingProgressBar.setVisibility(View.VISIBLE);
-
-        Bundle b = getIntent().getExtras();
-        teamId = b.getString("TEAM_ID");
-        token = b.getString("ACCESS_TOKEN");
-
 
         launchButton = findViewById(R.id.startButton);
 
@@ -77,8 +78,6 @@ public class WaitingActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(WaitingActivity.this, GeoGroupActivity.class);
                 Bundle b = new Bundle();
-                b.putString("TEAM_ID", teamId);
-                b.putString("ACCESS_TOKEN", token);
                 intent.putExtras(b); //Put your id to your next Intent
                 t.cancel();
                 startActivity(intent);
@@ -140,10 +139,6 @@ public class WaitingActivity extends AppCompatActivity {
 
                     if (gameIsFinish){
                         Intent intent = new Intent(WaitingActivity.this, SuccessActivity.class);
-                        Bundle b = new Bundle();
-                        b.putString("TEAM_ID", teamId);
-                        b.putString("ACCESS_TOKEN", token);
-                        intent.putExtras(b); //Put your id to your next Intent
                         t.cancel();
                         startActivity(intent);
                         finish();

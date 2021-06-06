@@ -6,6 +6,8 @@ import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.content.Intent;
@@ -96,18 +98,24 @@ public class LoginActivity extends AppCompatActivity {
             public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
 
                 try {
+
+
+
                     LoginResponse login = response.body();
                     progressBar.setVisibility(View.INVISIBLE);
                     loginTeamId = login.getTeamId();
                     loginAccessToken = login.getAccessToken();
                     Toast.makeText(getApplicationContext(), "Tu es bien connecté", Toast.LENGTH_SHORT).show();
 
-                    Intent intent = new Intent(LoginActivity.this, WaitingActivity.class);
-                    Bundle b = new Bundle();
-                    b.putString("TEAM_ID", loginTeamId);
-                    b.putString("ACCESS_TOKEN", loginAccessToken);
 
-                    intent.putExtras(b);
+                    SharedPreferences myPrefs = LoginActivity.this.getSharedPreferences("USER_PREFERENCES", MODE_PRIVATE);
+                    SharedPreferences.Editor editor = myPrefs.edit();
+                    editor.putString("TEAM_ID", loginTeamId);
+                    editor.putString("ACCESS_TOKEN", loginAccessToken);
+
+                    editor.apply();
+
+                    Intent intent = new Intent(LoginActivity.this, WaitingActivity.class);
                     startActivity(intent);
                     finish();
 

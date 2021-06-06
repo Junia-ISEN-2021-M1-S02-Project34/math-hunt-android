@@ -1,13 +1,13 @@
 package com.isen.math_hunt.activities;
 
-import androidx.annotation.NonNull;
+import android.annotation.SuppressLint;
+import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.util.Log;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
-
-import android.os.Bundle;
-import android.util.Log;
-import android.view.MenuItem;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.isen.math_hunt.R;
@@ -21,7 +21,6 @@ import com.isen.math_hunt.fragments.RankingFragment;
 import com.isen.math_hunt.interfaces.CurrentEnigmaIdInterface;
 import com.isen.math_hunt.model.RetrofitClient;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -42,7 +41,6 @@ public class GameActivity extends AppCompatActivity implements CurrentEnigmaIdIn
     private FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
     private int score;
-    private List<String> usedHintsIds = new ArrayList<>();
 
     private String gameId;
 
@@ -52,11 +50,10 @@ public class GameActivity extends AppCompatActivity implements CurrentEnigmaIdIn
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
 
-        Bundle b = getIntent().getExtras();
-        teamId = b.getString("TEAM_ID");
-        token = b.getString("ACCESS_TOKEN");
-        currentGeoGroupId = b.getString("CURRENT_GEOGROUP_ID");
-
+        SharedPreferences myPrefs = this.getSharedPreferences("USER_PREFERENCES", MODE_PRIVATE);
+        teamId = myPrefs.getString("TEAM_ID","");
+        token = myPrefs.getString("ACCESS_TOKEN","");
+        currentGeoGroupId = myPrefs.getString("CURRENT_GEOGROUP_ID","");
 
         getTeamById(teamId, token);
 
@@ -65,69 +62,45 @@ public class GameActivity extends AppCompatActivity implements CurrentEnigmaIdIn
         bottomNavigationView.setOnNavigationItemSelectedListener(navigationItemSelectedListener);
     }
 
-    private BottomNavigationView.OnNavigationItemSelectedListener navigationItemSelectedListener =
-            new BottomNavigationView.OnNavigationItemSelectedListener() {
-                @Override
-                public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                    Fragment selectedFragment = null;
+    @SuppressLint("NonConstantResourceId")
+    private final BottomNavigationView.OnNavigationItemSelectedListener navigationItemSelectedListener =
+            item -> {
 
-                    switch (item.getItemId()) {
-                        case R.id.page_1:
-                            Bundle enigmaBundle = new Bundle();
-                            enigmaBundle.putString("TEAM_ID", teamId);
-                            enigmaBundle.putString("CURRENT_ENIGMA_ID", currentEnigmaId);
-                            enigmaBundle.putString("CURRENT_GEOGROUP_ID", currentGeoGroupId);
-                            enigmaBundle.putString("ACCESS_TOKEN", token);
-                            Log.d("attemptsNumber", "attemptsNumber: " + attemptsNumber);
-                            enigmaBundle.putInt("ATTEMPTS_NUMBER", attemptsNumber);
-                            enigmaBundle.putInt("SCORE", score);
+                switch (item.getItemId()) {
+                    case R.id.page_1:
+                        Fragment enigmaFragment = new EnigmaFragment();
+                        transaction = getSupportFragmentManager().beginTransaction();
+                        transaction.replace(R.id.gameContainer, enigmaFragment);
+                        transaction.addToBackStack(null);
+                        transaction.commit();
+                        break;
+                    case R.id.page_2:
 
+                        Fragment hintFragment = new HintFragment();
+                        transaction = getSupportFragmentManager().beginTransaction();
+                        transaction.replace(R.id.gameContainer, hintFragment);
+                        transaction.commit();
+                        break;
+                    case R.id.page_3:
 
-                            Fragment enigmaFragment = new EnigmaFragment();
-                            enigmaFragment.setArguments(enigmaBundle);
-                            transaction = getSupportFragmentManager().beginTransaction();
-                            transaction.replace(R.id.gameContainer, enigmaFragment);
-                            transaction.commit();
-                            break;
-                        case R.id.page_2:
-                            Bundle hintBundle = new Bundle();
-                            hintBundle.putString("TEAM_ID", teamId);
-                            hintBundle.putString("CURRENT_ENIGMA_ID", currentEnigmaId);
-                            hintBundle.putString("ACCESS_TOKEN", token);
+                        Fragment progressionFragment = new ProgressionFragment();
+                        transaction = getSupportFragmentManager().beginTransaction();
+                        transaction.replace(R.id.gameContainer, progressionFragment);
+                        transaction.addToBackStack(null);
+                        transaction.commit();
+                        break;
+                    case R.id.page_4:
 
-                            Fragment hintFragment = new HintFragment();
-                            hintFragment.setArguments(hintBundle);
-                            transaction = getSupportFragmentManager().beginTransaction();
-                            transaction.replace(R.id.gameContainer, hintFragment);
-                            transaction.commit();
-                            break;
-                        case R.id.page_3:
-                            Bundle progressionBundle = new Bundle();
-                            progressionBundle.putString("TEAM_ID", teamId);
-                            progressionBundle.putString("ACCESS_TOKEN", token);
-
-                            Fragment progressionFragment = new ProgressionFragment();
-                            progressionFragment.setArguments(progressionBundle);
-                            transaction = getSupportFragmentManager().beginTransaction();
-                            transaction.replace(R.id.gameContainer, progressionFragment);
-                            transaction.commit();
-                            break;
-                        case R.id.page_4:
-                            Bundle rankingBundle = new Bundle();
-                            rankingBundle.putString("TEAM_ID", teamId);
-                            rankingBundle.putString("ACCESS_TOKEN", token);
-                            rankingBundle.putString("GAME_ID", gameId);
-                            Fragment rankingFragment = new RankingFragment();
-                            rankingFragment.setArguments(rankingBundle);
-                            transaction = getSupportFragmentManager().beginTransaction();
-                            transaction.replace(R.id.gameContainer, rankingFragment);
-                            transaction.commit();
-                            break;
-                    }
-
-
-                    return true;
+                        Fragment rankingFragment = new RankingFragment();
+                        transaction = getSupportFragmentManager().beginTransaction();
+                        transaction.replace(R.id.gameContainer, rankingFragment);
+                        transaction.addToBackStack(null);
+                        transaction.commit();
+                        break;
                 }
+
+
+                return true;
             };
 
     private void getTeamById(String id,String token) {
@@ -148,19 +121,17 @@ public class GameActivity extends AppCompatActivity implements CurrentEnigmaIdIn
 
                     getAttemptsNumber(progressionList,currentGeoGroupId,currentEnigmaId);
 
-
-                    Bundle enigmaBundle = new Bundle();
-                    enigmaBundle.putString("TEAM_ID", teamId);
-                    enigmaBundle.putString("CURRENT_ENIGMA_ID", currentEnigmaId);
-                    enigmaBundle.putString("CURRENT_GEOGROUP_ID", currentGeoGroupId);
-                    enigmaBundle.putInt("ATTEMPTS_NUMBER", attemptsNumber);
-                    enigmaBundle.putString("ACCESS_TOKEN", token);
-                    enigmaBundle.putInt("SCORE", score);
-                    enigmaBundle.putString("GAME_ID", gameId);
-
+                    SharedPreferences myPrefs = GameActivity.this.getSharedPreferences("USER_PREFERENCES", MODE_PRIVATE);
+                    SharedPreferences.Editor editor = myPrefs.edit();
+                    editor.putString("TEAM_ID", teamId);
+                    editor.putString("CURRENT_ENIGMA_ID", currentEnigmaId);
+                    editor.putString("CURRENT_GEOGROUP_ID", currentGeoGroupId);
+                    editor.putInt("ATTEMPTS_NUMBER", score);
+                    editor.putInt("SCORE", attemptsNumber);
+                    editor.putString("GAME_ID", gameId);
+                    editor.apply();
 
                     Fragment enigmaFragment = new EnigmaFragment();
-                    enigmaFragment.setArguments(enigmaBundle);
                     transaction = getSupportFragmentManager().beginTransaction();
                     transaction.replace(R.id.gameContainer, enigmaFragment);
                     transaction.addToBackStack(null);

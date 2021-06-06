@@ -1,6 +1,8 @@
 package com.isen.math_hunt.fragments;
 
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -48,8 +50,9 @@ public class ProgressionFragment extends Fragment {
         super.onCreate(savedInstanceState);
         View mView = inflater.inflate(R.layout.fragment_progression, null);
 
-        teamId = getArguments().getString("TEAM_ID");
-        token = getArguments().getString("ACCESS_TOKEN");
+        SharedPreferences myPrefs = this.getActivity().getSharedPreferences("USER_PREFERENCES", Context.MODE_PRIVATE);
+        teamId = myPrefs.getString("TEAM_ID","");
+        token = myPrefs.getString("ACCESS_TOKEN","");
 
         geoGroupsListView = (ListView) mView.findViewById(R.id.geoGroupsListView);
 

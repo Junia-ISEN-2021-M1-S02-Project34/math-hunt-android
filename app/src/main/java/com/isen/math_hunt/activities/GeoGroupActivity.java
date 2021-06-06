@@ -5,7 +5,9 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.location.Address;
 import android.location.Geocoder;
@@ -25,6 +27,7 @@ import android.widget.Toast;
 import com.isen.math_hunt.R;
 import com.isen.math_hunt.entities.GeoGroup;
 import com.isen.math_hunt.entities.Team;
+import com.isen.math_hunt.fragments.EnigmaFragment;
 import com.isen.math_hunt.model.RetrofitClient;
 import com.squareup.picasso.Picasso;
 
@@ -50,7 +53,6 @@ public class GeoGroupActivity extends AppCompatActivity implements LocationListe
     private Number geoGroupRadius; // radius en metres
 
 
-    //private Button button_location;
     private TextView text_location;
     private Button geoGroupContinueButton;
 
@@ -61,8 +63,6 @@ public class GeoGroupActivity extends AppCompatActivity implements LocationListe
 
     private String currentGeoGroupId;
 
-    private ProgressDialog geoGroupProgressDialog;
-    private ProgressDialog locationProgressBar;
 
     private ConstraintLayout layoutGeoGroup;
 
@@ -80,7 +80,6 @@ public class GeoGroupActivity extends AppCompatActivity implements LocationListe
 
         geoGroupContinueButton = findViewById(R.id.geoGroupContinueButton);
         text_location = findViewById(R.id.text_location);
-        //button_location = findViewById(R.id.button_location);
 
         geoGroupImageView = (ImageView) findViewById(R.id.geoGroupImageView);
 
@@ -92,23 +91,16 @@ public class GeoGroupActivity extends AppCompatActivity implements LocationListe
 
         getLocation();
 
-        Bundle b = getIntent().getExtras();
-        teamId = b.getString("TEAM_ID");
-        token = b.getString("ACCESS_TOKEN");
+        SharedPreferences myPrefs = this.getSharedPreferences("USER_PREFERENCES", MODE_PRIVATE);
+        teamId = myPrefs.getString("TEAM_ID","");
+        token = myPrefs.getString("ACCESS_TOKEN","");
 
         getTeamById(teamId);
 
-        geoGroupContinueButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(GeoGroupActivity.this, GameActivity.class);
-                Bundle b = new Bundle();
-                b.putString("TEAM_ID", teamId);
-                b.putString("ACCESS_TOKEN", token);
-                intent.putExtras(b); //Put your id to your next Intent
-                startActivity(intent);
-                finish();
-            }
+        geoGroupContinueButton.setOnClickListener(v -> {
+            Intent intent = new Intent(GeoGroupActivity.this, GameActivity.class);
+            startActivity(intent);
+            finish();
         });
 
     }
@@ -145,15 +137,18 @@ public class GeoGroupActivity extends AppCompatActivity implements LocationListe
         layoutGeoGroup.setVisibility(View.VISIBLE);
         geoGroupContinueButton.setVisibility(View.VISIBLE);
 
-        if (geoGroupPosX ==null || geoGroupPosY==null ){
+        Log.d("POSITION", "onLocationChanged: " + geoGroupPosX + geoGroupPosY);
+
+
+        if (geoGroupPosX == null || geoGroupPosY == null) {
             text_location.setText("chargement");
             geoGroupContinueButton.setEnabled(false);
             geoGroupContinueButton.setText("Encore un peu de marche!");
 
-        }else{
+        } else {
 
             int dist = (int) distance(geoGroupPosX, location.getLatitude(), geoGroupPosY, location.getLongitude());
-            if (dist > 1000) { // ICI VALEUR DU GEOGROUPE A CHANGER POUR LES TESTS SI BESOIN (Distance en mètre)
+            if (dist > geoGroupRadius.intValue()) { // ICI VALEUR DU GEOGROUPE A CHANGER POUR LES TESTS SI BESOIN (Distance en mètre)
                 geoGroupContinueButton.setEnabled(false);
                 geoGroupContinueButton.setText("Encore un peu de marche!");
 
@@ -191,7 +186,6 @@ public class GeoGroupActivity extends AppCompatActivity implements LocationListe
     public static double distance(Number lat1, Number lat2, Number lon1, Number lon2) {
 
         final int R = 6371; // Radius of the earth
-        //double height = 0;
         double latDistance = Math.toRadians(lat2.doubleValue() - lat1.doubleValue());
         double lonDistance = Math.toRadians(lon2.doubleValue() - lon1.doubleValue());
         double a = Math.sin(latDistance / 2) * Math.sin(latDistance / 2)
@@ -211,7 +205,7 @@ public class GeoGroupActivity extends AppCompatActivity implements LocationListe
 
         try {
             LocationManager locationManager = (LocationManager) getApplicationContext().getSystemService(LOCATION_SERVICE);
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, LOCATION_REFRESH_TIME, LOCATION_REFRESH_DISTANCE, GeoGroupActivity.this);
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, GeoGroupActivity.this);
 
 
         } catch (Exception e) {
@@ -234,11 +228,6 @@ public class GeoGroupActivity extends AppCompatActivity implements LocationListe
                     geoGroupRadius = geoGroup.getRadius();
                     Picasso.with(GeoGroupActivity.this).load(geoGroup.getPictureUrl()).fit().into(geoGroupImageView);
 
-
-                    //geoGroupImageView.setImageDrawable(LoadImageFromWebOperations(geoGroup.getPictureUrl()));
-                    //Log.d("IMAGE", "onResponse: " + geoGroup.getPictureUrl());
-
-
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -251,18 +240,6 @@ public class GeoGroupActivity extends AppCompatActivity implements LocationListe
 
             }
         });
-    }
-
-    public static Drawable LoadImageFromWebOperations(String url) {
-        try {
-            InputStream is = (InputStream) new URL(url).getContent();
-            Drawable d = Drawable.createFromStream(is, "src name");
-            return d;
-        } catch (Exception e) {
-            return null;
-        }
-
-
     }
 
 
