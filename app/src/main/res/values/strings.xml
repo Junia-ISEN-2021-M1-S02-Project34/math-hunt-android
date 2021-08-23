@@ -50,7 +50,7 @@
     <string name="AnswerTextFieldHint">Réponse</string>
     <string name="idTeam">idTeam</string>
     <string name="textProgression">Alors, vous en êtes où? \n  J\'ai noté pour vous  votre progression dans cette chasse aux énigmes.</string>
-    <string name="textHint">Besoin d\'un coup de main? \n Mon grand-père a caché des indices dans ses carnets mais cela vous coûtera quelque clés... </string>
+    <string name="textHint">Besoin d\'un coup de main? \n Mon père a caché des indices dans ses carnets mais cela vous coûtera quelque clés... </string>
     <string-array name="parties">
         <item>Partie1</item>
         <item>Partie2</item>
@@ -61,17 +61,17 @@
     </string-array>
     <string name="login">Login</string>
     <string name="admin">Admin</string>
-    <string name="introduction">Chers étudiants,\n\n Vous ne me connaissez pas, mais vous avez sûrement entendu le nom de mon grand-père, Norbert Ségard. \n J\'ai une certaine passion pour les sciences et les mathématiques et voyez-vous, c\'est une passion familiale. Mon grand-père m\'a transmis tous ses carnets de notes avant de mourir et j\'y ai découvert pleins d\'expériences et de mystères scientifiques qu\'il a étudié tout au long de sa vie. \n Mais alors quel rapport avec vous? Et bien il y a peu, j\'ai découvert dans un de ses carnets qu\'après avoir créé une certaine école d\'ingénieur appelé ISEN en 1956, il a dissimulé plusieurs énigmes mathématiques un peu partout dans la ville de Lille. \n Il précise que ceux qui réussiraient à les trouver et les résoudre obtiendrait la clé d\'un réussite inexplicable dans leurs études. A condition d’être assez rapide et de récolter assez de clés. \n \n Alors que diriez-vous d\'une chasse aux maths? \n\n Elise Ségard</string>
+    <string name="introduction">Chers étudiants, \n \n Vous ne me connaissez pas, mais vous avez sûrement entendu le nom de mon père, Norbert Ségard. \n \n J’ai une certaine passion pour les sciences et les mathématiques et voyez-vous, c’est une passion familiale. Mon père m’a transmis toutes ses archives avant de mourir à 58 ans et en particulier des carnets de notes pleins d’expériences et de mystères scientifiques qu’il a étudiés tout au long de sa vie. \n \n  Mais alors, quel rapport avec vous ? \n \n Il y a peu, j’ai découvert dans un de ses carnets qu’après que mon père ait créé l’Isen Lille en 1956, l’Isa en 1963 et refondé Hei (ces 3 écoles ayant donné naissance à Junia en 2020), plusieurs énigmes mathématiques avaient été dissimulées un peu partout dans la ville de Lille. \n \n Ceux qui réussiront à les trouver et les résoudre obtiendront peut-être les clés de la réussite dans leurs études. A condition d’être assez rapides et de récolter assez de clés. \n \n Alors que diriez-vous d’une chasse aux maths ? \n \n Jean-Paul Ségard. \n Isen 1973</string>
     <string name="delockButton">Débloquer</string>
     <string name="nextIndice">Votre indice est le suivant</string>
     <string name="valider">Valider</string>
-    <string name="hintTextr">Besoin d’un coup de main? \n Mon grand-père a caché des indices dans ses carnets mais cela vous coûtera quelques clés…</string>
+    <string name="hintTextr">Besoin d’un coup de main? \n Mon père a caché des indices dans ses carnets mais cela vous coûtera quelques clés…</string>
     <string name="progressionText">Alors où en êtes vous? \n J’ai noté pour vous votre progression dans cette chasse aux énigmes.</string>
     <string name="adminid">AdminId</string>
     <string name="retour">Retour</string>
     <string name="start_game">START GAME</string>
     <string name="stop_game">STOP GAME</string>
     <string name="rankingText">Faites vite pour trouver l’énigme finale avant les autres équipes et obtenir le plus de clés possibles!</string>
-    <string name="sucessMessage">Félicitations! \n Vous êtes arrivés au bout de cette chasse aux énigmes.\n Vous avez réussi à collecter les clés cachées par mon grand-père.\n Ces clés vous offriront la réussite absolue dans vos études qui commencent aujourd\'hui.\n\n Bonne continuation à vous et à bientôt autour d’un nouveau mystère…\n\n Elise Ségard</string>
+    <string name="sucessMessage">Félicitations! \n Vous êtes arrivés au bout de cette chasse aux énigmes.\n Vous avez réussi à collecter les clés cachées par mon père.\n Ces clés vous offriront la réussite absolue dans vos études qui commencent aujourd\'hui.\n\n Bonne continuation à vous et à bientôt autour d’un nouveau mystère…\n\n Elise Ségard</string>
 
 </resources>
